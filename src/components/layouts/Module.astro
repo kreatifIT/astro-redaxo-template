@@ -1,0 +1,45 @@
+---
+import type { ArticleSlice } from '../../adapters/generic-redaxo-adapter/@types';
+
+interface Props {
+    slice: ArticleSlice;
+}
+
+interface SettingsValues {
+    20: {
+        margin_top: 'margin-large-top' | 'margin-top' | 'margin-small-top' | '';
+        margin_bottom:
+            | 'margin-large-bottom'
+            | 'margin-bottom'
+            | 'margin-small-bottom'
+            | '';
+        padding_top:
+            | 'padding-large-top'
+            | 'padding-top'
+            | 'padding-small-top'
+            | '';
+        padding_bottom:
+            | 'padding-large-bottom'
+            | 'padding-bottom'
+            | 'padding-small-bottom'
+            | '';
+        theme?: 'dark' | 'gray';
+    };
+}
+
+const { slice } = Astro.props as Props;
+const values = slice.values as SettingsValues;
+---
+
+<section
+    class:list={[
+        values[20].margin_top,
+        values[20].margin_bottom,
+        values[20].padding_top,
+        values[20].padding_bottom,
+        'relative',
+    ]}
+    id={`section-${slice.id}`}
+>
+    <slot />
+</section>

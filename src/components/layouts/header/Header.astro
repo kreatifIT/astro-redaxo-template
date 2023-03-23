@@ -1,0 +1,81 @@
+---
+import Container from '@utils/Container.astro';
+import Column from '@utils/Column.astro';
+import Row from '@utils/Row.astro';
+import Logo from '@atoms/Logo.astro';
+import { RedaxoAdapter } from '@adapters/redaxo';
+import {
+    getArticleId,
+    getClangId,
+} from '@helpers/properties-management/server-properties';
+import Hamburger from '@atoms/Hamburger.astro';
+import MobileNavigation from './MobileNavigation.astro';
+import NavigationItem from '@atoms/NavigationItem.astro';
+
+const clangId = getClangId(Astro);
+const articleId = getArticleId(Astro);
+
+const navigation = await RedaxoAdapter.getRootNavigation(clangId, articleId, 2);
+---
+
+<header
+    class="fixed top-0 z-50 flex h-16 w-full items-center bg-white transition-colors md:h-20 xl:h-[120px]"
+    data-header-section
+>
+    <Container>
+        <Row class="justify-between lg:justify-center">
+            <Column class="w-5/12 md:w-3/12 xl:w-2/12">
+                <Logo />
+            </Column>
+            <Column
+                class="w-auto flex-grow md:w-9/12 lg:flex-grow-0 xl:w-10/12 2xl:w-8/12"
+            >
+                <nav
+                    class="hidden h-full w-full items-center justify-end xl:flex"
+                >
+                    <ul class="flex">
+                        {
+                            navigation
+                                .filter((c) => c.parentId == null)
+                                .map((category) => (
+                                    <NavigationItem
+                                        {...category}
+                                        children={navigation.filter(
+                                            (c) => c.parentId == category.id,
+                                        )}
+                                    />
+                                ))
+                        }
+                    </ul>
+                </nav>
+                <div
+                    class="flex h-full w-full items-center justify-end xl:hidden"
+                >
+                    <Hamburger />
+                    <MobileNavigation navigation={navigation} />
+                </div>
+            </Column>
+        </Row>
+    </Container>
+</header>
+<style is:global>
+    header.header-scrolled {
+        @apply bg-gray-100;
+    }
+    .header-scrolled [data-sub-navigation] {
+        @apply bg-gray-100;
+    }
+</style>
+
+<script>
+    const header = document.querySelector('[data-header-section]')!;
+    const checkHeader = () => {
+        if (window.scrollY > 50) {
+            header.classList.add('header-scrolled');
+        } else {
+            header.classList.remove('header-scrolled');
+        }
+    };
+    checkHeader();
+    document.addEventListener('scroll', checkHeader);
+</script>

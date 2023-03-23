@@ -1,0 +1,43 @@
+---
+import { GenericRedaxoAdapter } from '../adapters/generic-redaxo-adapter';
+import Layout from '@layouts/Layout.astro';
+import {
+    getAllProperties,
+    setArticleId,
+    setClangId,
+} from '@helpers/properties-management/server-properties';
+import WildcardCache from '@helpers/wildcards';
+import env from '@helpers/env.json';
+const { path } = Astro.params;
+
+if (path === 'sitemap.xml' || path === 'robots.txt') {
+    const redaxoRoot = env.REDAXO_ROOT;
+    return Astro.redirect(`${redaxoRoot}/${path}`, 301);
+}
+
+const articlePath = await GenericRedaxoAdapter.getArticleByPath(
+    path ?? '/',
+    '1',
+    {
+        clang: true,
+    },
+);
+
+const clangId = articlePath.clang.id;
+await WildcardCache.prepareCache(clangId);
+setClangId(Astro, clangId);
+setArticleId(Astro, articlePath.id);
+
+const allStates = getAllProperties(Astro);
+---
+
+<Layout />
+<script define:vars={{ allStates }}>
+    //@ts-ignore
+    window._states = allStates;
+    //@ts-ignore
+    window.getState = (key) => {
+        //@ts-ignore
+        return window._states[key];
+    };
+</script>

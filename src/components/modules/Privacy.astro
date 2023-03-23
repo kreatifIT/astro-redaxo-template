@@ -1,0 +1,59 @@
+---
+import type { ModuleProps } from '@adapters/generic-redaxo-adapter/@types';
+import Column from '@utils/Column.astro';
+import Container from '@utils/Container.astro';
+import Row from '@utils/Row.astro';
+
+interface Props extends ModuleProps {}
+
+interface Values {
+    20: {
+        iubenda_code: string;
+    };
+}
+
+const { slice } = Astro.props;
+
+const values = slice.values as Values;
+---
+
+<Container>
+    <Row class="justify-center">
+        <Column class="lg:w-10/12 xl:w-8/12">
+            <div class="privacy-policy">
+                <a
+                    href={`https://www.iubenda.com/privacy-policy/${values[20].iubenda_code}`}
+                    class="iubenda-white no-brand iubenda-embed iub-no-markup iub-body-embed"
+                    title="Privacy Policy">Privacy Policy</a
+                >
+                <script type="text/javascript" is:inline>
+                    (function (w, d) {
+                        var loader = function () {
+                            var s = d.createElement('script'),
+                                tag = d.getElementsByTagName('script')[0];
+                            s.src = 'https://cdn.iubenda.com/iubenda.js';
+                            tag.parentNode.insertBefore(s, tag);
+                        };
+                        if (w.addEventListener) {
+                            w.addEventListener('load', loader, false);
+                        } else if (w.attachEvent) {
+                            w.attachEvent('onload', loader);
+                        } else {
+                            w.onload = loader;
+                        }
+                    })(window, document);
+                </script>
+            </div>
+        </Column>
+    </Row>
+</Container>
+<style is:global lang="scss">
+    .privacy-policy {
+        h1 {
+            @apply mb-5 text-3xl font-bold;
+        }
+        h2 {
+            @apply mt-7 mb-3 text-2xl font-bold;
+        }
+    }
+</style>

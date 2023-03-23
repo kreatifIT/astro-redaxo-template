@@ -1,0 +1,11 @@
+---
+interface Props {
+    class: string;
+}
+
+const props = Astro.props;
+---
+
+<div class:list={['p-3 lg:p-6 w-full', 'flex-shrink-0', props.class]}>
+    <slot />
+</div>

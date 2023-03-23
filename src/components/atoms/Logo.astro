@@ -1,0 +1,18 @@
+---
+import { getClangId } from '@helpers/properties-management/server-properties';
+import { GenericRedaxoAdapter } from '@adapters/generic-redaxo-adapter';
+
+const clangId = getClangId(Astro);
+const startArticle = await GenericRedaxoAdapter.getSiteStartArticle(clangId);
+---
+
+<a href={startArticle.url}>
+    <img
+        src="/img/logo.svg"
+        loading="lazy"
+        alt="Logo"
+        width="225"
+        height="65"
+        class="mr-4 h-10 w-auto md:h-14 md:w-40 lg:h-auto lg:w-48 xl:w-56"
+    />
+</a>

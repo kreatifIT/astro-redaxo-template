@@ -1,0 +1,103 @@
+---
+import type { Article } from '@adapters/generic-redaxo-adapter/@types';
+import { getFullUrl, getLogoUrl } from '@helpers/url';
+import { getSettings } from '@helpers/wildcards';
+
+interface Props {
+    article: Article;
+}
+
+const settings = getSettings(Astro);
+const { article } = Astro.props;
+const organizationImage = settings.organization?.images[0];
+const schema: any = [
+    {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: settings.organization?.name,
+        url: getFullUrl('/'),
+        logo: getLogoUrl(),
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        name: settings.organization?.name,
+        address: {
+            '@type': 'PostalAddress',
+            streetAddress: settings.organization?.streetAddress,
+            addressLocality: settings.organization?.city,
+            addressRegion: settings.organization?.region,
+            addressCountry: settings.organization?.isoCountryCode,
+            postalCode: settings.organization?.zip,
+        },
+        geo: {
+            '@type': 'GeoCoordinates',
+            latitude: settings.contact?.coordinates[0],
+            longitude: settings.contact?.coordinates[1],
+        },
+        url: getFullUrl(article.url),
+        image: organizationImage
+            ? {
+                  '@context': 'https://schema.org',
+                  '@type': 'ImageObject',
+                  url: organizationImage.src,
+              }
+            : undefined,
+        telephone: settings.contact?.phone,
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': getFullUrl(article.url),
+        },
+        headline: article.name,
+        image: [
+            article.seo.images.map((image) => ({
+                '@context': 'https://schema.org',
+                '@type': 'ImageObject',
+                url: image.src,
+            })),
+        ],
+        datePublished: article.createDate,
+        dateModified: article.updateDate,
+        author: {
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: settings.organization?.name,
+            url: getFullUrl('/'),
+            logo: getLogoUrl(),
+        },
+        publisher: {
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: settings.organization?.name,
+            url: getFullUrl('/'),
+            logo: getLogoUrl(),
+        },
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        url: getFullUrl('/'),
+        name: settings.websiteName || settings.organization?.name,
+    },
+];
+
+if (article.breadcrumbs?.length > 0) {
+    schema.push({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: article.breadcrumbs?.map((breadcrumb, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: breadcrumb.label,
+            item: getFullUrl(breadcrumb.url),
+        })),
+    });
+}
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}
+></script>

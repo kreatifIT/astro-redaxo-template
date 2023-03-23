@@ -1,0 +1,92 @@
+#iubenda-cs-banner {
+    .iubenda-cs-container {
+        .iubenda-cs-content {
+            max-width: 98vw !important;
+            @apply bg-white text-gray-800;
+            font-size: 14px !important;
+
+            .iubenda-cs-opt-group-custom {
+                .iubenda-cs-accept-btn {
+                    @apply bg-primary text-white #{!important};
+                }
+            }
+
+            .iubenda-cs-opt-group-consent {
+                .iubenda-cs-reject-btn {
+                    @apply bg-gray-400 text-gray-800 #{!important};
+                }
+
+                .iubenda-cs-customize-btn {
+                    @apply bg-gray-400 text-gray-800 #{!important};
+                }
+            }
+
+            .iubenda-cs-close-btn {
+                display: none !important;
+            }
+
+            .cookieBannerLanguageSwitch {
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                text-align: center;
+                line-height: 100%;
+                font-size: 14px;
+                @apply text-gray-400;
+                z-index: 1;
+
+                .cookieBannerLanguageToggler {
+                    width: 20px;
+                    height: 20px;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                .cookieBannerLanguageMenu {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    max-height: 0;
+                    opacity: 0;
+                    overflow: hidden;
+                    transition: all 0.3s ease;
+                    box-shadow: 0px 2px 7px gray;
+                    transform: translateY(10px);
+                    text-transform: uppercase;
+                    @apply text-gray-600;
+
+                    & > * {
+                        padding: 7px 10px;
+                        text-align: center;
+                        display: block;
+                    }
+
+                    span {
+                        @apply bg-gray-100;
+                    }
+
+                    a {
+                        text-decoration: none;
+                        transition: all 0.3s ease;
+                        border-bottom: 1px solid transparent;
+                        @apply bg-white text-gray-600;
+
+                        &:hover {
+                            @apply bg-gray-100;
+                        }
+                    }
+                }
+
+                &.menu-open {
+                    .cookieBannerLanguageMenu {
+                        max-height: initial;
+                        overflow: visible;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}

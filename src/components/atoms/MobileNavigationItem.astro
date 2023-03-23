@@ -1,0 +1,86 @@
+---
+import Icon from '@utils/Icon';
+import type { NavigationItem } from '../../adapters/generic-redaxo-adapter/@types';
+interface Props extends NavigationItem {
+    children?: NavigationItem[];
+}
+
+const { url, label, active, children = [] } = Astro.props;
+---
+
+<li
+    data-mobile-navigation-item
+    class:list={[
+        'hover:text-primary block border-b-2  text-sm uppercase hover:bg-gray-100 px-5',
+        active ? 'text-primary' : 'text-gray-600',
+    ]}
+>
+    {
+        children.length < 2 ? (
+            <a href={url} class="block py-3 transition-colors">
+                {label}
+            </a>
+        ) : (
+            <>
+                <span
+                    class="flex w-full cursor-pointer justify-between py-3 transition-colors"
+                    data-mobile-navigation-toggler
+                >
+                    {label}
+                    <span
+                        data-mobile-navigation-icon
+                        class:list={[
+                            'inline-block transition-transform ml-1',
+                            active ? 'expanded' : '',
+                        ]}
+                    >
+                        <Icon name="angle-down-light" class="inline-block" />
+                    </span>
+                </span>
+                <ul
+                    class:list={[
+                        'overflow-hidden pl-4 transition-all',
+                        active ? '' : 'h-0',
+                    ]}
+                    data-mobile-sub-navigation
+                >
+                    {children.map((child) => (
+                        <a
+                            href={child.url}
+                            class="hover:text-primary block py-2 text-gray-600 transition-colors first:mt-0"
+                        >
+                            {child.label}
+                        </a>
+                    ))}
+                </ul>
+            </>
+        )
+    }
+</li>
+
+<style>
+    .expanded {
+        @apply rotate-180;
+    }
+</style>
+
+<script>
+    document
+        .querySelectorAll('[data-mobile-navigation-toggler]')
+        .forEach((item) => {
+            const parent = item.closest('[data-mobile-navigation-item]')!;
+            const icon = parent.querySelector('[data-mobile-navigation-icon]')!;
+            const subMenu = parent.querySelector(
+                '[data-mobile-sub-navigation]',
+            ) as HTMLElement;
+            if (subMenu) {
+                item.addEventListener('click', () => {
+                    subMenu.style.height = subMenu.classList.contains('h-0')
+                        ? `${subMenu.scrollHeight}px`
+                        : '0px';
+                    subMenu.classList.toggle('h-0');
+                    icon.classList.toggle('expanded');
+                });
+            }
+        });
+</script>

@@ -1,0 +1,147 @@
+/// Large spacings per breakpoint
+$utils-spacing-large-s: 3.5rem;
+$utils-spacing-large-m: 5rem;
+$utils-spacing-large-l: 9.375rem;
+
+/// Medium spacings per breakpoint
+$utils-spacing-s: 2.5rem;
+$utils-spacing-m: 3.75rem;
+$utils-spacing-l: 6.25rem;
+
+/// Small spacings per breakpoint
+$utils-spacing-small-s: 1.25rem;
+$utils-spacing-small-m: 1.25rem;
+$utils-spacing-small-l: 1.25rem;
+
+.margin-large-top {
+    margin-top: $utils-spacing-large-s;
+    @media screen and (min-width: 768px) {
+        margin-top: $utils-spacing-large-m;
+    }
+    @media screen and (min-width: 1024px) {
+        margin-top: $utils-spacing-large-l;
+    }
+}
+
+.margin-top {
+    margin-top: $utils-spacing-s;
+    @media screen and (min-width: 768px) {
+        margin-top: $utils-spacing-m;
+    }
+    @media screen and (min-width: 1024px) {
+        margin-top: $utils-spacing-l;
+    }
+}
+
+.margin-small-top {
+    margin-top: $utils-spacing-small-s;
+    @media screen and (min-width: 768px) {
+        margin-top: $utils-spacing-small-m;
+    }
+    @media screen and (min-width: 1024px) {
+        margin-top: $utils-spacing-small-l;
+    }
+}
+
+.margin-large-bottom {
+    margin-bottom: $utils-spacing-large-s;
+    @media screen and (min-width: 768px) {
+        margin-bottom: $utils-spacing-large-m;
+    }
+    @media screen and (min-width: 1024px) {
+        margin-bottom: $utils-spacing-large-l;
+    }
+}
+
+.margin-bottom {
+    margin-bottom: $utils-spacing-s;
+    @media screen and (min-width: 768px) {
+        margin-bottom: $utils-spacing-m;
+    }
+    @media screen and (min-width: 1024px) {
+        margin-bottom: $utils-spacing-l;
+    }
+}
+
+.margin-small-bottom {
+    margin-bottom: $utils-spacing-small-s;
+    @media screen and (min-width: 768px) {
+        margin-bottom: $utils-spacing-small-m;
+    }
+    @media screen and (min-width: 1024px) {
+        margin-bottom: $utils-spacing-small-l;
+    }
+}
+
+.padding-large-top {
+    padding-top: $utils-spacing-large-s;
+    @media screen and (min-width: 768px) {
+        padding-top: $utils-spacing-large-m;
+    }
+    @media screen and (min-width: 1024px) {
+        padding-top: $utils-spacing-large-l;
+    }
+}
+
+.padding-top {
+    padding-top: $utils-spacing-s;
+    @media screen and (min-width: 768px) {
+        padding-top: $utils-spacing-m;
+    }
+    @media screen and (min-width: 1024px) {
+        padding-top: $utils-spacing-l;
+    }
+}
+
+.padding-small-top {
+    padding-top: $utils-spacing-small-s;
+    @media screen and (min-width: 768px) {
+        padding-top: $utils-spacing-small-m;
+    }
+    @media screen and (min-width: 1024px) {
+        padding-top: $utils-spacing-small-l;
+    }
+}
+
+.padding-large-bottom {
+    padding-bottom: $utils-spacing-large-s;
+    @media screen and (min-width: 768px) {
+        padding-bottom: $utils-spacing-large-m;
+    }
+    @media screen and (min-width: 1024px) {
+        padding-bottom: $utils-spacing-large-l;
+    }
+}
+
+.padding-bottom {
+    padding-bottom: $utils-spacing-s;
+    @media screen and (min-width: 768px) {
+        padding-bottom: $utils-spacing-m;
+    }
+    @media screen and (min-width: 1024px) {
+        padding-bottom: $utils-spacing-l;
+    }
+}
+
+.padding-small-bottom {
+    padding-bottom: $utils-spacing-small-s;
+    @media screen and (min-width: 768px) {
+        padding-bottom: $utils-spacing-small-m;
+    }
+    @media screen and (min-width: 1024px) {
+        padding-bottom: $utils-spacing-small-l;
+    }
+}
+
+.margin-mobile-large-y {
+    margin-top: $utils-spacing-large-s;
+    margin-bottom: $utils-spacing-large-s;
+    @media screen and (min-width: 768px) {
+        margin-top: $utils-spacing-large-m;
+        margin-bottom: $utils-spacing-large-m;
+    }
+    @media screen and (min-width: 1024px) {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}

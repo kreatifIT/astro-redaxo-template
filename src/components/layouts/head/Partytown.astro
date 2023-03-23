@@ -1,0 +1,38 @@
+<script type="text/plain" class="_iub_cs_activate-inline" data-iub-purposes="1">
+    const updatePurposes = () => {
+        const purposes = _iub.cs.consent?.purposes;
+        if (!purposes) return;
+        const executeScripts = Object.keys(purposes).every(
+            (purpose) => purposes[purpose] == true,
+        );
+        if (executeScripts) {
+            const scriptTags = document.querySelectorAll(
+                'script[type="text/partytown-consent-dependent"]',
+            );
+            scriptTags.forEach((scriptTag) => {
+                const scriptPurposes =
+                    scriptTag.getAttribute('data-iub-purposes');
+                if (purposes) {
+                    const specifiedPurposes = JSON.parse(scriptPurposes);
+                    if (
+                        !specifiedPurposes.every(
+                            (purpose) => purposes[purpose] == true,
+                        )
+                    )
+                        return;
+                } else {
+                    if (
+                        !Object.keys(purposes).every(
+                            (purpose) => purposes[purpose] == true,
+                        )
+                    )
+                        return;
+                }
+                scriptTag.setAttribute('type', 'text/partytown');
+            });
+            window.dispatchEvent(new CustomEvent('ptupdate'));
+        }
+    };
+    document.addEventListener('iub_changed', updatePurposes);
+    updatePurposes();
+</script>

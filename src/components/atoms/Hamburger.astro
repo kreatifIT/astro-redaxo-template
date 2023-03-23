@@ -1,0 +1,32 @@
+---
+---
+
+<button class="space-y-1.5" data-hamburger title="Menu">
+    <span class="top block h-0.5 w-6 bg-gray-800 transition-transform"></span>
+    <span class="middle block h-0.5 w-6 bg-gray-800 transition-opacity"></span>
+    <span class="bottom block h-0.5 w-6 bg-gray-800 transition-transform"
+    ></span>
+</button>
+
+<style>
+    .open .top {
+        @apply translate-y-2 rotate-45;
+    }
+    .open .middle {
+        @apply opacity-0;
+    }
+    .open .bottom {
+        @apply -translate-y-2 -rotate-45;
+    }
+</style>
+
+<script>
+    const hamburger = document.querySelector('[data-hamburger]')!;
+    const mobileNavigation = document.querySelector(
+        '[data-mobile-navigation]',
+    )!;
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        mobileNavigation.classList.toggle('open');
+    });
+</script>

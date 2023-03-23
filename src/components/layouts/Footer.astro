@@ -1,0 +1,134 @@
+---
+import Column from '@utils/Column.astro';
+import Container from '@utils/Container.astro';
+import Row from '@utils/Row.astro';
+import Logo from '@atoms/Logo.astro';
+import {
+    getArticleId,
+    getClangId,
+} from '@helpers/properties-management/server-properties';
+import { RedaxoAdapter } from '@adapters/redaxo';
+import { getSettings, t } from '@helpers/wildcards';
+
+const year = new Date().getFullYear();
+
+const clangId = getClangId(Astro);
+const articleId = getArticleId(Astro);
+
+const projectSettings = getSettings(Astro);
+const organization = projectSettings.organization;
+const contact = projectSettings.contact;
+
+const footerMenu = await RedaxoAdapter.getNavigation(
+    clangId,
+    articleId,
+    'footer_menu',
+);
+---
+
+<footer class="z-1 relative bg-gray-100">
+    <div class="md:py-18 py-12 text-gray-800 lg:py-24">
+        <Container>
+            <Row class="justify-center">
+                <Column class="md:w-6/12 lg:w-3/12 xl:w-2/12">
+                    <div class="flex justify-center">
+                        <Logo />
+                    </div>
+                </Column>
+                <Column class="md:w-6/12 lg:w-3/12 xl:w-2/12">
+                    <div class="text-center">
+                        {organization?.streetAddress}<br />
+                        {organization?.zip}
+                        {organization?.city} ({organization?.region})<br />
+                        {organization?.province} - {organization?.country}<br />
+                    </div>
+                </Column>
+                <Column class="md:w-6/12 lg:w-3/12 xl:w-2/12">
+                    <div class="text-center">
+                        {
+                            organization?.vatNumber && (
+                                <>
+                                    {t(Astro, 'label.vat_short')}:
+                                    {organization?.vatNumber}
+                                    <br />
+                                </>
+                            )
+                        }
+                        {
+                            organization?.reaNumber && (
+                                <>
+                                    {t(Astro, 'label.rea_nr')}:{' '}
+                                    {organization?.reaNumber}
+                                    <br />
+                                </>
+                            )
+                        }
+                        {
+                            contact?.emailPec && (
+                                <>
+                                    {t(Astro, 'label.pec')}:
+                                    <a
+                                        href={`mailto:${contact?.emailPec}`}
+                                        class="font-bold underline underline-offset-2"
+                                    >
+                                        {contact?.emailPec}
+                                    </a>
+                                    <br />
+                                </>
+                            )
+                        }
+                    </div>
+                </Column>
+                <Column class="md:w-6/12 lg:w-3/12 xl:w-2/12">
+                    <div class="text-center">
+                        <a
+                            class="iubenda-cs-preferences-link hover:text-primary block transition-colors"
+                            href="javascript:;">Cookie-Einstellungen</a
+                        >
+                        {
+                            footerMenu.map((item) => (
+                                <a
+                                    href={item.url}
+                                    target={item.internal ? '_self' : '_blank'}
+                                    class:list={[
+                                        'hover:text-primary block transition-colors',
+                                        item.active ? 'text-primary' : '',
+                                    ]}
+                                    set:html={item.label}
+                                />
+                            ))
+                        }
+                    </div>
+                </Column>
+            </Row>
+        </Container>
+    </div>
+    <div
+        class="bg-gray-800 py-7 text-sm tracking-wide text-white md:py-9 lg:py-11"
+    >
+        <Container>
+            <Row class="justify-center">
+                <Column class="w-full xl:w-8/12">
+                    <div class="justify-between md:flex">
+                        <div class="mb-2 md:mb-0">
+                            {
+                                t(Astro, 'label.copyright').replace(
+                                    '{{YEAR}}',
+                                    year.toString(),
+                                )
+                            }
+                        </div>
+                        <div>
+                            Produced by <a
+                                href="https://www.kreatif.it"
+                                target="_blank"
+                                class="text-kreatif-green font-bold transition-opacity hover:opacity-80"
+                                >Kreatif</a
+                            >
+                        </div>
+                    </div>
+                </Column>
+            </Row>
+        </Container>
+    </div>
+</footer>

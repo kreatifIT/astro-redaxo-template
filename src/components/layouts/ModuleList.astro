@@ -1,0 +1,56 @@
+---
+import type { Article } from '@adapters/generic-redaxo-adapter/@types';
+import { parseModuleValues } from '@adapters/generic-redaxo-adapter/utils';
+import type { ArticleAnchor } from '@helpers/@types';
+import { moduleToComponent } from '@helpers/redaxo-config';
+import Module from './Module.astro';
+interface Props {
+    article: Article;
+}
+
+const { article } = Astro.props;
+const anchors = article.slices
+    .filter((slice) => {
+        const values = parseModuleValues(slice.values);
+        return values[10]?.anchor_title;
+    })
+    .map((slice) => {
+        const values = parseModuleValues(slice.values);
+        return {
+            title: values[10]?.anchor_title,
+            id: slice.id,
+            iconClassName: values[20]?.anchor_icon,
+        } as ArticleAnchor;
+    });
+---
+
+{
+    article.slices?.map((slice) => {
+        const Component = moduleToComponent.get(slice.moduleCode);
+        if (!Component) {
+            console.error(
+                'no component found for moduleCode:',
+                slice.moduleCode,
+            );
+            return null;
+        }
+        let parsedSlice = {
+            ...slice,
+            values: parseModuleValues(slice.values),
+            media: parseModuleValues(slice.media),
+            link: parseModuleValues(slice.link),
+            linkList: parseModuleValues(slice.linkList),
+            mediaList: parseModuleValues(slice.mediaList),
+        };
+
+        return (
+            <Module slice={parsedSlice}>
+                <Component
+                    slice={parsedSlice}
+                    article={article}
+                    anchors={anchors}
+                />
+            </Module>
+        );
+    })
+}
