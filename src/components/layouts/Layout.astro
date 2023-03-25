@@ -27,7 +27,7 @@ const article = await RedaxoAdapter.getArticleById(articleId, clangId, {
     <head>
         <Head article={article} />
     </head>
-    <body>
+    <body class="overflow-x-hidden">
         <Header />
         <Main article={article} />
         <Footer />

@@ -1,0 +1,33 @@
+---
+import type {
+    Link,
+    ModuleProps,
+} from '@adapters/generic-redaxo-adapter/@types';
+import Container from '@utils/Container.astro';
+import Heading from '@utils/Heading';
+import RexLink from '@utils/RexLink';
+
+interface Props extends ModuleProps {}
+
+interface Values {
+    1: {
+        title_large: string;
+        title_small: string;
+        text: string;
+        lead: string;
+        link: Link;
+    };
+}
+
+const { slice } = Astro.props;
+
+const values = slice.values as Values;
+---
+
+<Container>
+    <Heading text={values[1].title_large} class="text-2xl font-bold" />
+    <Heading text={values[1].title_small} class="text-xl font-bold" />
+    {values[1].lead && <div set:html={values[1].lead} class="my-2 text-lg" />}
+    {values[1].text && <div set:html={values[1].text} class="text my-2" />}
+    <RexLink link={values[1].link} />
+</Container>

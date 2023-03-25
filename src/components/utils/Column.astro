@@ -6,6 +6,6 @@ interface Props {
 const props = Astro.props;
 ---
 
-<div class:list={['p-3 lg:p-6 w-full', 'flex-shrink-0', props.class]}>
+<div class:list={['px-3 lg:px-6', 'flex-shrink-0', props.class]}>
     <slot />
 </div>

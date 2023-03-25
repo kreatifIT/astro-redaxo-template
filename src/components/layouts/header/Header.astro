@@ -11,6 +11,7 @@ import {
 import Hamburger from '@atoms/Hamburger.astro';
 import MobileNavigation from './MobileNavigation.astro';
 import NavigationItem from '@atoms/NavigationItem.astro';
+import LanguagePicker from '@layouts/LanguagePicker.astro';
 
 const clangId = getClangId(Astro);
 const articleId = getArticleId(Astro);
@@ -23,13 +24,11 @@ const navigation = await RedaxoAdapter.getRootNavigation(clangId, articleId, 2);
     data-header-section
 >
     <Container>
-        <Row class="justify-between lg:justify-center">
+        <Row>
             <Column class="w-5/12 md:w-3/12 xl:w-2/12">
                 <Logo />
             </Column>
-            <Column
-                class="w-auto flex-grow md:w-9/12 lg:flex-grow-0 xl:w-10/12 2xl:w-8/12"
-            >
+            <Column class="w-7/12 md:w-9/12 lg:flex-grow-0 xl:w-10/12">
                 <nav
                     class="hidden h-full w-full items-center justify-end xl:flex"
                 >
@@ -47,6 +46,7 @@ const navigation = await RedaxoAdapter.getRootNavigation(clangId, articleId, 2);
                                 ))
                         }
                     </ul>
+                    <LanguagePicker />
                 </nav>
                 <div
                     class="flex h-full w-full items-center justify-end xl:hidden"

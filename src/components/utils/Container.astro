@@ -1,16 +1,16 @@
 ---
 interface Props {
-    class?: string
-    noPadding?: boolean
+    class?: string;
+    noPadding?: boolean;
 }
 
-const { class: className = "", noPadding } = Astro.props
+const { class: className = '', noPadding } = Astro.props;
 ---
 
 <div
     class:list={[
-        "max-w-[1680px] mx-auto relative z-1 w-full 2xl:px-0 flex flex-col",
-        !noPadding ? "px-4" : "",
+        'max-w-[1680px] mx-auto relative z-1 w-full flex flex-col',
+        !noPadding ? 'px-4' : '',
         className,
     ]}
 >

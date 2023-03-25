@@ -1,40 +1,19 @@
 ---
 import type { NavigationItem } from '@adapters/generic-redaxo-adapter/@types';
-import { RedaxoAdapter } from '@adapters/redaxo';
 import MobileNavigationItem from '@atoms/MobileNavigationItem.astro';
-import {
-    getArticleId,
-    getClangId,
-} from '@helpers/properties-management/server-properties';
+import LanguagePicker from '@layouts/LanguagePicker.astro';
 
 interface Props {
     navigation: NavigationItem[];
 }
-const langId = getClangId(Astro);
 const { navigation } = Astro.props;
-const articleId = getArticleId(Astro);
-const langs = await RedaxoAdapter.getClangs(articleId, langId);
 ---
 
 <div
     class="invisible fixed right-0 bottom-0 top-16 w-full max-w-sm translate-x-full overflow-auto bg-white p-5 transition-all md:top-20 xl:top-[120px] xl:hidden"
     data-mobile-navigation
 >
-    <div class="flex flex-wrap">
-        {
-            langs.map((lang) => (
-                <a
-                    class:list={[
-                        'flex h-11 w-11 cursor-pointer items-center justify-center bg-gray-100 uppercase',
-                        lang.active ? 'opacity-50' : '',
-                    ]}
-                    href={lang.url}
-                >
-                    {lang.code}
-                </a>
-            ))
-        }
-    </div>
+    <LanguagePicker />
     <nav class="mt-3">
         <ul class="flex flex-col">
             {

@@ -29,76 +29,68 @@ const footerMenu = await RedaxoAdapter.getNavigation(
 <footer class="z-1 relative bg-gray-100">
     <div class="md:py-18 py-12 text-gray-800 lg:py-24">
         <Container>
-            <Row class="justify-center">
-                <Column class="md:w-6/12 lg:w-3/12 xl:w-2/12">
-                    <div class="flex justify-center">
-                        <Logo />
-                    </div>
+            <Row>
+                <Column class="md:w-6/12 lg:w-3/12">
+                    <Logo />
                 </Column>
-                <Column class="md:w-6/12 lg:w-3/12 xl:w-2/12">
-                    <div class="text-center">
-                        {organization?.streetAddress}<br />
-                        {organization?.zip}
-                        {organization?.city} ({organization?.region})<br />
-                        {organization?.province} - {organization?.country}<br />
-                    </div>
+                <Column class="md:w-6/12 lg:w-3/12">
+                    {organization?.streetAddress}<br />
+                    {organization?.zip}
+                    {organization?.city} ({organization?.region})<br />
+                    {organization?.province} - {organization?.country}<br />
                 </Column>
-                <Column class="md:w-6/12 lg:w-3/12 xl:w-2/12">
-                    <div class="text-center">
-                        {
-                            organization?.vatNumber && (
-                                <>
-                                    {t(Astro, 'label.vat_short')}:
-                                    {organization?.vatNumber}
-                                    <br />
-                                </>
-                            )
-                        }
-                        {
-                            organization?.reaNumber && (
-                                <>
-                                    {t(Astro, 'label.rea_nr')}:{' '}
-                                    {organization?.reaNumber}
-                                    <br />
-                                </>
-                            )
-                        }
-                        {
-                            contact?.emailPec && (
-                                <>
-                                    {t(Astro, 'label.pec')}:
-                                    <a
-                                        href={`mailto:${contact?.emailPec}`}
-                                        class="font-bold underline underline-offset-2"
-                                    >
-                                        {contact?.emailPec}
-                                    </a>
-                                    <br />
-                                </>
-                            )
-                        }
-                    </div>
-                </Column>
-                <Column class="md:w-6/12 lg:w-3/12 xl:w-2/12">
-                    <div class="text-center">
-                        <a
-                            class="iubenda-cs-preferences-link hover:text-primary block transition-colors"
-                            href="javascript:;">Cookie-Einstellungen</a
-                        >
-                        {
-                            footerMenu.map((item) => (
+                <Column class="md:w-6/12 lg:w-3/12">
+                    {
+                        organization?.vatNumber && (
+                            <>
+                                {t(Astro, 'label.vat_short')}:
+                                {organization?.vatNumber}
+                                <br />
+                            </>
+                        )
+                    }
+                    {
+                        organization?.reaNumber && (
+                            <>
+                                {t(Astro, 'label.rea_nr')}:{' '}
+                                {organization?.reaNumber}
+                                <br />
+                            </>
+                        )
+                    }
+                    {
+                        contact?.emailPec && (
+                            <>
+                                {t(Astro, 'label.pec')}:
                                 <a
-                                    href={item.url}
-                                    target={item.internal ? '_self' : '_blank'}
-                                    class:list={[
-                                        'hover:text-primary block transition-colors',
-                                        item.active ? 'text-primary' : '',
-                                    ]}
-                                    set:html={item.label}
-                                />
-                            ))
-                        }
-                    </div>
+                                    href={`mailto:${contact?.emailPec}`}
+                                    class="font-bold underline underline-offset-2"
+                                >
+                                    {contact?.emailPec}
+                                </a>
+                                <br />
+                            </>
+                        )
+                    }
+                </Column>
+                <Column class="md:w-6/12 lg:w-3/12">
+                    <button
+                        class="iubenda-cs-preferences-link transition-colors hover:text-primary"
+                        >{t(Astro, 'label.cookie_settings')}</button
+                    >
+                    {
+                        footerMenu.map((item) => (
+                            <a
+                                href={item.url}
+                                target={item.internal ? '_self' : '_blank'}
+                                class:list={[
+                                    'hover:text-primary block transition-colors',
+                                    item.active ? 'text-primary' : '',
+                                ]}
+                                set:html={item.label}
+                            />
+                        ))
+                    }
                 </Column>
             </Row>
         </Container>
@@ -107,28 +99,20 @@ const footerMenu = await RedaxoAdapter.getNavigation(
         class="bg-gray-800 py-7 text-sm tracking-wide text-white md:py-9 lg:py-11"
     >
         <Container>
-            <Row class="justify-center">
-                <Column class="w-full xl:w-8/12">
-                    <div class="justify-between md:flex">
-                        <div class="mb-2 md:mb-0">
-                            {
-                                t(Astro, 'label.copyright').replace(
-                                    '{{YEAR}}',
-                                    year.toString(),
-                                )
-                            }
-                        </div>
-                        <div>
-                            Produced by <a
-                                href="https://www.kreatif.it"
-                                target="_blank"
-                                class="text-kreatif-green font-bold transition-opacity hover:opacity-80"
-                                >Kreatif</a
-                            >
-                        </div>
-                    </div>
-                </Column>
-            </Row>
+            <div class="justify-between md:flex">
+                <div class="mb-2 md:mb-0">
+                    Copyright &copy; {year}
+                    {organization?.name}
+                </div>
+                <div>
+                    Produced by <a
+                        href="https://www.kreatif.it"
+                        target="_blank"
+                        class="font-bold text-kreatif-green transition-opacity hover:opacity-80"
+                        >Kreatif</a
+                    >
+                </div>
+            </div>
         </Container>
     </div>
 </footer>

@@ -6,6 +6,6 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<div class:list={['flex -m-3 lg:-m-6 flex-wrap', className || '']}>
+<div class:list={['flex -mx-3 lg:-mx-6 flex-wrap', className || '']}>
     <slot />
 </div>
