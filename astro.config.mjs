@@ -19,6 +19,11 @@ export default defineConfig({
         ssr: {
             noExternal: ['@splidejs/react-splide', 'react-map-gl', '@splidejs/splide-extension-video', '@vime/react'],
         },
+        define: {
+            'process.env.REDAXO_ENDPOINT': JSON.stringify(process.env.REDAXO_ENDPOINT),
+            'process.env.REDAXO_ROOT': JSON.stringify(process.env.REDAXO_ROOT),
+            'process.env.ROOT': JSON.stringify(process.env.ROOT),
+        }
     },
     adapter: cloudflare(),
     output: 'server',

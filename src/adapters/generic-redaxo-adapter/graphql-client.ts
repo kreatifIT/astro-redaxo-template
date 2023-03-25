@@ -1,5 +1,4 @@
 import type { DocumentNode } from 'graphql';
-import env from '@helpers/env.json';
 
 export type GraphQLResponse = {
     data: any;
@@ -8,6 +7,12 @@ export type GraphQLResponse = {
 
 export default class GraphQLClient {
     private cache = new Map<string, any>();
+    private ENDPOINT = '';
+
+    public setEndpoint(endpoint: string) {
+        this.ENDPOINT = endpoint;
+    }
+
     public async query(
         query: DocumentNode,
         variables: Record<string, any>,
@@ -58,13 +63,12 @@ export default class GraphQLClient {
     }
 
     private getGraphQLEndpoint(clangId: string): string {
-        const redaxoEndpoint = env.REDAXO_ENDPOINT;
-        if (!redaxoEndpoint) {
+        if (!this.ENDPOINT) {
             throw new Error(
-                'REDAXO_ENDPOINT is not defined. Please set it in your .env file.',
+                'No GraphQL endpoint defined. Please initialize the GraphQLClient correctly.',
             );
         }
-        const url = new URL(env.REDAXO_ENDPOINT);
+        const url = new URL(this.ENDPOINT);
         url.pathname = `${url.pathname}/${clangId}/`;
         return url.toString();
     }
@@ -94,12 +98,6 @@ export default class GraphQLClient {
                         'GraphQL request failed. Response:\n',
                         JSON.stringify(res.errors, null, 2),
                     );
-                    if (!!import.meta.env.DEBUG) {
-                        //throw error with query name
-                        throw new Error(
-                            'Failed to fetch API at request ' + body.query,
-                        );
-                    }
                 }
                 return res;
             })

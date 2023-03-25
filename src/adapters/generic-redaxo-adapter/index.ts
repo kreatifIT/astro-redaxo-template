@@ -23,10 +23,15 @@ import {
     REX_NAVIGATION_QRY,
     REX_ROOT_NAVIGATION_QRY,
 } from '@adapters/generic-redaxo-adapter/queries/navigation';
-import env from '@helpers/env.json';
 
 export class GenericRedaxoAdapter {
-    protected static redaxo = new GraphQLClient();
+    protected static redaxo: GraphQLClient = new GraphQLClient();
+    protected static REDAXO_ROOT = '';
+
+    public static init(redaxoRoot: string, graphqlEndpoint: string) {
+        this.REDAXO_ROOT = redaxoRoot;
+        this.redaxo.setEndpoint(graphqlEndpoint);
+    }
 
     protected static getArticleIncludes(includes?: ArticleIncludes) {
         return {
@@ -102,9 +107,9 @@ export class GenericRedaxoAdapter {
 
     public static getMediaUrl(media: string, imageType?: string) {
         if (imageType) {
-            return `${env.REDAXO_ROOT}/media/${imageType}/${media}`;
+            return `${this.REDAXO_ROOT}/media/${imageType}/${media}`;
         }
-        return `${env.REDAXO_ROOT}/media/${media}`;
+        return `${this.REDAXO_ROOT}/media/${media}`;
     }
 
     public static async getMedia(
