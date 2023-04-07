@@ -26,12 +26,7 @@ import {
 
 export class GenericRedaxoAdapter {
     protected static redaxo: GraphQLClient = new GraphQLClient();
-    protected static REDAXO_ROOT = '';
-
-    public static init(redaxoRoot: string, graphqlEndpoint: string) {
-        this.REDAXO_ROOT = redaxoRoot;
-        this.redaxo.setEndpoint(graphqlEndpoint);
-    }
+    protected static REDAXO_ROOT = import.meta.env.REDAXO_ROOT as string;
 
     protected static getArticleIncludes(includes?: ArticleIncludes) {
         return {

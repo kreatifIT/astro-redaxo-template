@@ -2,7 +2,7 @@ export const getFullUrl = (url: string) => {
     if (url.startsWith('http')) {
         return url;
     }
-    const baseUrl = import.meta.env.ROOT.replace(/\/$/, '');
+    const baseUrl = import.meta.env.FRONTEND_ROOT.replace(/\/$/, '');
     url = url.replace(/^\//, '');
     return `${baseUrl}/${url}`;
 };

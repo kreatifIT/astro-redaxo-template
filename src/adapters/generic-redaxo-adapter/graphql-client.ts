@@ -63,14 +63,13 @@ export default class GraphQLClient {
     }
 
     private getGraphQLEndpoint(clangId: string): string {
-        if (!this.ENDPOINT) {
+        const base = import.meta.env.REDAXO_ENDPOINT as string;
+        if (!base) {
             throw new Error(
                 'No GraphQL endpoint defined. Please initialize the GraphQLClient correctly.',
             );
         }
-        const url = new URL(this.ENDPOINT);
-        url.pathname = `${url.pathname}/${clangId}/`;
-        return url.toString();
+        return base.replace('{{clangId}}', clangId);
     }
 
     private executeRequest(

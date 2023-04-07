@@ -23,9 +23,6 @@ export const REX_SEO_FRAGMENT = gql`
         image {
             ...MediaFragment
         }
-        images {
-            ...MediaFragment
-        }
         alternateLanguages {
             langCode
             url

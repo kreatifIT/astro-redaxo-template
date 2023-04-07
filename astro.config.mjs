@@ -22,7 +22,7 @@ export default defineConfig({
         define: {
             'process.env.REDAXO_ENDPOINT': JSON.stringify(process.env.REDAXO_ENDPOINT),
             'process.env.REDAXO_ROOT': JSON.stringify(process.env.REDAXO_ROOT),
-            'process.env.ROOT': JSON.stringify(process.env.ROOT),
+            'process.env.FRONTEND_ROOT': JSON.stringify(process.env.ROOT),
         }
     },
     adapter: cloudflare(),

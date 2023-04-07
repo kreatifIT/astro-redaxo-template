@@ -11,32 +11,26 @@ import { RedaxoAdapter } from '@adapters/redaxo';
 
 const { path } = Astro.params;
 
-const redaxoRoot = import.meta.env.REDAXO_ROOT as string;
-const redaxoEndpoint = import.meta.env.REDAXO_ENDPOINT as string;
-
 if (path === 'sitemap.xml' || path === 'robots.txt') {
     return Astro.redirect(`${redaxoRoot}/${path}`, 301);
 }
 
-RedaxoAdapter.init(redaxoRoot, redaxoEndpoint);
+const article = await RedaxoAdapter.getArticleByPath(path ?? '/', '1', {
+    breadcrumbs: true,
+    seo: true,
+    slices: true,
+    clang: true,
+});
 
-const articlePath = await GenericRedaxoAdapter.getArticleByPath(
-    path ?? '/',
-    '1',
-    {
-        clang: true,
-    },
-);
-
-const clangId = articlePath.clang.id;
+const clangId = article.clang.id;
 await WildcardCache.prepareCache(clangId);
 setClangId(Astro, clangId);
-setArticleId(Astro, articlePath.id);
+setArticleId(Astro, article.id);
 
 const allStates = getAllProperties(Astro);
 ---
 
-<Layout />
+<Layout article={article} />
 <script define:vars={{ allStates }}>
     //@ts-ignore
     window._states = allStates;

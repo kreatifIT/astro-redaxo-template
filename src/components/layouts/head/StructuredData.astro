@@ -53,13 +53,11 @@ const schema: any = [
             '@id': getFullUrl(article.url),
         },
         headline: article.name,
-        image: [
-            article.seo.images.map((image) => ({
-                '@context': 'https://schema.org',
-                '@type': 'ImageObject',
-                url: image.src,
-            })),
-        ],
+        image: {
+            '@context': 'https://schema.org',
+            '@type': 'ImageObject',
+            url: article.seo.image?.src || '',
+        },
         datePublished: article.createDate,
         dateModified: article.updateDate,
         author: {
