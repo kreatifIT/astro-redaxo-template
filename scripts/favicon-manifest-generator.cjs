@@ -5,7 +5,7 @@ const manifest = require('../app.manifest.cjs');
 const jsdom = require('jsdom');
 const faviconsComponent = path.join(
     __dirname,
-    '../src/components/utils/Favicons.astro',
+    '../src/components/layouts/head/Favicons.astro',
 );
 
 const source = getFaviconPath('favicon');

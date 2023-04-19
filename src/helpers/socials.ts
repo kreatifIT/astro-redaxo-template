@@ -1,11 +1,5 @@
-import Text from '@modules/Text.astro';
-import Privacy from '@modules/Privacy.astro';
-import type { Social } from '@adapters/redaxo/@types';
+import type { Social } from '@adapters/kreatif-redaxo-adapter/@types';
 
-export const moduleToComponent = new Map<string, any>([
-    ['text', Text],
-    ['privacy', Privacy],
-]);
 const socialMediaClasses = new Map<string, string>([
     ['facebook', 'hover:before:bg-socials-facebook'],
     ['instagram', 'hover:before:bg-socials-instagram'],

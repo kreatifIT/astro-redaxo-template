@@ -1,9 +1,9 @@
-import { Link } from "@adapters/generic-redaxo-adapter/@types"
+import type { Link } from '@adapters/redaxo/@types';
 
 interface Props {
-    link: Link
-    title?: string
-    class?: string
+    link: Link;
+    title?: string;
+    class?: string;
 }
 
 export default function RexLink({ link, title, class: className }: Props) {
@@ -17,5 +17,5 @@ export default function RexLink({ link, title, class: className }: Props) {
         >
             <slot />
         </a>
-    )
+    );
 }

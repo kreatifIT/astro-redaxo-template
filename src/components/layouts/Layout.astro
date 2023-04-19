@@ -1,28 +1,44 @@
 ---
 import Header from '@layouts/header/Header.astro';
-import Footer from '@layouts/Footer.astro';
 import '@styles/fonts.scss';
 import '@styles/spacing.scss';
 import '@styles/base.scss';
 import '../../../public/fonts/iconFont/iconFont.scss';
 import Main from '@layouts/Main.astro';
 import Head from '@layouts/head/Head.astro';
-import type { Article } from '@adapters/generic-redaxo-adapter/@types';
+import type { Article } from '@adapters/redaxo/@types';
+import WildcardCache from '@helpers/wildcards';
+import { getLayoutData } from '@adapters/kreatif-redaxo-adapter/layout';
+import Properties from '@layouts/Properties.astro';
+import Footer from './Footer.astro';
 
 interface Props {
     article: Article;
 }
-
 const { article } = Astro.props;
+
+const clangId = article.clang.id;
+const articleId = article.id;
+
+const [_, { rootNavigation: navigation, clangs, siteStartArticle }] =
+    await Promise.all([
+        WildcardCache.prepareCache(clangId),
+        getLayoutData(2, articleId, clangId),
+    ]);
 ---
 
 <html lang={article.clang.code.toLowerCase()}>
     <head>
-        <Head article={article} />
+        <Head article={article} clangs={clangs} />
     </head>
     <body class="overflow-x-hidden">
-        <Header />
+        <Header
+            clangs={clangs}
+            siteStartArticle={siteStartArticle}
+            navigation={navigation}
+        />
         <Main article={article} />
-        <Footer />
+        <Footer siteStartArticle={siteStartArticle} />
+        <Properties />
     </body>
 </html>

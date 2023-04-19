@@ -1,7 +1,7 @@
-import type { ProjectSettings } from '../adapters/redaxo/@types';
-import { RedaxoAdapter } from '@adapters/redaxo';
+import type { ProjectSettings } from '../adapters/kreatif-redaxo-adapter/@types';
 import type { AstroGlobal } from 'astro';
 import { getClangId } from './properties-management/server-properties';
+import { getKreatifWildcards } from '@adapters/kreatif-redaxo-adapter/project-settings';
 
 /**
  * Get a wildcard value based on the current language
@@ -28,21 +28,15 @@ export default class WildcardCache {
     private static settings: Map<string, ProjectSettings> = new Map();
 
     static async prepareCache(languageId: string): Promise<void> {
-        const [settings, wildcards] = await Promise.all([
-            RedaxoAdapter.getProjectSettings(languageId, {
-                contact: true,
-                organization: true,
-                iubenda: true,
-                tokens: true,
-            }),
-            RedaxoAdapter.getWildcards(languageId),
-        ]);
-        wildcards.forEach((w) => {
+        const { wildCards, projectSettings } = await getKreatifWildcards(
+            languageId,
+        );
+        wildCards.forEach((w) => {
             if (!this.sprog.has(languageId))
                 this.sprog.set(languageId, new Map());
             this.sprog.get(languageId)?.set(w.wildcard, w.replace);
         });
-        this.settings.set(languageId, settings);
+        this.settings.set(languageId, projectSettings);
     }
 
     static getSprog(wildcard: string, langId: string): string {

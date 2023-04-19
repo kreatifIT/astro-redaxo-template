@@ -1,19 +1,20 @@
 ---
-import type { NavigationItem } from '@adapters/generic-redaxo-adapter/@types';
+import type { Clang, NavigationItem } from '@adapters/redaxo/@types';
 import MobileNavigationItem from '@atoms/MobileNavigationItem.astro';
 import LanguagePicker from '@layouts/LanguagePicker.astro';
 
 interface Props {
     navigation: NavigationItem[];
+    clangs: Clang[];
 }
-const { navigation } = Astro.props;
+const { navigation, clangs } = Astro.props;
 ---
 
 <div
     class="invisible fixed right-0 bottom-0 top-16 w-full max-w-sm translate-x-full overflow-auto bg-white p-5 transition-all md:top-20 xl:top-[120px] xl:hidden"
     data-mobile-navigation
 >
-    <LanguagePicker />
+    <LanguagePicker clangs={clangs} />
     <nav class="mt-3">
         <ul class="flex flex-col">
             {

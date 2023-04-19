@@ -1,6 +1,4 @@
 ---
-import type { Article } from '@adapters/generic-redaxo-adapter/@types';
-import Favicons from '@utils/Favicons.astro';
 import Iubenda from '@utils/iubenda/Iubenda.astro';
 import { SEO, TwitterCardType } from 'astro-seo';
 import { getFullUrl } from '@helpers/url';
@@ -8,12 +6,15 @@ import { getSettings } from '@helpers/wildcards';
 import Partytown from './Partytown.astro';
 import StructuredData from './StructuredData.astro';
 import Tracking from './Tracking.astro';
+import type { Article, Clang } from '@adapters/redaxo/@types';
+import Favicons from './Favicons.astro';
 
 interface Props {
     article: Article;
+    clangs: Clang[];
 }
 
-const { article } = Astro.props;
+const { article, clangs } = Astro.props;
 const projectSettings = getSettings(Astro);
 
 const lastSlashPos = article.seo.title.lastIndexOf('/');
@@ -122,7 +123,7 @@ const SEOData = {
         ))
 }
 <Favicons />
-<Iubenda article={article} />
+<Iubenda article={article} clangs={clangs} />
 <StructuredData article={article} />
 <Tracking />
 <Partytown />

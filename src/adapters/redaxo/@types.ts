@@ -1,54 +1,108 @@
-import type { Media } from '../generic-redaxo-adapter/@types';
-export type ProjectSettings = {
-    organization?: {
-        name: string;
-        streetAddress: string;
-        zip: string;
-        city: string;
-        region: string;
-        province: string;
-        country: string;
-        isoCountryCode: string;
-        vatNumber: string;
-        chamberOfCommerce: string;
-        chamberOfCommerceNumber: string;
-        reaNumber: string;
-        shareholderEquity: string;
-        images: Media[];
-    };
-    contact?: {
-        phone: string;
-        email: string;
-        emailPec: string;
-        socials: Social[];
-        coordinates: number[];
-    };
-    seoGeoRegion?: string;
-    websiteName?: string;
-    iubendaCookieBanner?: {
-        bannerData: string;
-        showLanguageSwitch: boolean;
-    };
-    tokens?: {
-        googleTagManager?: string;
-        googleAnalytics?: string;
-        googleWebmasterId?: string;
-        bingValidateId?: string;
-        facebookPixelId?: string;
-        facebookDomainVerification?: string;
-        linkedInInsightId?: string;
-        mapboxAccessToken?: string;
-    };
+export type Article = {
+    id: string;
+    name: string;
+    slices: ArticleSlice[];
+    isStartArticle: boolean;
+    url: string;
+    clang: Clang;
+    seo: SEO;
+    createDate: string;
+    updateDate: string;
+    breadcrumbs: Breadcrumb[];
 };
 
-export type Social = {
+export type ArticleSlice = {
+    id: string;
+    moduleCode: string;
+    values?: any;
+    media?: any;
+    mediaList?: any;
+    link?: any;
+    linkList?: any;
+};
+
+export type Category = {
+    id: string;
     name: string;
+    url: string;
+    startArticle: Article;
+    articles: Article[];
+    children: Category[];
+};
+
+export type Clang = {
+    id: string;
+    code: string;
+    active: boolean;
     url: string;
 };
 
-export type ProjectSettingsIncludes = {
-    organization?: boolean;
-    contact?: boolean;
-    iubenda?: boolean;
-    tokens?: boolean;
+export type Link = {
+    url: string;
+    label: string;
+    target: string;
+};
+
+export type Media = {
+    id: string;
+    filename: string;
+    focusPoint: number[];
+    title: string;
+    alt: string;
+    src: string;
+    srcset: string;
+    width: number;
+    height: number;
+};
+
+export type ModuleProps = {
+    slice: ArticleSlice;
+    article: Article;
+};
+
+export type ArticleIncludes = {
+    slices?: boolean;
+    clang?: boolean;
+    seo?: boolean;
+    breadcrumbs?: boolean;
+};
+
+export type CategoryIncludes = {
+    articles?: boolean;
+    children?: boolean;
+    startArticle?: boolean;
+};
+
+export type Wildcard = {
+    id: string;
+    wildcard: string;
+    replace: string;
+};
+
+export type SEO = {
+    title: string;
+    description: string;
+    canonical: string;
+    robots: string;
+    image: Media;
+    images: Media[];
+    alternateLanguages: {
+        langCode: string;
+        url: string;
+    }[];
+};
+
+export type NavigationItem = {
+    id: string;
+    label: string;
+    url: string;
+    parentId: string;
+    internal: boolean;
+    active: boolean;
+};
+
+export type Breadcrumb = {
+    id: string;
+    label: string;
+    url: string;
 };

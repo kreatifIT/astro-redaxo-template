@@ -1,0 +1,15 @@
+---
+import { getAllProperties } from '@helpers/properties-management/server-properties';
+
+const allStates = getAllProperties(Astro);
+---
+
+<script define:vars={{ allStates }}>
+    //@ts-ignore
+    window._states = allStates;
+    //@ts-ignore
+    window.getState = (key) => {
+        //@ts-ignore
+        return window._states[key];
+    };
+</script>

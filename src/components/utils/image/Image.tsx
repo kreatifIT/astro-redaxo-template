@@ -1,4 +1,4 @@
-import type { Media } from '@adapters/generic-redaxo-adapter/@types';
+import type { Media } from '@adapters/redaxo/@types';
 
 interface Props extends Media {
     contain?: boolean;

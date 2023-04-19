@@ -1,6 +1,6 @@
 import { getClangId } from './properties-management/server-properties';
 import type { AstroGlobal } from 'astro';
-import type { Clang } from '@adapters/generic-redaxo-adapter/@types';
+import type { Clang } from '@adapters/redaxo/@types';
 import { t } from '@helpers/wildcards';
 
 const BANNER = `

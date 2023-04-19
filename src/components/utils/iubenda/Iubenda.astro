@@ -1,19 +1,17 @@
 ---
 import { getBanner } from '@helpers/iubenda';
 import { getClangId } from '@helpers/properties-management/server-properties';
-import { RedaxoAdapter } from '@adapters/redaxo';
-import type { Article } from '@adapters/generic-redaxo-adapter/@types';
 import { getSettings } from '@helpers/wildcards';
 import './Iubenda.scss';
+import type { Article, Clang } from '@adapters/redaxo/@types';
 
 interface Props {
     article: Article;
+    clangs: Clang[];
 }
 
-const { article } = Astro.props;
+const { article, clangs } = Astro.props;
 
-const clangId = getClangId(Astro);
-const clangs = await RedaxoAdapter.getClangs(article.id, clangId);
 const bannerHTML = getBanner(Astro, clangs);
 const settings = getSettings(Astro);
 ---

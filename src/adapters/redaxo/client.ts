@@ -6,14 +6,9 @@ export type GraphQLResponse = {
 };
 
 export default class GraphQLClient {
-    private cache = new Map<string, any>();
-    private ENDPOINT = '';
+    private static cache = new Map<string, any>();
 
-    public setEndpoint(endpoint: string) {
-        this.ENDPOINT = endpoint;
-    }
-
-    public async query(
+    public static async query(
         query: DocumentNode,
         variables: Record<string, any>,
         clangId: string,
@@ -48,7 +43,7 @@ export default class GraphQLClient {
         });
     }
 
-    public async mutate(
+    public static async mutate(
         mutation: DocumentNode,
         variables: Record<string, any>,
         clangId: string,
@@ -62,7 +57,7 @@ export default class GraphQLClient {
         );
     }
 
-    private getGraphQLEndpoint(clangId: string): string {
+    private static getGraphQLEndpoint(clangId: string): string {
         const base = import.meta.env.REDAXO_ENDPOINT as string;
         if (!base) {
             throw new Error(
@@ -72,7 +67,7 @@ export default class GraphQLClient {
         return base.replace('{{clangId}}', clangId);
     }
 
-    private executeRequest(
+    private static executeRequest(
         body: Record<string, any>,
         clangId: string,
     ): Promise<GraphQLResponse> {

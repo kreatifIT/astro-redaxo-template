@@ -1,10 +1,10 @@
-import type { Media } from '@adapters/generic-redaxo-adapter/@types';
 import { useStore } from '@nanostores/preact';
-import Image from '@utils/Image';
+import Image from '@utils/image/Image';
 import useIubendaPreferences from '@utils/iubenda/useIubendaPreferences';
 import type { JSX } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { splideStore } from './splide-store';
+import type { Media } from '@adapters/redaxo/@types';
 
 export interface Props {
     id: string;

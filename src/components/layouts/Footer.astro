@@ -1,14 +1,20 @@
 ---
-import Column from '@utils/Column.astro';
-import Container from '@utils/Container.astro';
-import Row from '@utils/Row.astro';
 import Logo from '@atoms/Logo.astro';
 import {
     getArticleId,
     getClangId,
 } from '@helpers/properties-management/server-properties';
-import { RedaxoAdapter } from '@adapters/redaxo';
 import { getSettings, t } from '@helpers/wildcards';
+import { getNavigation } from '@adapters/redaxo/navigation';
+import type { Article } from '@adapters/redaxo/@types';
+import Container from '@utils/grid/Container.astro';
+import Row from '@utils/grid/Row.astro';
+import Column from '@utils/grid/Column.astro';
+
+interface Props {
+    siteStartArticle: Article;
+}
+const { siteStartArticle } = Astro.props;
 
 const year = new Date().getFullYear();
 
@@ -19,11 +25,7 @@ const projectSettings = getSettings(Astro);
 const organization = projectSettings.organization;
 const contact = projectSettings.contact;
 
-const footerMenu = await RedaxoAdapter.getNavigation(
-    clangId,
-    articleId,
-    'footer_menu',
-);
+const footerMenu = await getNavigation(clangId, articleId, 'footer_menu');
 ---
 
 <footer class="z-1 relative bg-gray-100">
@@ -31,7 +33,7 @@ const footerMenu = await RedaxoAdapter.getNavigation(
         <Container>
             <Row>
                 <Column class="md:w-6/12 lg:w-3/12">
-                    <Logo />
+                    <Logo siteStartArticle={siteStartArticle} />
                 </Column>
                 <Column class="md:w-6/12 lg:w-3/12">
                     {organization?.streetAddress}<br />
@@ -74,10 +76,6 @@ const footerMenu = await RedaxoAdapter.getNavigation(
                     }
                 </Column>
                 <Column class="md:w-6/12 lg:w-3/12">
-                    <button
-                        class="iubenda-cs-preferences-link transition-colors hover:text-primary"
-                        >{t(Astro, 'label.cookie_settings')}</button
-                    >
                     {
                         footerMenu.map((item) => (
                             <a
@@ -91,6 +89,10 @@ const footerMenu = await RedaxoAdapter.getNavigation(
                             />
                         ))
                     }
+                    <button
+                        class="iubenda-cs-preferences-link transition-colors hover:text-primary"
+                        >{t(Astro, 'label.cookie_settings')}</button
+                    >
                 </Column>
             </Row>
         </Container>

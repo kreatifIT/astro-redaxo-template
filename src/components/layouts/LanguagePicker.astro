@@ -1,26 +1,26 @@
 ---
-import { RedaxoAdapter } from '@adapters/redaxo';
-import type { Article } from '@adapters/generic-redaxo-adapter/@types';
-import {
-    getArticleId,
-    getClangId,
-} from '@helpers/properties-management/server-properties';
+import type { Clang } from '@adapters/redaxo/@types';
 
-const clangId = getClangId(Astro);
-const articleId = getArticleId(Astro);
+interface Props {
+    clangs: Clang[];
+}
 
-const clangs = await RedaxoAdapter.getClangs(articleId, clangId);
+const { clangs }: Props = Astro.props;
 ---
 
 <div>
     {
-        clangs?.map((clang) => (
-            <a
-                href={clang.url}
-                class:list={['uppercase', clang.active ? 'opacity-50' : '']}
-            >
-                {clang.code}
-            </a>
-        ))
+        clangs.length > 1 &&
+            clangs?.map((clang) => (
+                <a
+                    href={clang.url}
+                    class:list={[
+                        'uppercase',
+                        clang.active ? 'text-primary' : '',
+                    ]}
+                >
+                    {clang.code}
+                </a>
+            ))
     }
 </div>
