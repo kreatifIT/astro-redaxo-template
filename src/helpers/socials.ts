@@ -14,7 +14,7 @@ const socialMediaIcons = new Map<string, string>([
     ['instagram', 'instagram'],
     ['twitter', 'twitter'],
     ['youtube', 'youtube'],
-    ['linkedin', 'linked-in'],
+    ['linkedin', 'linkedin'],
     ['pinterest', 'pinterest'],
 ]);
 
