@@ -10,6 +10,7 @@ export default function Image({
     focusPoint,
     width,
     src,
+    srcset,
     height,
     contain,
     class: className,
@@ -22,7 +23,7 @@ export default function Image({
         <img
             src={src}
             alt={alt}
-            srcset={src}
+            srcset={srcset}
             width={width}
             loading="lazy"
             height={height}

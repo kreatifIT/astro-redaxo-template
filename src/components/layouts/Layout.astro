@@ -20,11 +20,13 @@ const { article } = Astro.props;
 const clangId = article.clang.id;
 const articleId = article.id;
 
-const [_, { rootNavigation: navigation, clangs, siteStartArticle }] =
-    await Promise.all([
-        WildcardCache.prepareCache(clangId),
-        getLayoutData(2, articleId, clangId),
-    ]);
+const [
+    _,
+    { rootNavigation: navigation, clangs, siteStartArticle, footerArticle },
+] = await Promise.all([
+    WildcardCache.prepareCache(clangId),
+    getLayoutData(2, articleId, clangId),
+]);
 ---
 
 <html lang={article.clang.code.toLowerCase()}>
@@ -37,7 +39,7 @@ const [_, { rootNavigation: navigation, clangs, siteStartArticle }] =
             siteStartArticle={siteStartArticle}
             navigation={navigation}
         />
-        <Main article={article} />
+        <Main article={article} footerArticle={footerArticle} />
         <Footer siteStartArticle={siteStartArticle} />
         <Properties />
     </body>
