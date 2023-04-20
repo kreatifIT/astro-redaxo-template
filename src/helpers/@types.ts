@@ -3,3 +3,7 @@ export interface ArticleAnchor {
     iconClassName: string;
     id: string;
 }
+
+export interface ContentPageProps {
+    data: any;
+}

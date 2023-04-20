@@ -1,5 +1,5 @@
 ---
-import type { Article } from '@adapters/generic-redaxo-adapter/@types';
+import type { Article } from '@adapters/redaxo/@types';
 import { getFullUrl, getLogoUrl } from '@helpers/url';
 import { getSettings } from '@helpers/wildcards';
 
@@ -35,7 +35,7 @@ const schema: any = [
             latitude: settings.contact?.coordinates[0],
             longitude: settings.contact?.coordinates[1],
         },
-        url: getFullUrl(article.url),
+        url: getFullUrl('/'),
         image: organizationImage
             ? {
                   '@context': 'https://schema.org',

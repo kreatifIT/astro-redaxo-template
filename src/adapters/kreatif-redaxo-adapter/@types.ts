@@ -46,3 +46,11 @@ export type Social = {
     name: string;
     url: string;
 };
+
+export type ContentType = {
+    type: string;
+    elementId: string;
+    clang: {
+        id: string;
+    };
+};

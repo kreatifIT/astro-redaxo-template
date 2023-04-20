@@ -11,6 +11,7 @@ import WildcardCache from '@helpers/wildcards';
 import { getLayoutData } from '@adapters/kreatif-redaxo-adapter/layout';
 import Properties from '@layouts/Properties.astro';
 import Footer from './Footer.astro';
+import ModuleList from './ModuleList.astro';
 
 interface Props {
     article: Article;
@@ -32,6 +33,7 @@ const [
 <html lang={article.clang.code.toLowerCase()}>
     <head>
         <Head article={article} clangs={clangs} />
+        <slot name="head" />
     </head>
     <body class="overflow-x-hidden">
         <Header
@@ -39,7 +41,10 @@ const [
             siteStartArticle={siteStartArticle}
             navigation={navigation}
         />
-        <Main article={article} footerArticle={footerArticle} />
+        <main>
+            <slot />
+            {footerArticle && <ModuleList article={footerArticle} />}
+        </main>
         <Footer siteStartArticle={siteStartArticle} />
         <Properties />
     </body>

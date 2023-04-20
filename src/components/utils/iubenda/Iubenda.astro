@@ -6,11 +6,10 @@ import './Iubenda.scss';
 import type { Article, Clang } from '@adapters/redaxo/@types';
 
 interface Props {
-    article: Article;
     clangs: Clang[];
 }
 
-const { article, clangs } = Astro.props;
+const { clangs } = Astro.props;
 
 const bannerHTML = getBanner(Astro, clangs);
 const settings = getSettings(Astro);

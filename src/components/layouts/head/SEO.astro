@@ -1,0 +1,109 @@
+---
+import type { Media } from '@adapters/redaxo/@types';
+import { getFullUrl } from '@helpers/url';
+import { getSettings } from '@helpers/wildcards';
+import type { TwitterCardType } from 'astro-seo';
+import { SEO } from 'astro-seo';
+
+interface Props {
+    title: string;
+    description: string;
+    url: string;
+    image: Media;
+    noindex: boolean;
+    nofollow: boolean;
+}
+
+const { title, description, image, url, nofollow, noindex } = Astro.props;
+const projectSettings = getSettings(Astro);
+const lastSlashPos = title.lastIndexOf('/');
+const titleSuffix = title.slice(lastSlashPos > 0 ? lastSlashPos + 1 : 0).trim();
+
+const SEOData = {
+    title: title,
+    titleTemplate: '%s / ' + titleSuffix,
+    description: description,
+    noindex,
+    nofollow,
+    charset: 'utf-8',
+    openGraph: title
+        ? {
+              basic: {
+                  title,
+                  type: 'article',
+                  url: getFullUrl(url),
+                  image: image?.src,
+              },
+              optional: {
+                  description: description,
+                  site_name: projectSettings.seoGeoRegion,
+              },
+              image: {
+                  secureUrl: image?.src,
+                  type: '',
+                  width: image?.width,
+                  height: image?.height,
+                  alt: image?.alt,
+              },
+          }
+        : undefined,
+    twitter: {
+        card: 'summary' as TwitterCardType,
+        site: '',
+        creator: '',
+        title: title,
+        image: image?.src,
+        imageAlt: image?.alt,
+        description: description,
+    },
+    extend: {
+        meta: [
+            {
+                name: 'viewport',
+                content: 'width=device-width, initial-scale=1.0',
+            },
+            {
+                name: 'geo.region',
+                content: projectSettings.seoGeoRegion,
+            },
+            {
+                name: 'geo.placename',
+                content: projectSettings.organization?.city,
+            },
+            {
+                name: 'geo.position',
+                content:
+                    projectSettings.contact?.coordinates[0] +
+                    ';' +
+                    projectSettings.contact?.coordinates[1],
+            },
+            {
+                name: 'ICBM',
+                content:
+                    projectSettings.contact?.coordinates[0] +
+                    ';' +
+                    projectSettings.contact?.coordinates[1],
+            },
+            {
+                name: 'X-UA-Compatible',
+                content: 'IE=edge',
+            },
+            {
+                name: 'google-site-verification',
+                content: '',
+            },
+        ],
+    },
+};
+---
+
+<SEO
+    title={SEOData.title}
+    description={SEOData.description}
+    noindex={SEOData.noindex}
+    nofollow={SEOData.nofollow}
+    charset={SEOData.charset}
+    openGraph={SEOData.openGraph}
+    twitter={SEOData.twitter}
+    extend={SEOData.extend}
+/>

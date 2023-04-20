@@ -15,103 +15,8 @@ interface Props {
 }
 
 const { article, clangs } = Astro.props;
-const projectSettings = getSettings(Astro);
-
-const lastSlashPos = article.seo.title.lastIndexOf('/');
-const titleSuffix = article.seo.title
-    .slice(lastSlashPos > 0 ? lastSlashPos + 1 : 0)
-    .trim();
-
-const SEOData = {
-    title: article.seo.title,
-    titleTemplate: '%s / ' + titleSuffix,
-    description: article.seo.description,
-    noindex: article.seo.robots.includes('noindex'),
-    nofollow: article.seo.robots.includes('nofollow'),
-    charset: 'utf-8',
-    openGraph:
-        article.seo.title && article.seo.image
-            ? {
-                  basic: {
-                      title: article.name,
-                      type: 'article',
-                      url: getFullUrl(article.url),
-                      image: article.seo.image?.src,
-                  },
-                  optional: {
-                      description: article.seo.description,
-                      site_name: projectSettings.seoGeoRegion,
-                  },
-                  image: {
-                      secureUrl: article.seo.image?.src,
-                      type: '',
-                      width: article.seo.image?.width,
-                      height: article.seo.image?.height,
-                      alt: article.seo.image?.alt,
-                  },
-              }
-            : undefined,
-    twitter: {
-        card: 'summary' as TwitterCardType,
-        site: '',
-        creator: '',
-        title: article.seo.title,
-        image: article.seo.image?.src,
-        imageAlt: article.seo.image?.alt,
-        description: article.seo.description,
-    },
-    extend: {
-        meta: [
-            {
-                name: 'viewport',
-                content: 'width=device-width, initial-scale=1.0',
-            },
-            {
-                name: 'geo.region',
-                content: projectSettings.seoGeoRegion,
-            },
-            {
-                name: 'geo.placename',
-                content: projectSettings.organization?.city,
-            },
-            {
-                name: 'geo.position',
-                content:
-                    projectSettings.contact?.coordinates[0] +
-                    ';' +
-                    projectSettings.contact?.coordinates[1],
-            },
-            {
-                name: 'ICBM',
-                content:
-                    projectSettings.contact?.coordinates[0] +
-                    ';' +
-                    projectSettings.contact?.coordinates[1],
-            },
-            {
-                name: 'X-UA-Compatible',
-                content: 'IE=edge',
-            },
-            {
-                name: 'google-site-verification',
-                content: '',
-            },
-        ],
-    },
-};
 ---
 
-<SEO
-    title={SEOData.title}
-    description={SEOData.description}
-    noindex={SEOData.noindex}
-    nofollow={SEOData.nofollow}
-    charset={SEOData.charset}
-    openGraph={SEOData.openGraph}
-    twitter={SEOData.twitter}
-    extend={SEOData.extend}
-/>
-<meta name="generator" content={Astro.generator} />
 {
     article.seo.alternateLanguages?.length > 0 &&
         article.seo.alternateLanguages.map((elem) => (
@@ -123,7 +28,8 @@ const SEOData = {
         ))
 }
 <Favicons />
-<Iubenda article={article} clangs={clangs} />
+<Iubenda clangs={clangs} />
 <StructuredData article={article} />
+<meta name="generator" content={Astro.generator} />
 <Tracking />
 <Partytown />
