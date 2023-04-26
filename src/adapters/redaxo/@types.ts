@@ -5,9 +5,8 @@ export type Article = {
     isStartArticle: boolean;
     url: string;
     clang: Clang;
-    seo: SEO;
-    createDate: string;
-    updateDate: string;
+    createdAt: string;
+    updatedAt: string;
     breadcrumbs: Breadcrumb[];
 };
 
@@ -79,17 +78,15 @@ export type Wildcard = {
     replace: string;
 };
 
-export type SEO = {
+export type Metadata = {
     title: string;
     description: string;
-    canonical: string;
     robots: string;
+    canonical: string;
     image: Media;
-    images: Media[];
-    alternateLanguages: {
-        langCode: string;
-        url: string;
-    }[];
+    createdAt: string;
+    updatedAt: string;
+    breadcrumbs: Breadcrumb[];
 };
 
 export type NavigationItem = {
@@ -102,7 +99,6 @@ export type NavigationItem = {
 };
 
 export type Breadcrumb = {
-    id: string;
     label: string;
     url: string;
 };

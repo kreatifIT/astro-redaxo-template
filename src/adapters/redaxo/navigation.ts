@@ -19,12 +19,16 @@ export async function getRootNavigation(
     return data.rootNavigation as NavigationItem[];
 }
 
-export async function getNavigation(clangId: string, id: string, name: string) {
+export async function getNavigation(
+    clangId: string,
+    articleId: string | undefined,
+    name: string,
+) {
     const { data } = await GraphQLClient.query(
         REX_NAVIGATION_QRY,
         {
             name,
-            articleId: id,
+            articleId,
         },
         clangId,
     );
@@ -41,7 +45,7 @@ const REX_ROOT_NAVIGATION_QRY = gql`
 `;
 
 const REX_NAVIGATION_QRY = gql`
-    query navigation($name: String!, $articleId: ID!) {
+    query navigation($name: String!, $articleId: ID) {
         navigation(name: $name, articleId: $articleId) {
             ...NavigationItemFragment
         }

@@ -1,14 +1,15 @@
 ---
-import type { Article } from '@adapters/generic-redaxo-adapter/@types';
+import type { Article, Metadata } from '@adapters/redaxo/@types';
 import { getFullUrl, getLogoUrl } from '@helpers/url';
 import { getSettings } from '@helpers/wildcards';
 
 interface Props {
-    article: Article;
+    metadata: Metadata;
+    siteStartArticle: Article;
 }
 
 const settings = getSettings(Astro);
-const { article } = Astro.props;
+const { metadata, siteStartArticle } = Astro.props;
 const organizationImage = settings.organization?.images[0];
 const schema: any = [
     {
@@ -35,7 +36,7 @@ const schema: any = [
             latitude: settings.contact?.coordinates[0],
             longitude: settings.contact?.coordinates[1],
         },
-        url: getFullUrl(article.url),
+        url: getFullUrl('/'),
         image: organizationImage
             ? {
                   '@context': 'https://schema.org',
@@ -50,16 +51,16 @@ const schema: any = [
         '@type': 'Article',
         mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': getFullUrl(article.url),
+            '@id': getFullUrl(siteStartArticle.url),
         },
-        headline: article.name,
+        headline: metadata.title,
         image: {
             '@context': 'https://schema.org',
             '@type': 'ImageObject',
-            url: article.seo.image?.src || '',
+            url: metadata.image?.src || '',
         },
-        datePublished: article.createDate,
-        dateModified: article.updateDate,
+        datePublished: metadata.createdAt,
+        dateModified: metadata.updatedAt,
         author: {
             '@context': 'https://schema.org',
             '@type': 'Organization',
@@ -83,11 +84,11 @@ const schema: any = [
     },
 ];
 
-if (article.breadcrumbs?.length > 0) {
+if (metadata.breadcrumbs?.length > 0) {
     schema.push({
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
-        itemListElement: article.breadcrumbs?.map((breadcrumb, index) => ({
+        itemListElement: metadata.breadcrumbs.map((breadcrumb, index) => ({
             '@type': 'ListItem',
             position: index + 1,
             name: breadcrumb.label,

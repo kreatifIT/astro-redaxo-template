@@ -1,4 +1,4 @@
-import type { Media } from '../redaxo/@types';
+import type { Clang, Media, Metadata } from '../redaxo/@types';
 
 export type ProjectSettings = {
     organization?: {
@@ -45,4 +45,11 @@ export type ProjectSettings = {
 export type Social = {
     name: string;
     url: string;
+};
+
+export type ContentType = {
+    type: string;
+    elementId: string;
+    clangs: Clang[];
+    metadata: Metadata;
 };

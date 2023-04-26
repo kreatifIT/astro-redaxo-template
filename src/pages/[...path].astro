@@ -1,28 +1,39 @@
 ---
-import Layout from '@layouts/Layout.astro';
+import RexLayout from '@layouts/RexLayout.astro';
 import {
     getAllProperties,
-    setArticleId,
     setClangId,
 } from '@helpers/properties-management/server-properties';
-import { getArticleByPath } from '@adapters/redaxo/article';
+import { getLayoutData } from '@helpers/layout';
+import ModuleList from '@layout/ModuleList.astro';
 
-const { path } = Astro.params;
-
+let { path } = Astro.params;
+path ??= '/';
 if (path === 'sitemap.xml' || path === 'robots.txt') {
     return Astro.redirect(`${import.meta.env.REDAXO_ROOT}/${path}`, 301);
 }
 
-const article = await getArticleByPath(path ?? '/', '1', {
-    breadcrumbs: true,
-    seo: true,
-    slices: true,
-    clang: true,
-});
-
-const clangId = article.clang.id;
-setClangId(Astro, clangId);
-setArticleId(Astro, article.id);
+const {
+    contentType,
+    article,
+    clangs,
+    footerArticle,
+    currentClang,
+    navigation,
+    siteStartArticle,
+} = await getLayoutData(path, 2);
+setClangId(Astro, currentClang.id);
 ---
 
-<Layout article={article} />
+<RexLayout
+    article={article}
+    currentClang={currentClang}
+    metadata={contentType.metadata}
+    clangs={clangs}
+    footerArticle={footerArticle}
+    navigation={navigation}
+    siteStartArticle={siteStartArticle}
+    path={path}
+>
+    {contentType.type === 'article' && <ModuleList article={article} />}
+</RexLayout>

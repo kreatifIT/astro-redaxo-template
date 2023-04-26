@@ -1,9 +1,9 @@
 ---
 import Logo from '@atoms/Logo.astro';
 import Hamburger from '@atoms/Hamburger.astro';
-import MobileNavigation from './MobileNavigation.astro';
+import MobileNavigation from '@layout/header/MobileNavigation.astro';
 import NavigationItem from '@atoms/NavigationItem.astro';
-import LanguagePicker from '@layouts/LanguagePicker.astro';
+import LanguagePicker from '@layout/LanguagePicker.astro';
 import type {
     Article,
     Clang,
@@ -23,7 +23,7 @@ const { navigation, siteStartArticle, clangs } = Astro.props;
 ---
 
 <header
-    class="fixed top-0 z-50 flex h-16 w-full items-center bg-gray-100 transition-colors md:h-20 xl:h-[120px]"
+    class="fixed top-0 z-50 flex h-16 w-full items-center bg-gray-100 transition-colors md:h-20 xl:h-24"
     data-header-section
 >
     <Container>

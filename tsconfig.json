@@ -3,14 +3,36 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@layouts/*": ["src/components/layouts/*"],
-            "@modules/*": ["src/components/modules/*"],
-            "@atoms/*": ["src/components/atoms/*"],
-            "@utils/*": ["src/components/utils/*"],
-            "@helpers/*": ["src/helpers/*"],
-            "@adapters/*": ["src/adapters/*"],
-            "@components/*": ["src/components/*"],
-            "@styles/*": ["src/styles/*"]
+            "@layouts/*": [
+                "src/layouts/*"
+            ],
+            "@layout/*": [
+                "src/components/layout/*"
+            ],
+            "@modules/*": [
+                "src/components/modules/*"
+            ],
+            "@atoms/*": [
+                "src/components/atoms/*"
+            ],
+            "@utils/*": [
+                "src/components/utils/*"
+            ],
+            "@helpers/*": [
+                "src/helpers/*"
+            ],
+            "@adapters/*": [
+                "src/adapters/*"
+            ],
+            "@components/*": [
+                "src/components/*"
+            ],
+            "@styles/*": [
+                "src/styles/*"
+            ],
+            "@contents/*": [
+                "src/components/contents/*"
+            ]
         },
         "jsx": "react-jsx",
         "jsxImportSource": "preact"

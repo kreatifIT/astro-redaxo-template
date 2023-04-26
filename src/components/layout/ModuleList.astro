@@ -1,9 +1,10 @@
 ---
 import type { ArticleAnchor } from '@helpers/@types';
 import { moduleToComponent } from '@helpers/modules';
-import Module from './Module.astro';
+import Module from '@layout/Module.astro';
 import { parseModuleValues } from '@adapters/redaxo/utils';
 import type { Article } from '@adapters/redaxo/@types';
+
 interface Props {
     article: Article;
 }
