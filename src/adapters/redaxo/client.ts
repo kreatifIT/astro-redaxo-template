@@ -6,30 +6,12 @@ export type GraphQLResponse = {
 };
 
 export default class GraphQLClient {
-    private static cache = new Map<string, any>();
-
     public static async query(
         query: DocumentNode,
         variables: Record<string, any>,
         clangId: string,
     ): Promise<GraphQLResponse> {
         return new Promise((resolve) => {
-            const cacheKey = JSON.stringify({
-                query: query.loc?.source.body,
-                variables,
-                clangId,
-            });
-
-            if (this.cache.has(cacheKey) && this.cache.get(cacheKey)) {
-                const cachedData = JSON.parse(this.cache.get(cacheKey));
-                if (
-                    cachedData &&
-                    cachedData.data &&
-                    Object.keys(cachedData.data).length > 0
-                ) {
-                    resolve(cachedData);
-                }
-            }
             this.executeRequest(
                 {
                     query: query.loc?.source.body,
@@ -38,7 +20,6 @@ export default class GraphQLClient {
                 clangId,
             ).then((res) => {
                 resolve(res);
-                this.cache.set(cacheKey, JSON.stringify(res));
             });
         });
     }
