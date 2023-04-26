@@ -74,7 +74,6 @@ export const REX_CATEGORY_FRAGMENT = gql`
 
 export const REX_BREADCRUMB_FRAGMENT = gql`
     fragment BreadcrumbFragment on Breadcrumb {
-        id
         label
         url
     }

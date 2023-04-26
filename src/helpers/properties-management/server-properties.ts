@@ -34,11 +34,3 @@ export const getClangId = (Astro: AstroGlobal) => {
 export const setClangId = (Astro: AstroGlobal, clangId: string) => {
     setProperty(Astro, 'clangId', clangId);
 };
-
-export const getArticleId = (Astro: AstroGlobal) => {
-    return getProperty(Astro, 'articleId');
-};
-
-export const setArticleId = (Astro: AstroGlobal, articleId: string) => {
-    setProperty(Astro, 'articleId', articleId);
-};

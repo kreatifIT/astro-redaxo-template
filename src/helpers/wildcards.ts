@@ -1,7 +1,7 @@
-import type { ProjectSettings } from '../adapters/kreatif-redaxo-adapter/@types';
+import type { ProjectSettings } from '@adapters/kreatif-redaxo-adapter/@types';
 import type { AstroGlobal } from 'astro';
 import { getClangId } from './properties-management/server-properties';
-import { getKreatifWildcards } from '@adapters/kreatif-redaxo-adapter/project-settings';
+import type { Wildcard } from '@adapters/redaxo/@types';
 
 /**
  * Get a wildcard value based on the current language
@@ -27,10 +27,11 @@ export default class WildcardCache {
     private static sprog: Map<string, Map<string, string>> = new Map();
     private static settings: Map<string, ProjectSettings> = new Map();
 
-    static async prepareCache(languageId: string): Promise<void> {
-        const { wildCards, projectSettings } = await getKreatifWildcards(
-            languageId,
-        );
+    static prepareCache(
+        wildCards: Wildcard[],
+        projectSettings: ProjectSettings,
+        languageId: string,
+    ): void {
         wildCards.forEach((w) => {
             if (!this.sprog.has(languageId))
                 this.sprog.set(languageId, new Map());

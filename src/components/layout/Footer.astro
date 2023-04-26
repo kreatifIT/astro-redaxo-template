@@ -1,9 +1,6 @@
 ---
 import Logo from '@atoms/Logo.astro';
-import {
-    getArticleId,
-    getClangId,
-} from '@helpers/properties-management/server-properties';
+import { getClangId } from '@helpers/properties-management/server-properties';
 import { getSettings, t } from '@helpers/wildcards';
 import { getNavigation } from '@adapters/redaxo/navigation';
 import type { Article } from '@adapters/redaxo/@types';
@@ -13,13 +10,13 @@ import Column from '@utils/grid/Column.astro';
 
 interface Props {
     siteStartArticle: Article;
+    articleId?: string;
 }
-const { siteStartArticle } = Astro.props;
+const { siteStartArticle, articleId } = Astro.props;
 
 const year = new Date().getFullYear();
 
 const clangId = getClangId(Astro);
-const articleId = getArticleId(Astro);
 
 const projectSettings = getSettings(Astro);
 const organization = projectSettings.organization;
