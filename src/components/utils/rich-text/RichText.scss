@@ -1,0 +1,53 @@
+.rich-text {
+    br,
+    p {
+        @apply mb-4;
+    }
+
+    p:last-child {
+        @apply mb-0;
+    }
+
+    strong,
+    b {
+        @apply font-bold;
+    }
+
+    em,
+    i {
+        @apply italic;
+    }
+
+    a {
+        @apply text-primary underline transition-opacity hover:opacity-75;
+    }
+
+    ul,
+    ol {
+        @apply ml-4 list-inside list-disc;
+    }
+
+    ol {
+        @apply list-decimal;
+    }
+
+    h2 {
+        @apply mt-8 mb-4 text-3xl font-bold;
+    }
+
+    h3 {
+        @apply mt-8 mb-4 text-2xl font-bold;
+    }
+
+    h4 {
+        @apply mt-8 mb-4 text-lg font-bold;
+    }
+
+    h5 {
+        @apply mt-8 mb-4 text-base font-bold;
+    }
+
+    h6 {
+        @apply mt-8 mb-4 text-sm font-bold;
+    }
+}

@@ -3,6 +3,7 @@ import type { Link, ModuleProps } from '@adapters/redaxo/@types';
 import Container from '@utils/grid/Container.astro';
 import Heading from '@utils/heading/Heading';
 import RexLink from '@utils/RexLink';
+import RichText from '@utils/rich-text/RichText';
 
 interface Props extends ModuleProps {}
 
@@ -24,7 +25,7 @@ const values = slice.values as Values;
 <Container>
     <Heading text={values[1].title_large} class="text-2xl font-bold" />
     <Heading text={values[1].title_small} class="text-xl font-bold" />
-    {values[1].lead && <div set:html={values[1].lead} class="my-2 text-lg" />}
-    {values[1].text && <div set:html={values[1].text} class="text my-2" />}
+    {values[1].lead && <RichText text={values[1].lead} class="my-2 text-lg" />}
+    {values[1].text && <RichText text={values[1].text} class="text my-2" />}
     <RexLink link={values[1].link} />
 </Container>
