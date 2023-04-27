@@ -5,16 +5,16 @@ import { getMedia } from '@adapters/redaxo/media';
 
 interface Props {
     media: string;
-    imageType: string;
+    mediaType: string;
     contain?: boolean;
     class?: string;
 }
 
-const { media, imageType, contain, class: className = '' } = Astro.props;
+const { media, mediaType, contain, class: className = '' } = Astro.props;
 
 const clangId = getClangId(Astro);
 
-const mediaObj = await getMedia(media, imageType, clangId);
+const mediaObj = await getMedia(media, mediaType, clangId);
 ---
 
 <Image {...mediaObj} contain={contain} class={className} />
