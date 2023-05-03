@@ -20,6 +20,7 @@
         "@astrojs/preact": "^2.0.3",
         "@astrojs/tailwind": "^3.0.1",
         "@nanostores/preact": "github:nanostores/preact",
+        "@shopware-pwa/shopware-6-client": "^1.6.1",
         "@splidejs/react-splide": "^0.7.12",
         "@splidejs/splide-extension-video": "^0.8.0",
         "@vime/core": "^5.4.0",
