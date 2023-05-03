@@ -24,7 +24,7 @@
         "@splidejs/splide-extension-video": "^0.8.0",
         "@vime/core": "^5.4.0",
         "@vime/react": "^5.4.0",
-        "astro": "^2.0.6",
+        "astro": "^2.3.4",
         "astro-seo": "^0.7.1",
         "dotenv": "^16.0.3",
         "favicons": "^7.1.0",
