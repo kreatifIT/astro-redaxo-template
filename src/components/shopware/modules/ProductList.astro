@@ -1,0 +1,41 @@
+---
+import {
+    getCategoryId,
+    getClangCode,
+    getContext,
+    getShopwareInstance,
+} from '@helpers/properties-management/server-properties';
+import { getCategoryProducts } from '@shopware-pwa/shopware-6-client';
+import ProductList from '../utils/ProductList';
+import Container from '@utils/grid/Container.astro';
+
+const productStep = 6;
+
+let activeCatId = getCategoryId(Astro);
+if (activeCatId == null) {
+    const context = getContext(Astro);
+    activeCatId = context.salesChannel.navigationCategoryId;
+}
+
+const contextInstance = getShopwareInstance(Astro);
+const productListing = await getCategoryProducts(
+    activeCatId,
+    {
+        p: 1,
+        limit: productStep,
+        associations: { seoUrls: ['id', 'pathInfo'], categories: ['id'] },
+    },
+    contextInstance,
+);
+
+const clangCode = getClangCode(Astro);
+---
+
+<Container>
+    <ProductList
+        client:only="preact"
+        productStep={productStep}
+        productListing={productListing}
+        clangCode={clangCode}
+    />
+</Container>

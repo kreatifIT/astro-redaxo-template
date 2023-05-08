@@ -1,28 +1,16 @@
 ---
-import Header from '@layout/header/Header.astro';
-import '@styles/fonts.scss';
-import '@styles/spacing.scss';
-import '@styles/base.scss';
-import '../../public/fonts/iconFont/iconFont.scss';
 import type {
     Article,
     Clang,
     Metadata,
     NavigationItem,
 } from '@adapters/redaxo/@types';
-import Properties from '@layout/Properties.astro';
-import Footer from '@layout/Footer.astro';
-import ModuleList from '@layout/ModuleList.astro';
-import Favicons from '@layout/head/Favicons.astro';
-import Iubenda from '@utils/iubenda/Iubenda.astro';
-import StructuredData from '@layout/head/StructuredData.astro';
-import Tracking from '@layout/head/Tracking.astro';
-import Partytown from '@layout/head/Partytown.astro';
 import HrefLangs from '@layout/head/HrefLangs.astro';
-import SEO from '@layout/head/SEO.astro';
+import Favicons from '@layout/head/Favicons.astro';
+import Footer from '@layout/Footer.astro';
+import Header from '@layout/header/Header.astro';
 import ShopwareInit from '@atoms/ShopwareInit.astro';
 import OffcanvasCart from '@components/shopware/utils/OffcanvasCart';
-
 interface Props {
     metadata: Metadata;
     currentClang: Clang;
@@ -45,21 +33,22 @@ const {
 } = Astro.props;
 ---
 
-<html lang={currentClang.code.toLowerCase()}>
+<!--html lang={currentClang.code.toLowerCase()}-->
+<html>
     <head>
+        <ShopwareInit />
         <meta charset="utf-8" />
         <HrefLangs clangs={clangs} />
         <Favicons />
-        <Iubenda clangs={clangs} />
-        <StructuredData
+        <!--Iubenda clangs={clangs} /-->
+        <!--StructuredData
             metadata={metadata}
             siteStartArticle={siteStartArticle}
-        />
-        <SEO metadata={metadata} path={path} />
+        /-->
+        <!--SEO metadata={metadata} path={path} /-->
         <meta name="generator" content={Astro.generator} />
-        <Tracking />
-        <Partytown />
-        <ShopwareInit />
+        <!--Tracking /-->
+        <!--Partytown /-->
     </head>
     <body class="overflow-x-hidden pt-16 xl:pt-24">
         <Header
@@ -67,12 +56,18 @@ const {
             siteStartArticle={siteStartArticle}
             navigation={navigation}
         />
-        <main>
-            <slot />
-            {footerArticle && <ModuleList article={footerArticle} />}
+        <main class="pt-20 md:pt-20 xl:pt-[200px]">
+            <div
+                class="z-1 relative mx-auto flex w-full max-w-[1680px] flex-col px-4"
+            >
+                <div class="row">
+                    <slot />
+                </div>
+            </div>
         </main>
         <Footer siteStartArticle={siteStartArticle} articleId={article?.id} />
-        <Properties />
+        <!--Properties /-->
+
         <OffcanvasCart client:only="preact" />
     </body>
 </html>

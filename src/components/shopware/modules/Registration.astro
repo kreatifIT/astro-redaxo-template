@@ -1,0 +1,26 @@
+---
+import RegistrationForm from '../utils/Registration';
+import LoginForm from '../atoms/LoginForm';
+---
+
+<div class="mt-20 mb-20 flex">
+    <div class="w-[30%] pr-5">
+        <h2 class="mb-2 border-b pb-2"><b>Ich bin bereits Kunde</b></h2>
+        <p>Einloggen mit E-Mail-Adresse und Passwort</p>
+        <LoginForm client:only="preact" />
+
+        <div class="mt-5">
+            <p><b>Vorteile einer Registrierung:</b></p>
+            <ul class="mt-2 ml-7 list-disc">
+                <li>Schnelles Einkaufen</li>
+                <li>Speichern Sie Ihre Daten und Einstellungen.</li>
+                <li>Bestellübersicht und Versandinformationen</li>
+                <li>Verwalten Sie Ihr Newsletter-Abonnement</li>
+            </ul>
+        </div>
+    </div>
+    <div class="w-[70%] pl-5">
+        <h2 class="mb-2 border-b pb-2"><b>Ich bin Neukunde</b></h2>
+        <RegistrationForm client:only="preact" />
+    </div>
+</div>

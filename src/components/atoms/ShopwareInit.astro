@@ -1,0 +1,80 @@
+---
+---
+
+<script>
+    import {
+        getSwCookies,
+        setSwCookie,
+    } from '@components/shopware/helpers/client';
+    import {
+        ShopwareApiInstanceStore,
+        cartStore,
+        contextStore,
+        customerStore,
+    } from '@components/shopware/utils/shopware-store';
+    import {
+        ShopwareApiInstance,
+        createInstance,
+        getCart,
+        getCustomer,
+        getSessionContext,
+    } from '@shopware-pwa/shopware-6-client';
+
+    const { contextToken, swLangId } = getSwCookies();
+
+    let contextInstance: ShopwareApiInstance = createInstance({
+        endpoint: 'https://sw.kreatif.it', //import.meta.env.SHOPWARE_ENDPOINT,
+        accessToken: 'SWSCNWLLYWLHSW9OZ0QWDJJWCW', // import.meta.env.SHOPWARE_ACCESS_KEY,
+        languageId: swLangId,
+        contextToken: contextToken,
+    });
+
+    if (contextInstance) {
+        ShopwareApiInstanceStore.set(contextInstance);
+    }
+
+    contextInstance.onConfigChange(({ config }) => {
+        let contextInstance = ShopwareApiInstanceStore.get();
+        if (contextInstance) {
+            contextInstance.config = config;
+            ShopwareApiInstanceStore.set(contextInstance);
+
+            if (config.contextToken) {
+                setSwCookie('sw-context-token', config.contextToken);
+            }
+        }
+    });
+    const context = await getSessionContext(contextInstance);
+    contextStore.set(context); //addresses
+    let customer = null;
+    if (context.customer) {
+        customer = await getCustomer(
+            {
+                associations: {
+                    defaultBillingAddress: {
+                        associations: {
+                            country: {},
+                        },
+                    },
+                    defaultShippingAddress: {
+                        associations: {
+                            country: {},
+                        },
+                    },
+                    addresses: {
+                        associations: {
+                            country: {},
+                        },
+                    },
+                    defaultPaymentMethod: {},
+                },
+            },
+            contextInstance as ShopwareApiInstance,
+        );
+    }
+
+    customerStore.set(customer);
+
+    const cart = await getCart(contextInstance);
+    cartStore.set(cart);
+</script>

@@ -1,0 +1,27 @@
+---
+import {
+    getCustomer,
+    getShopwareInstance,
+} from '@helpers/properties-management/server-properties';
+import { getCustomerOrders } from '@shopware-pwa/shopware-6-client';
+import UserMenu from '../atoms/UserMenu';
+import UserOrder from '../utils/UserOrder';
+
+const customer = getCustomer(Astro);
+---
+
+<div class="row mt-5 mb-5">
+    <div class="flex w-full flex-row flex-wrap">
+        <div class="w-[20%] pb-20">
+            <h2 class="mb-5 border-b pb-2 font-bold">
+                Hallo,
+                {customer?.firstName}
+                {customer?.lastName}
+            </h2>
+            <UserMenu client:only="preact" />
+        </div>
+        <div class="w-[80%] pl-20">
+            <UserOrder client:visible />
+        </div>
+    </div>
+</div>

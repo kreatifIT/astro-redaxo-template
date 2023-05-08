@@ -1,0 +1,105 @@
+---
+import { getCustomer } from '@helpers/properties-management/server-properties';
+import UserMenu from '../atoms/UserMenu';
+import { ShopwareURL } from '../helpers/url';
+import DefaultShippingAddress from '../atoms/DefaultShippingAddress';
+import DefaultBillingAddress from '../atoms/DefaultBillingAddress';
+import { getShopwareUrlByAstro } from '../helpers/server';
+
+const customer = getCustomer(Astro);
+---
+
+<div class="row mt-5 mb-5">
+    <div class="flex w-full flex-row flex-wrap">
+        <div class="w-[20%] pb-20">
+            <h2 class="mb-5 border-b pb-2 font-bold">
+                Hallo,
+                {customer?.firstName}
+                {customer?.lastName}
+            </h2>
+            <UserMenu />
+        </div>
+        <div class="w-[80%] pl-20">
+            <h1>Übersicht</h1>
+            <p>
+                Hier haben Sie direkten Zugriff auf Ihre Profilinformationen,
+                hinterlegte Adressen und die Standard-Zahlungsart.
+            </p>
+
+            <div class="mt-10 flex w-full flex-row flex-wrap">
+                <div class="w-[50%] pr-10">
+                    <h2 class="mb-5 border-b pb-2 font-bold">
+                        Persönliche Daten
+                    </h2>
+                    <div class="">
+                        <p>{customer.firstName} {customer.lastName}</p>
+                        <p>{customer.email}</p>
+
+                        <a
+                            href={getShopwareUrlByAstro(
+                                Astro,
+                                ShopwareURL.USER_PROFILE,
+                            )}
+                            class="mt-2 inline-block border p-2"
+                            >Profil ändern</a
+                        >
+                    </div>
+                </div>
+                <div class="w-[50%] pl-10">
+                    <h2 class="mb-5 border-b pb-2 font-bold">
+                        Standard-Zahlungsarten
+                    </h2>
+                    <p class="font-bold">
+                        {customer.defaultPaymentMethod.translated.name}
+                    </p>
+                    <p>
+                        {customer.defaultPaymentMethod.translated.description}
+                    </p>
+                    <a
+                        href={getShopwareUrlByAstro(
+                            Astro,
+                            ShopwareURL.USER_PAYMENTS,
+                        )}
+                        class="mt-2 inline-block border p-2"
+                        >Zahlungsart ändern</a
+                    >
+                </div>
+            </div>
+
+            <div class="mt-10 flex w-full flex-row flex-wrap">
+                <div class="w-[50%] pr-10">
+                    <h2 class="mb-5 border-b pb-2 font-bold">
+                        Standard-Rechnungsadresse
+                    </h2>
+                    <div class="">
+                        <DefaultBillingAddress closeOverlay={undefined} />
+                        <a
+                            href={getShopwareUrlByAstro(
+                                Astro,
+                                ShopwareURL.USER_ADDRESSES,
+                            )}
+                            class="mt-2 inline-block border p-2"
+                            >Rechnungsadresse ändern</a
+                        >
+                    </div>
+                </div>
+                <div class="w-[50%] pl-10">
+                    <h2 class="mb-5 border-b pb-2 font-bold">
+                        Standard-Lieferadresse
+                    </h2>
+                    <div>
+                        <DefaultShippingAddress closeOverlay={undefined} />
+                        <a
+                            href={getShopwareUrlByAstro(
+                                Astro,
+                                ShopwareURL.USER_ADDRESSES,
+                            )}
+                            class="mt-2 inline-block border p-2"
+                            >Lieferadresse ändern</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

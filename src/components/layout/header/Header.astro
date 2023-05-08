@@ -12,6 +12,11 @@ import type {
 import Container from '@utils/grid/Container.astro';
 import Row from '@utils/grid/Row.astro';
 import Column from '@utils/grid/Column.astro';
+import ShopNav from '@components/shopware/modules/ShopNav.astro';
+import CartWidget from '@components/shopware/atoms/CartWidget';
+import UserWidget from '@components/shopware/atoms/UserWidget';
+import WhistlistWidget from '@components/shopware/atoms/WhishlistWidget';
+import SearchWidget from '@components/shopware/atoms/SearchWidget';
 
 interface Props {
     navigation: INavigationItem[];
@@ -48,7 +53,16 @@ const { navigation, siteStartArticle, clangs } = Astro.props;
                                     />
                                 ))
                         }
+                        <ShopNav />
                     </ul>
+
+                    <div class="mr-5 flex flex-wrap">
+                        <SearchWidget client:only="preact" />
+                        <CartWidget client:only="preact" />
+                        <UserWidget client:only="preact" />
+                        <WhistlistWidget client:only="preact" />
+                    </div>
+
                     <LanguagePicker clangs={clangs} />
                 </nav>
                 <div

@@ -1,11 +1,15 @@
 ---
 import type { Clang } from '@adapters/redaxo/@types';
+import { getClangId } from '@helpers/properties-management/server-properties';
 
 interface Props {
     clangs: Clang[];
 }
 
 const { clangs }: Props = Astro.props;
+const clangId = getClangId(Astro);
+
+console.log('clangId', clangId);
 ---
 
 <div>
@@ -16,7 +20,7 @@ const { clangs }: Props = Astro.props;
                     href={clang.url}
                     class:list={[
                         'uppercase',
-                        clang.active ? 'text-primary' : '',
+                        clang.id === clangId ? 'text-primary' : '',
                     ]}
                 >
                     {clang.code}

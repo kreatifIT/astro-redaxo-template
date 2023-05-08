@@ -118,8 +118,9 @@ export async function getInitialData(
         },
         '1',
     );
+
     return {
-        clangs: data.contentTypeByPath.clangs,
+        clangs: data.contentTypeByPath?.clangs,
         navigation: data.rootNavigation,
         siteStartArticle: data.siteStartArticle,
         footerArticle: data.footerArticle,

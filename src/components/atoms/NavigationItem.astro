@@ -43,7 +43,7 @@ const { url, label, active, internal, children = [] } = Astro.props;
                         <a
                             href={child.url}
                             target={internal ? '_self' : '_blank'}
-                            class="mt-2 block text-center text-gray-600 transition-colors first:mt-0 hover:text-primary"
+                            class="hover:text-primary mt-2 block text-center text-gray-600 transition-colors first:mt-0"
                         >
                             {child.label}
                         </a>

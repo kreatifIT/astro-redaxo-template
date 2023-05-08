@@ -1,0 +1,95 @@
+---
+import {
+    getCategoryId,
+    getClangId,
+    getContext,
+    getProperty,
+    getShopwareInstance,
+} from '@helpers/properties-management/server-properties';
+import { getStoreNavigation } from '@shopware-pwa/shopware-6-client';
+import Icon from '@utils/Icon';
+
+const instance = getShopwareInstance(Astro);
+
+const context = getContext(Astro);
+const rootCatId = context.salesChannel.navigationCategoryId;
+let activeCatId = getCategoryId(Astro);
+if (activeCatId == null) {
+    activeCatId = context.salesChannel.navigationCategoryId;
+}
+
+let shopNavigation = await getStoreNavigation(
+    {
+        requestActiveId: activeCatId,
+        requestRootId: rootCatId,
+        depth: 5,
+    },
+    instance,
+);
+
+const clangCode = getProperty(Astro, 'clangCode');
+---
+
+{
+    shopNavigation.map((nav) => (
+        <li
+            data-navigation-item
+            class:list={[
+                'relative px-2 xl:px-4 tracking-wide text-sm uppercase before:absolute before:bottom-0 before:left-4 before:right-4 before:bg-primary before:h-[2px] before:scale-x-0 hover:before:scale-x-100 before:transition-transform before:origin-left hover:text-primary',
+            ]}
+        >
+            {nav.children.length < 1 ? (
+                <a
+                    href={
+                        '/' + clangCode + '/shop/' + nav.seoUrls[0].seoPathInfo
+                    }
+                    class="block py-2 transition-colors"
+                >
+                    {nav.translated.name}
+                </a>
+            ) : (
+                <>
+                    <span class="block cursor-pointer py-2 transition-colors">
+                        <a
+                            href={
+                                '/' +
+                                clangCode +
+                                '/shop/' +
+                                nav.seoUrls[0].seoPathInfo
+                            }
+                        >
+                            {nav.translated.name}
+                        </a>
+                        <span
+                            data-navigation-icon
+                            class="ml-1 inline-block transition-transform"
+                        >
+                            <Icon
+                                name="angle-down-light"
+                                class="inline-block"
+                            />
+                        </span>
+                    </span>
+                    <ul
+                        class="text-normal absolute bottom-0 left-0 right-0 translate-y-full bg-white p-4 pb-6 normal-case transition-all"
+                        data-sub-navigation
+                    >
+                        {nav.children.map((navChild: any) => (
+                            <a
+                                href={
+                                    '/' +
+                                    clangCode +
+                                    '/shop/' +
+                                    navChild.seoUrls[0].seoPathInfo
+                                }
+                                class="hover:text-primary mt-2 block text-center text-gray-600 transition-colors first:mt-0"
+                            >
+                                {navChild.translated.name}
+                            </a>
+                        ))}
+                    </ul>
+                </>
+            )}
+        </li>
+    ))
+}

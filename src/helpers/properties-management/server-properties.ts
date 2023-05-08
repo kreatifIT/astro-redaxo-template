@@ -1,3 +1,4 @@
+import type { ShopwareApiInstance } from '@shopware-pwa/shopware-6-client';
 import type { AstroAdapter, AstroGlobal } from 'astro';
 
 export const setProperty = (Astro: any, key: string, value: string) => {
@@ -33,4 +34,46 @@ export const getClangId = (Astro: AstroGlobal) => {
 
 export const setClangId = (Astro: AstroGlobal, clangId: string) => {
     setProperty(Astro, 'clangId', clangId);
+};
+
+/** Shopware **/
+export const getCategoryId = (Astro: AstroGlobal) => {
+    return getProperty(Astro, 'categoryId');
+};
+
+export const setCategoryId = (Astro: AstroGlobal, categoryId: string) => {
+    setProperty(Astro, 'categoryId', categoryId);
+};
+export const setClangCode = (Astro: AstroGlobal, clangCode: string) => {
+    setProperty(Astro, 'clangCode', clangCode);
+};
+
+export const getClangCode = (Astro: AstroGlobal) => {
+    return getProperty(Astro, 'clangCode');
+};
+
+export const setShopwareInstance = (
+    Astro: AstroGlobal,
+    value: ShopwareApiInstance,
+) => {
+    //@ts-ignore
+    Astro.request.swApiInstance = value;
+};
+export const getShopwareInstance = (Astro: AstroGlobal) => {
+    //@ts-ignore
+    return Astro.request.swApiInstance;
+};
+
+export const setCustomer = (Astro: AstroGlobal, value: any) => {
+    setProperty(Astro, 'customer', value);
+};
+export const getCustomer = (Astro: AstroGlobal) => {
+    return getProperty(Astro, 'customer');
+};
+
+export const setContext = (Astro: AstroGlobal, value: any) => {
+    setProperty(Astro, 'context', value);
+};
+export const getContext = (Astro: AstroGlobal) => {
+    return getProperty(Astro, 'context');
 };

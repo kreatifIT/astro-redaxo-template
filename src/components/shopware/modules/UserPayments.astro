@@ -1,0 +1,30 @@
+---
+import { getCustomer } from '@helpers/properties-management/server-properties';
+import UserMenu from '../atoms/UserMenu';
+import UserPaymetns from '../utils/UserPayments';
+
+const customer = getCustomer(Astro);
+---
+
+<div class="row mt-5 mb-5">
+    <div class="flex w-full flex-row flex-wrap">
+        <div class="w-[20%] pb-20">
+            <h2 class="mb-5 border-b pb-2 font-bold">
+                Hallo,
+                {customer?.firstName}
+                {customer?.lastName}
+            </h2>
+            <UserMenu client:only="preact" />
+        </div>
+        <div class="w-[80%] pl-20">
+            <div class="mb-10">
+                <h2 class="mb-5 border-b pb-2 font-bold">Zahlungsarten</h2>
+                <p>
+                    Hier finden sie alle verfügbaren Zahlungsarten und können
+                    eine Standard-Zahlungsart wählen.
+                </p>
+            </div>
+            <UserPaymetns client:visible />
+        </div>
+    </div>
+</div>

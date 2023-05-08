@@ -1,14 +1,14 @@
 ---
-import RexLayout from '@layouts/RexLayout.astro';
-import { setClangId } from '@helpers/properties-management/server-properties';
-import { getLayoutData } from '@helpers/layout';
-import ModuleList from '@layout/ModuleList.astro';
 import { initShopwareSite } from '@components/shopware/helpers/server';
-
-let { path } = Astro.params;
-
-console.log('path', path);
+import { getLayoutData } from '@helpers/layout';
+import {
+    setClangId,
+    setProperty,
+} from '@helpers/properties-management/server-properties';
+import SwLayout from '@layouts/SwLayout.astro';
+let { path, lang } = Astro.params;
 path ??= '/';
+
 if (path === 'sitemap.xml' || path === 'robots.txt') {
     return Astro.redirect(`${import.meta.env.REDAXO_ROOT}/${path}`, 301);
 }
@@ -23,11 +23,20 @@ const {
     siteStartArticle,
 } = await getLayoutData(path, 2);
 setClangId(Astro, currentClang.id);
+setProperty(Astro, 'clangCode', currentClang.code);
 
-await initShopwareSite(Astro, path ?? '/', currentClang.code ?? '');
+const {
+    component: Component,
+    data,
+    redirect,
+} = await initShopwareSite(Astro, path ?? '/', lang ?? '');
+
+if (redirect) {
+    return Astro.redirect(redirect, 301);
+}
 ---
 
-<RexLayout
+<SwLayout
     article={article}
     currentClang={currentClang}
     metadata={contentType.metadata}
@@ -37,5 +46,5 @@ await initShopwareSite(Astro, path ?? '/', currentClang.code ?? '');
     siteStartArticle={siteStartArticle}
     path={path}
 >
-    {contentType.type === 'article' && <ModuleList article={article} />}
-</RexLayout>
+    {Component ? <Component /> : null}
+</SwLayout>
