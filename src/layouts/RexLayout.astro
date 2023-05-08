@@ -10,7 +10,6 @@ import type {
     Metadata,
     NavigationItem,
 } from '@adapters/redaxo/@types';
-import Properties from '@layout/Properties.astro';
 import Footer from '@layout/Footer.astro';
 import ModuleList from '@layout/ModuleList.astro';
 import Favicons from '@layout/head/Favicons.astro';
@@ -69,6 +68,5 @@ const {
             {footerArticle && <ModuleList article={footerArticle} />}
         </main>
         <Footer siteStartArticle={siteStartArticle} articleId={article?.id} />
-        <Properties />
     </body>
 </html>

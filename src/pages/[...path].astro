@@ -1,11 +1,8 @@
 ---
 import RexLayout from '@layouts/RexLayout.astro';
-import {
-    getAllProperties,
-    setClangId,
-} from '@helpers/properties-management/server-properties';
 import { getLayoutData } from '@helpers/layout';
 import ModuleList from '@layout/ModuleList.astro';
+import { CLANG_ID_COOKIE_NAME } from '@helpers/cookies';
 
 let { path } = Astro.params;
 path ??= '/';
@@ -22,7 +19,7 @@ const {
     navigation,
     siteStartArticle,
 } = await getLayoutData(path, 2);
-setClangId(Astro, currentClang.id);
+Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id);
 ---
 
 <RexLayout
