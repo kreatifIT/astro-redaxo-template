@@ -1,7 +1,7 @@
-import { getClangId } from './properties-management/server-properties';
 import type { AstroGlobal } from 'astro';
 import type { Clang } from '@adapters/redaxo/@types';
 import { t } from '@helpers/wildcards';
+import { getClangId } from './cookies';
 
 const BANNER = `
 <div class="iubenda-cs-container">

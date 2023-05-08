@@ -1,9 +1,9 @@
 ---
 import RexLayout from '@layouts/RexLayout.astro';
-import { setClangId } from '@helpers/properties-management/server-properties';
 import { getLayoutData } from '@helpers/layout';
 import ModuleList from '@layout/ModuleList.astro';
 import { initShopwareSite } from '@components/shopware/helpers/server';
+import { CLANG_ID_COOKIE_NAME } from '@helpers/cookies';
 
 let { path } = Astro.params;
 
@@ -22,9 +22,9 @@ const {
     navigation,
     siteStartArticle,
 } = await getLayoutData(path, 2);
-setClangId(Astro, currentClang.id);
 
-await initShopwareSite(Astro, path ?? '/', currentClang.code ?? '');
+await initShopwareSite(Astro, path ?? '/', currentClang.id ?? '');
+Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id);
 ---
 
 <RexLayout

@@ -1,12 +1,12 @@
 ---
 import Logo from '@atoms/Logo.astro';
-import { getClangId } from '@helpers/properties-management/server-properties';
 import { getSettings, t } from '@helpers/wildcards';
 import { getNavigation } from '@adapters/redaxo/navigation';
 import type { Article } from '@adapters/redaxo/@types';
 import Container from '@utils/grid/Container.astro';
 import Row from '@utils/grid/Row.astro';
 import Column from '@utils/grid/Column.astro';
+import { getClangId } from '@helpers/cookies';
 
 interface Props {
     siteStartArticle: Article;

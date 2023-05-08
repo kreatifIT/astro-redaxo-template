@@ -1,4 +1,4 @@
-import { ProjectSettings } from './@types';
+import type { ProjectSettings } from './@types';
 import { gql } from 'graphql-tag';
 import {
     REX_CONTACT_FRAGMENT,
