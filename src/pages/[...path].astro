@@ -7,7 +7,6 @@ import { CLANG_ID_COOKIE_NAME } from '@helpers/cookies';
 
 let { path } = Astro.params;
 
-console.log('path', path);
 path ??= '/';
 if (path === 'sitemap.xml' || path === 'robots.txt') {
     return Astro.redirect(`${import.meta.env.REDAXO_ROOT}/${path}`, 301);
@@ -23,8 +22,10 @@ const {
     siteStartArticle,
 } = await getLayoutData(path, 2);
 
-await initShopwareSite(Astro, path ?? '/', currentClang.id ?? '');
-Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id);
+await initShopwareSite(Astro, path ?? '/', currentClang.code ?? '');
+Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
+    path: '/',
+});
 ---
 
 <RexLayout

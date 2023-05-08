@@ -7,9 +7,6 @@ interface Props {
 }
 
 const { clangs }: Props = Astro.props;
-const clangId = getClangId(Astro);
-
-console.log('clangId', clangId);
 ---
 
 <div>
@@ -20,7 +17,7 @@ console.log('clangId', clangId);
                     href={clang.url}
                     class:list={[
                         'uppercase',
-                        clang.id === clangId ? 'text-primary' : '',
+                        clang.active ? 'text-primary' : '',
                     ]}
                 >
                     {clang.code}

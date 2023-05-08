@@ -2,19 +2,26 @@ import { getShopwareUrl } from '@components/shopware/helpers/client';
 import { ShopwareURL } from '../helpers/url';
 import { logout } from '@shopware-pwa/shopware-6-client';
 import { useStore } from '@nanostores/preact';
-import { ShopwareApiInstanceStore } from '../utils/shopware-store';
+import {
+    ShopwareApiInstanceStore,
+    customerStore,
+} from '../utils/shopware-store';
 
 export default function UserMenu() {
     const contextInstance = useStore(ShopwareApiInstanceStore);
+    const customer = useStore(customerStore);
     const logoutFunction = async () => {
         let _customLogout = await logout(contextInstance as any);
         window.location.href = '/';
     };
 
-    // TODO daniel getShopwareUrl link wird nicht erstellt
-
     return (
         <>
+            <h2 class="mb-5 border-b pb-2 font-bold">
+                Hallo,
+                {customer?.firstName}
+                {customer?.lastName}
+            </h2>
             <div class="">
                 <ul>
                     <li>

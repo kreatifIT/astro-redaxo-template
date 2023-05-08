@@ -13,18 +13,19 @@ import { ShopwareURL, getShopwareUrlByLang } from '../helpers/url';
 interface Props {
     redirect: boolean;
     setFunction: any | undefined;
-    address: any | undefined;
+    addressId: string | undefined;
 }
 
 export default function UserAddressCreateModify({
     redirect,
     setFunction,
-    address,
+    addressId,
 }: Props) {
     const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const [salutations, setSalutations] = useState<any>([]);
     const [countries, setCountries] = useState<any>([]);
+    const [address, setAddress] = useState<any>(undefined);
 
     useEffect(() => {
         if (contextInstance) {
@@ -51,8 +52,17 @@ export default function UserAddressCreateModify({
 
             _getSalutations(contextInstance, setSalutations);
             _getCountries(contextInstance, setCountries);
+
+            console.log('addressId', addressId);
+            if (addressId) {
+                console.log('customer', customer);
+                let address = customer?.addresses.find(
+                    (a: any) => a.id === addressId,
+                );
+                setAddress(address);
+            }
         }
-    }, [contextInstance]);
+    }, [contextInstance, customer]);
 
     const createAddress = async (e: any) => {
         e.preventDefault();

@@ -1,14 +1,15 @@
-import { getProperty } from '@helpers/properties-management/client-properties';
 import { ShopwareURL, getShopwareUrlByLang } from './url';
 
 export const getShopwareUrl = (target: ShopwareURL) => {
     if (typeof window === 'undefined') return;
-    let clangCode = getClangCodeFromCookie();
+    const clangCode = getClangCodeFromCookie();
     return getShopwareUrlByLang(clangCode, target);
 };
 
 // get Thumbnail
 export const getThumbnail = (media: any, width: number, height: number) => {
+    if (typeof document === 'undefined') return;
+
     if (!media) return;
     let url = media.url,
         currentHeight = 0,
@@ -31,6 +32,7 @@ export const getThumbnail = (media: any, width: number, height: number) => {
 };
 
 export const getSwCookies = () => {
+    if (typeof document === 'undefined') return;
     const cookies = document?.cookie.split(';');
     let contextToken = '';
     let swLangId = '';
@@ -48,6 +50,8 @@ export const getSwCookies = () => {
 };
 
 export const getClangCodeFromCookie = () => {
+    if (typeof document === 'undefined') return;
+
     const cookies = document?.cookie.split(';');
     let clangCode = '';
 

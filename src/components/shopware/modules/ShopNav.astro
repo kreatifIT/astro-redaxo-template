@@ -1,22 +1,30 @@
 ---
 import {
-    getCategoryId,
-    getClangId,
-    getContext,
-    getProperty,
-    getShopwareInstance,
-} from '@helpers/properties-management/server-properties';
-import { getStoreNavigation } from '@shopware-pwa/shopware-6-client';
+    ShopwareApiInstance,
+    createInstance,
+    getStoreNavigation,
+} from '@shopware-pwa/shopware-6-client';
 import Icon from '@utils/Icon';
+import { getShopwareUrl } from '../helpers/client';
+import { getShopwareUrlByAstro } from '../helpers/server';
+import { ShopwareURL, getShopwareUrlByLang } from '../helpers/url';
 
-const instance = getShopwareInstance(Astro);
+const contextToken = Astro.cookies.get('sw-context-token').value;
+const swLangId = Astro.cookies.get('sw-language-id').value;
+const context = Astro.cookies.get('context').json();
 
-const context = getContext(Astro);
 const rootCatId = context.salesChannel.navigationCategoryId;
-let activeCatId = getCategoryId(Astro);
+let activeCatId = null;
 if (activeCatId == null) {
     activeCatId = context.salesChannel.navigationCategoryId;
 }
+
+const contextInstance: ShopwareApiInstance = createInstance({
+    endpoint: import.meta.env.SHOPWARE_ENDPOINT,
+    accessToken: import.meta.env.SHOPWARE_ACCESS_KEY,
+    languageId: swLangId,
+    contextToken: contextToken,
+});
 
 let shopNavigation = await getStoreNavigation(
     {
@@ -24,14 +32,14 @@ let shopNavigation = await getStoreNavigation(
         requestRootId: rootCatId,
         depth: 5,
     },
-    instance,
+    contextInstance,
 );
 
-const clangCode = getProperty(Astro, 'clangCode');
+const clangCode = Astro.cookies.get('clangCode').value || 'de';
 ---
 
 {
-    shopNavigation.map((nav) => (
+    shopNavigation?.map((nav) => (
         <li
             data-navigation-item
             class:list={[
@@ -41,7 +49,8 @@ const clangCode = getProperty(Astro, 'clangCode');
             {nav.children.length < 1 ? (
                 <a
                     href={
-                        '/' + clangCode + '/shop/' + nav.seoUrls[0].seoPathInfo
+                        getShopwareUrlByLang(clangCode, ShopwareURL.SHOP_ROOT) +
+                        nav.seoUrls[0].seoPathInfo
                     }
                     class="block py-2 transition-colors"
                 >
@@ -52,10 +61,10 @@ const clangCode = getProperty(Astro, 'clangCode');
                     <span class="block cursor-pointer py-2 transition-colors">
                         <a
                             href={
-                                '/' +
-                                clangCode +
-                                '/shop/' +
-                                nav.seoUrls[0].seoPathInfo
+                                getShopwareUrlByLang(
+                                    clangCode,
+                                    ShopwareURL.SHOP_ROOT,
+                                ) + nav.seoUrls[0].seoPathInfo
                             }
                         >
                             {nav.translated.name}
@@ -77,10 +86,10 @@ const clangCode = getProperty(Astro, 'clangCode');
                         {nav.children.map((navChild: any) => (
                             <a
                                 href={
-                                    '/' +
-                                    clangCode +
-                                    '/shop/' +
-                                    navChild.seoUrls[0].seoPathInfo
+                                    getShopwareUrlByLang(
+                                        clangCode,
+                                        ShopwareURL.SHOP_ROOT,
+                                    ) + navChild.seoUrls[0].seoPathInfo
                                 }
                                 class="hover:text-primary mt-2 block text-center text-gray-600 transition-colors first:mt-0"
                             >

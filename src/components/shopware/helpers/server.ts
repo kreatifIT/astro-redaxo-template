@@ -25,18 +25,7 @@ import UserAddressCreate from '@components/shopware/modules/UserAddressCreate.as
 import UserPayments from '@components/shopware/modules/UserPayments.astro';
 import UserOrder from '@components/shopware/modules/UserOrder.astro';
 import Registration from '@components/shopware/modules/Registration.astro';
-
-import {
-    getClangCode,
-    getShopwareInstance,
-    setCategoryId,
-    setClangCode,
-    setClangId,
-    setContext,
-    setCustomer,
-    setProperty,
-    setShopwareInstance,
-} from '@helpers/properties-management/server-properties';
+import { getClangId } from '@helpers/cookies';
 
 export const parseEnvironmentMapping = (
     mapping: string,
@@ -55,15 +44,14 @@ export const initShopwareSite = async (
     path: string,
     lang: string,
 ) => {
-    setClangCode(Astro, lang);
     Astro.cookies.set('clangCode', lang, { path: '/' });
+
     const clangId = parseEnvironmentMapping(
         import.meta.env.CODE_CLANG_MAPPING,
         lang,
     );
 
     if (!clangId) throw new Error('Clang ID not found in environment mapping');
-    setClangId(Astro, clangId);
 
     const swLang = parseEnvironmentMapping(
         import.meta.env.SW_LANG_MAPPING,
@@ -74,7 +62,6 @@ export const initShopwareSite = async (
         import.meta.env.CODE_CLANG_MAPPING,
         clangId,
     );
-    console.log('clangCode', clangCode);
 
     if (!swLang) throw new Error('SW Lang ID not found in environment mapping');
 
@@ -86,7 +73,6 @@ export const initShopwareSite = async (
         languageId: swLang,
         contextToken: contextToken ? contextToken : undefined,
     });
-    setShopwareInstance(Astro, contextInstance);
     const sessionContext = await getSessionContext(contextInstance);
 
     Astro.cookies.set('sw-context-token', contextInstance.config.contextToken, {
@@ -96,7 +82,6 @@ export const initShopwareSite = async (
         path: '/',
     });
 
-    setContext(Astro, sessionContext);
     Astro.cookies.set('context', sessionContext, { path: '/' });
 
     const customer = await getCustomer(
@@ -126,16 +111,6 @@ export const initShopwareSite = async (
         return undefined;
     });
 
-    setCustomer(Astro, customer);
-
-    contextInstance.onConfigChange(({ config }) => {
-        const instance = getShopwareInstance(Astro);
-        if (instance) {
-            instance.config = config;
-            setShopwareInstance(Astro, instance);
-        }
-    });
-
     const component = getShopwareComponent(path, lang);
 
     if (!path.includes('recover/password')) {
@@ -143,7 +118,6 @@ export const initShopwareSite = async (
             (path.includes('account') && customer == null) ||
             (path.includes('checkout') && customer == null)
         ) {
-            console.log('whats up');
             // wenn user objekt nicht vorhanden und im pfad ist "account" dann auf die Startseite weiterleiten
             return {
                 component: null,
@@ -189,13 +163,17 @@ export const initShopwareSite = async (
             data: path,
         };
     } else if (_seoUrl.elements[0].routeName == 'frontend.detail.page') {
-        setProperty(Astro, 'productId', _seoUrl.elements[0].foreignKey);
+        Astro.cookies.set('productId', _seoUrl.elements[0].foreignKey, {
+            path: '/',
+        });
         return {
             component: ProductDetail,
             data: path,
         };
     } else if (_seoUrl.elements[0].routeName == 'frontend.navigation.page') {
-        setCategoryId(Astro, _seoUrl.elements[0].foreignKey);
+        Astro.cookies.set('categoryId', _seoUrl.elements[0].foreignKey, {
+            path: '/',
+        });
         return {
             component: ProductList,
             data: path,
@@ -236,6 +214,6 @@ export const getShopwareUrlByAstro = (
     Astro: AstroGlobal,
     target: ShopwareURL,
 ) => {
-    const lang = getClangCode(Astro);
+    const lang = getClangId(Astro);
     return getShopwareUrlByLang(lang, target);
 };
