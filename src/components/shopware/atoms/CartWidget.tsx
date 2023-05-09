@@ -20,8 +20,6 @@ export default function CartWidget() {
         }
     }, [cart]);
 
-    useEffect(() => {}, [customer]);
-
     const toggleOffcanvas = () => {
         showOffcanvasStore.set(!showOffcanvas);
     };
@@ -36,7 +34,7 @@ export default function CartWidget() {
                 >
                     Warenkorb
                 </span>
-                <span className="cart__count absoulte -top-0.5 -right-0.5 rounded-full bg-green-800 px-2 py-1 text-white">
+                <span className="cart__count absoulte -right-0.5 -top-0.5 rounded-full bg-green-800 px-2 py-1 text-white">
                     {cartCount}
                 </span>
             </p>

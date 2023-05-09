@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'preact/hooks';
-import { getShopwareUrl } from '@components/shopware/helpers/client';
+import {
+    formatPrice,
+    getShopwareUrl,
+} from '@components/shopware/helpers/client';
 import { ShopwareURL } from '../helpers/url';
 import { useStore } from '@nanostores/preact';
 import { ShopwareApiInstanceStore, customerStore } from './shopware-store';
@@ -13,6 +16,11 @@ export default function CheckoutFinished({ orderId }: Props) {
     const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const [order, setOrder] = useState<any>(null);
+    const [loadOrder, setLoadOrder] = useState(false);
+
+    if (contextInstance) {
+        setLoadOrder(true);
+    }
 
     useEffect(() => {
         const getOrder = async () => {
@@ -60,14 +68,14 @@ export default function CheckoutFinished({ orderId }: Props) {
         if (contextInstance) {
             getOrder();
         }
-    }, [contextInstance]);
+    }, [loadOrder]);
 
     return (
         <>
             {order ? (
                 <div className="container ml-auto mr-auto">
                     <div className="row">
-                        <div className="col-12 mt-5 mb-20">
+                        <div className="col-12 mb-20 mt-5">
                             <h1 class={'text-center'}>
                                 Vielen Dank für Ihre Bestellung!
                             </h1>
@@ -179,7 +187,7 @@ export default function CheckoutFinished({ orderId }: Props) {
                         </div>
                     </div>
 
-                    <div class="line-items mt-10 mb-10">
+                    <div class="line-items mb-10 mt-10">
                         <div class="flex-warp line-item-header flex border-b">
                             <div class=" w-2/5 flex-col">
                                 <b>Produkt</b>
@@ -220,25 +228,11 @@ export default function CheckoutFinished({ orderId }: Props) {
                                             <b>{item.quantity}</b>
                                         </div>
                                         <div class=" w-1/5 flex-col text-center">
-                                            <b>
-                                                {item.unitPrice.toLocaleString(
-                                                    'de-DE',
-                                                    {
-                                                        style: 'currency',
-                                                        currency: 'EUR',
-                                                    },
-                                                )}
-                                            </b>
+                                            <b>{formatPrice(item.unitPrice)}</b>
                                         </div>
                                         <div class=" w-1/5 flex-col text-right">
                                             <b>
-                                                {item.totalPrice.toLocaleString(
-                                                    'de-DE',
-                                                    {
-                                                        style: 'currency',
-                                                        currency: 'EUR',
-                                                    },
-                                                )}
+                                                {formatPrice(item.totalPrice)}
                                             </b>
                                         </div>
                                     </div>
@@ -247,7 +241,7 @@ export default function CheckoutFinished({ orderId }: Props) {
                         </div>
                     </div>
 
-                    <div class="mt-20 mb-20 ml-auto w-[35%]">
+                    <div class="mb-20 ml-auto mt-20 w-[35%]">
                         <h2>
                             <b>Zusammenfassung</b>
                         </h2>
@@ -255,26 +249,17 @@ export default function CheckoutFinished({ orderId }: Props) {
                             <tr>
                                 <td>Zwischensumem:</td>
                                 <td class="text-right">
-                                    {order?.price?.rawTotal.toLocaleString(
-                                        'de-DE',
-                                        {
-                                            style: 'currency',
-                                            currency: 'EUR',
-                                        },
-                                    )}
+                                    {formatPrice(order?.price?.rawTotal)}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Versandkosten:</td>
                                 <td class="text-right">
-                                    {order?.deliveries &&
-                                        order?.deliveries[0]?.shippingCosts.totalPrice.toLocaleString(
-                                            'de-DE',
-                                            {
-                                                style: 'currency',
-                                                currency: 'EUR',
-                                            },
-                                        )}
+                                    {formatPrice(
+                                        order?.deliveries &&
+                                            order?.deliveries[0]?.shippingCosts
+                                                .totalPrice,
+                                    )}
                                 </td>
                             </tr>
                             <tr>
@@ -285,25 +270,13 @@ export default function CheckoutFinished({ orderId }: Props) {
                             <tr>
                                 <td>Gesamtsumme:</td>
                                 <td class="text-right">
-                                    {order?.price?.totalPrice.toLocaleString(
-                                        'de-DE',
-                                        {
-                                            style: 'currency',
-                                            currency: 'EUR',
-                                        },
-                                    )}
+                                    {formatPrice(order?.price?.totalPrice)}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Gesamtnettosumme:</td>
                                 <td class="text-right">
-                                    {order?.price?.netPrice.toLocaleString(
-                                        'de-DE',
-                                        {
-                                            style: 'currency',
-                                            currency: 'EUR',
-                                        },
-                                    )}
+                                    {formatPrice(order?.price?.totalPrice)}
                                 </td>
                             </tr>
                             <tr>
@@ -313,12 +286,8 @@ export default function CheckoutFinished({ orderId }: Props) {
                                     Mwst.
                                 </td>
                                 <td class="text-right">
-                                    {order?.price?.calculatedTaxes[0]?.tax.toLocaleString(
-                                        'de-DE',
-                                        {
-                                            style: 'currency',
-                                            currency: 'EUR',
-                                        },
+                                    {formatPrice(
+                                        order?.price?.calculatedTaxes[0]?.tax,
                                     )}
                                 </td>
                             </tr>

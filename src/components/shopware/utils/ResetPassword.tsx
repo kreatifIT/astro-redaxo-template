@@ -94,7 +94,7 @@ export default function ResetPassword({ pwHash }: Props) {
                             type="password"
                             name="password"
                             placeholder="Neus Passwort"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                         />
 
                         <label class="mt-5 block" for="c_password">
@@ -105,7 +105,7 @@ export default function ResetPassword({ pwHash }: Props) {
                             type="password"
                             name="c_password"
                             placeholder="Passwort wiederholen"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                         />
 
                         <button

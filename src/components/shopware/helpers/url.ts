@@ -29,13 +29,14 @@ export enum ShopwareURL {
     USER_ADDRESS_CREATE,
     USER_PAYMENTS,
     USER_ORDER,
+    USER_ORDER_EDIT,
 }
 
 export const langToTarget = new Map<string, Map<string, ShopwareURL>>([
     [
         'de',
         new Map<string, any>([
-            ['', ShopwareURL.SHOP_ROOT],
+            ['/', ShopwareURL.SHOP_ROOT],
             ['warenkorb', ShopwareURL.CART],
             ['checkout', ShopwareURL.CHECKOUT],
             ['checkout-finished', ShopwareURL.CHECKOUT_FINISHED],
@@ -49,13 +50,14 @@ export const langToTarget = new Map<string, Map<string, ShopwareURL>>([
             ['account/address/create', ShopwareURL.USER_ADDRESS_CREATE],
             ['account/payment', ShopwareURL.USER_PAYMENTS],
             ['account/order', ShopwareURL.USER_ORDER],
+            ['account/order/edit', ShopwareURL.USER_ORDER_EDIT],
             //todo: expand parser to allow wildcards {{articleSlug}} etc.
         ]),
     ],
     [
         'it',
         new Map<string, any>([
-            ['', ShopwareURL.SHOP_ROOT],
+            ['/', ShopwareURL.SHOP_ROOT],
             ['registration', ShopwareURL.REGISTRATION],
             ['warenkorb', ShopwareURL.CART],
             ['checkout', ShopwareURL.CHECKOUT_FINISHED],
@@ -69,13 +71,14 @@ export const langToTarget = new Map<string, Map<string, ShopwareURL>>([
             ['account/address/create', ShopwareURL.USER_ADDRESS_CREATE],
             ['account/payment', ShopwareURL.USER_PAYMENTS],
             ['account/order', ShopwareURL.USER_ORDER],
+            ['account/order/edit', ShopwareURL.USER_ORDER_EDIT],
             //todo: expand parser to allow wildcards {{articleSlug}} etc.
         ]),
     ],
     [
         'en',
         new Map<string, any>([
-            ['', ShopwareURL.SHOP_ROOT],
+            ['/', ShopwareURL.SHOP_ROOT],
             ['registration', ShopwareURL.REGISTRATION],
             ['cart', ShopwareURL.CART],
             ['checkout', ShopwareURL.CHECKOUT_FINISHED],
@@ -89,6 +92,7 @@ export const langToTarget = new Map<string, Map<string, ShopwareURL>>([
             ['account/address/create', ShopwareURL.USER_ADDRESS_CREATE],
             ['account/payment', ShopwareURL.USER_PAYMENTS],
             ['account/order', ShopwareURL.USER_ORDER],
+            ['account/order/edit', ShopwareURL.USER_ORDER_EDIT],
             //todo: expand parser to allow wildcards {{articleSlug}} etc.
         ]),
     ],

@@ -7,36 +7,38 @@ import {
 import { useEffect, useState } from 'preact/hooks';
 import ProductWhistlist from '../atoms/ProductWhistlist';
 import { getWishlistProducts } from '@shopware-pwa/shopware-6-client';
+import { formatPrice } from '../helpers/client';
 
-interface Props {
-    contextToken: string | undefined;
-    swLangId: string | undefined;
-    whishlist: any;
-}
-
-export default function Whistlist({
-    contextToken,
-    swLangId,
-    whishlist,
-}: Props) {
+export default function Whistlist() {
     const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const [_whishlist, setWhishlist] = useState(whishlist);
+    const [_whishlist, setWhishlist] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(false);
+
+    if (contextInstance && customer) {
+        setInitialLoading(true);
+    }
+
+    useEffect(() => {
+        // hier müssen wir ein timeout einbauen, da sonst die wishlist nicht richtig geladen wird
+        const fetchData = async (setWhishlist: (arg0: any) => void) => {
+            let _respons = await getWishlistProducts(
+                {},
+                contextInstance as any,
+            );
+            setWhishlist(_respons);
+            setLoading(false);
+            if (loading) {
+                location.reload();
+            }
+        };
+        fetchData(setWhishlist);
+    }, [initialLoading]);
 
     useEffect(() => {
         if (loading) {
-            // hier müssen wir ein timeout einbauen, da sonst die wishlist nicht richtig geladen wird
-            const fetchData = async (setWhishlist: (arg0: any) => void) => {
-                let _respons = await getWishlistProducts(
-                    {},
-                    contextInstance as any,
-                );
-                setWhishlist(_respons);
-                setLoading(false);
-                location.reload();
-            };
-            fetchData(setWhishlist);
+            location.reload();
         }
     }, [loading]);
 
@@ -44,7 +46,7 @@ export default function Whistlist({
         <>
             {customer ? (
                 <>
-                    <h1 class="mt-5 mb-5 text-center">Ihre Merkliste</h1>
+                    <h1 class="mb-5 mt-5 text-center">Ihre Merkliste</h1>
 
                     <div class="flex w-full flex-row flex-wrap">
                         {_whishlist?.products?.elements?.map((product: any) => (
@@ -60,12 +62,9 @@ export default function Whistlist({
                                         </p>
                                         <br />
                                         <p class="text-right">
-                                            {product.calculatedPrice.unitPrice.toLocaleString(
-                                                'de-DE',
-                                                {
-                                                    style: 'currency',
-                                                    currency: 'EUR',
-                                                },
+                                            {formatPrice(
+                                                product.calculatedPrice
+                                                    .unitPrice,
                                             )}
                                         </p>
                                     </a>
@@ -80,7 +79,7 @@ export default function Whistlist({
                     </div>
                 </>
             ) : (
-                <h1 class="mt-5 mb-5 text-center">
+                <h1 class="mb-5 mt-5 text-center">
                     Bitte loggen Sie sich ein um Ihre Merkliste zu sehen.
                 </h1>
             )}

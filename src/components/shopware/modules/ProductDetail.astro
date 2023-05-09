@@ -5,16 +5,22 @@ import {
     getProduct,
 } from '@shopware-pwa/shopware-6-client';
 import ProductDetail from '../utils/ProductDetail';
+const { itemId } = Astro.props;
 
 const contextToken = Astro.cookies.get('sw-context-token').value;
 const swLangId = Astro.cookies.get('sw-language-id').value;
-const productId = Astro.cookies.get('productId').value;
+const productId = itemId;
 const contextInstance: ShopwareApiInstance = createInstance({
     endpoint: import.meta.env.SHOPWARE_ENDPOINT,
     accessToken: import.meta.env.SHOPWARE_ACCESS_KEY,
     languageId: swLangId,
     contextToken: contextToken,
 });
+
+if (productId === undefined) {
+    return;
+}
+
 const _response = await getProduct(
     productId,
     { associations: { media: [] } },

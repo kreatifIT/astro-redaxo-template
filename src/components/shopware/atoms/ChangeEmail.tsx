@@ -43,7 +43,6 @@ export default function ChangeEmail() {
                 contextInstance as any,
             )
                 .catch((e) => {
-                    console.log('error', e);
                     setErrorChangeEmail('Bitte kontrollieren Sie ihre Eingabe');
                     hasError = true;
                 })
@@ -139,7 +138,7 @@ export default function ChangeEmail() {
                             />
                         </div>
                     </div>
-                    <div class="mt-5 mb-5 w-[100%]">
+                    <div class="mb-5 mt-5 w-[100%]">
                         <p>
                             Bitte geben Sie Ihr aktuelles Passwort ein, um die
                             Änderungen zu bestätigen.
@@ -156,7 +155,7 @@ export default function ChangeEmail() {
                             />
                         </div>
                     </div>
-                    <div class="mt-5 mb-5 w-[100%]">
+                    <div class="mb-5 mt-5 w-[100%]">
                         <p>
                             Die mit einem Stern (*) markierten Felder sind
                             Pflichtfelder.

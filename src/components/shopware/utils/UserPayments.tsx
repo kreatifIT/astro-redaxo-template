@@ -6,13 +6,18 @@ import {
 } from './shopware-store';
 import { useStore } from '@nanostores/preact';
 import {
+    changeOrderPaymentMethod,
     getAvailablePaymentMethods,
     getCustomer,
     setCurrentPaymentMethod,
 } from '@shopware-pwa/shopware-6-client';
 import { changeDefaultPaymentMethod } from '@adapters/shopware';
 
-export default function UserPaymetns() {
+interface Props {
+    orderId: string | undefined;
+}
+
+export default function UserPaymetns({ orderId }: Props) {
     const [paymentMethods, setPaymentMethods] = useState<any>([]);
     const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
@@ -32,7 +37,7 @@ export default function UserPaymetns() {
             };
             _getPaymentMethods(contextInstance, setPaymentMethods);
         }
-    }, [contextInstance]);
+    }, []);
 
     const _changeDefaultPaymentMethod = async (e: any) => {
         e.preventDefault();
@@ -46,9 +51,17 @@ export default function UserPaymetns() {
 
         const _responseCustomer = await changeDefaultPaymentMethod(
             e.target.value,
-            contextInstance.config.contextToken,
-            contextInstance.config.languageId,
+            contextToken,
+            swLangId,
         );
+
+        if (orderId) {
+            const _responseOrder = await changeOrderPaymentMethod(
+                orderId,
+                e.target.value,
+                contextInstance as any,
+            );
+        }
 
         const _customer = await getCustomer(
             {
@@ -87,7 +100,7 @@ export default function UserPaymetns() {
         <>
             <h2 class="mb-5 border-b pb-2 font-bold">Zahlungsart</h2>
             {successMessage && (
-                <div class="relative mt-5 mb-5 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
+                <div class="relative mb-5 mt-5 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
                     <span class="block sm:inline">{successMessage}</span>
                 </div>
             )}

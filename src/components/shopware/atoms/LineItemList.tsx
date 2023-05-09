@@ -1,3 +1,4 @@
+import { formatPrice } from '../helpers/client';
 import LineItemSelectQuantity from './LineItemSelectQuantity';
 import RemoveLineItem from './RemoveLineItem';
 
@@ -9,7 +10,7 @@ export default function LineItemList({ lineItems }: Props) {
     return (
         <>
             {lineItems?.map((lineItem: any) => (
-                <div class="flex border-b pt-5 pb-5">
+                <div class="flex border-b pb-5 pt-5">
                     <div class="w-5/12 px-5">
                         <div class="flex">
                             {lineItem?.cover?.url && (
@@ -28,16 +29,10 @@ export default function LineItemList({ lineItems }: Props) {
                         )}
                     </div>
                     <div class="w-2/12  px-5">
-                        {lineItem.price.unitPrice.toLocaleString('de-DE', {
-                            style: 'currency',
-                            currency: 'EUR',
-                        })}
+                        {formatPrice(lineItem.price.unitPrice)}
                     </div>
                     <div class="w-2/12  px-5">
-                        {lineItem.price.totalPrice.toLocaleString('de-DE', {
-                            style: 'currency',
-                            currency: 'EUR',
-                        })}
+                        {formatPrice(lineItem.price.totalPrice)}
                     </div>
                     <div class="w-1/12  px-5">
                         <RemoveLineItem lineItem={lineItem} />

@@ -19,7 +19,7 @@ function AdditioanlAdress({ salutations, countries }: Props) {
     return (
         <>
             <div>
-                <div class="-mx-3 mb-6 mt-5 mt-20 flex flex-wrap">
+                <div class="-mx-3 mb-6 mt-20 mt-5 flex flex-wrap">
                     <div class="w-[100%] px-3">
                         <h2 class="mb-2 border-b pb-2">
                             <b>Abweichende Lieferadresse</b>
@@ -30,7 +30,7 @@ function AdditioanlAdress({ salutations, countries }: Props) {
                         <label for="salutation_shipping">Anrede *</label>
                         <select
                             name="shippingAddress_salutationId"
-                            class="block border py-2 px-3"
+                            class="block border px-3 py-2"
                             id="salutation_shipping"
                         >
                             <option disabled={true} selected={true} value="">
@@ -51,7 +51,7 @@ function AdditioanlAdress({ salutations, countries }: Props) {
                             name="shippingAddress_firstName"
                             required={true}
                             placeholder="Vorname"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="shipping_first_name"
                         />
                     </div>
@@ -62,7 +62,7 @@ function AdditioanlAdress({ salutations, countries }: Props) {
                             name="shippingAddress_lastName"
                             required={true}
                             placeholder="Nachname"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="shipping_last_name"
                         />
                     </div>
@@ -76,7 +76,7 @@ function AdditioanlAdress({ salutations, countries }: Props) {
                             name="shippingAddress_street"
                             required={true}
                             placeholder="Straße"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="shipping_street"
                         />
                     </div>
@@ -87,7 +87,7 @@ function AdditioanlAdress({ salutations, countries }: Props) {
                             name="shippingAddress_plz"
                             required={true}
                             placeholder="PLZ"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="shipping_plz"
                         />
                     </div>
@@ -98,7 +98,7 @@ function AdditioanlAdress({ salutations, countries }: Props) {
                             name="shippingAddress_city"
                             required={true}
                             placeholder="Ort"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="shipping_city"
                         />
                     </div>
@@ -106,7 +106,7 @@ function AdditioanlAdress({ salutations, countries }: Props) {
                         <label for="shipping_country">Land *</label>
                         <select
                             name="shippingAddress_countryId"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="shipping_country"
                         >
                             <option disabled={true} selected={true} value="">
@@ -126,40 +126,47 @@ function AdditioanlAdress({ salutations, countries }: Props) {
 }
 
 export default function RegistrationForm() {
-    const [salutations, setSalutations]: any = useState();
-    const [countries, setCountries]: any = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [showAdditionalForm, setShowAdditionalForm] = useState(false);
     const contextInstance: ShopwareApiInstance = useStore(
         ShopwareApiInstanceStore,
     );
 
+    const [salutations, setSalutations]: any = useState();
+    const [countries, setCountries]: any = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showAdditionalForm, setShowAdditionalForm] = useState(false);
+
+    const [loadData, setLoadData] = useState(false);
+
+    if (contextInstance) {
+        setLoadData(true);
+    }
+
     useEffect(() => {
+        const _getSalutations = async (
+            contextInstance: any,
+            setSalutations: any,
+        ) => {
+            const _response = await getAvailableSalutations(
+                contextInstance as any,
+            );
+            setSalutations(_response);
+        };
+
+        const _getCountries = async (
+            contextInstance: any,
+            setCountries: any,
+        ) => {
+            const _response = await getAvailableCountries(
+                contextInstance as any,
+            );
+            setCountries(_response);
+        };
+
         if (contextInstance) {
-            const _getSalutations = async (
-                contextInstance: any,
-                setSalutations: any,
-            ) => {
-                const _response = await getAvailableSalutations(
-                    contextInstance as any,
-                );
-                setSalutations(_response);
-            };
-
-            const _getCountries = async (
-                contextInstance: any,
-                setCountries: any,
-            ) => {
-                const _response = await getAvailableCountries(
-                    contextInstance as any,
-                );
-                setCountries(_response);
-            };
-
             _getSalutations(contextInstance, setSalutations);
             _getCountries(contextInstance, setCountries);
         }
-    }, [contextInstance]);
+    }, [loadData]);
 
     const registerFunction = async (e: any) => {
         e.preventDefault();
@@ -277,7 +284,7 @@ export default function RegistrationForm() {
                         <label for={salutations?.entity}>Anrede *</label>
                         <select
                             name="salutationId"
-                            class="block border py-2 px-3"
+                            class="block border px-3 py-2"
                             id={salutations?.entity}
                         >
                             <option disabled={true} selected={true} value="">
@@ -297,7 +304,7 @@ export default function RegistrationForm() {
                             name="firstName"
                             required={true}
                             placeholder="Vorname"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="first_name"
                         />
                     </div>
@@ -308,7 +315,7 @@ export default function RegistrationForm() {
                             name="lastName"
                             required={true}
                             placeholder="Nachname"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="last_name"
                         />
                     </div>
@@ -320,7 +327,7 @@ export default function RegistrationForm() {
                             name="email"
                             required={true}
                             placeholder="E-Mail"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="mail"
                         />
                     </div>
@@ -331,7 +338,7 @@ export default function RegistrationForm() {
                             name="password"
                             required={true}
                             placeholder="Passwort"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="password"
                         />
                         <p class="mt-1 text-xs">
@@ -354,7 +361,7 @@ export default function RegistrationForm() {
                             name="street"
                             required={true}
                             placeholder="Straße"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="street"
                         />
                     </div>
@@ -365,7 +372,7 @@ export default function RegistrationForm() {
                             name="plz"
                             required={true}
                             placeholder="PLZ"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="plz"
                         />
                     </div>
@@ -376,7 +383,7 @@ export default function RegistrationForm() {
                             name="city"
                             required={true}
                             placeholder="Ort"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="city"
                         />
                     </div>
@@ -384,7 +391,7 @@ export default function RegistrationForm() {
                         <label for="country">Land *</label>
                         <select
                             name="countryId"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                             id="country"
                         >
                             <option disabled={true} selected={true} value="">
@@ -399,7 +406,7 @@ export default function RegistrationForm() {
                     </div>
                 </div>
 
-                <div class="-mx-3 mb-6 mt-5 mt-20 flex flex-wrap">
+                <div class="-mx-3 mb-6 mt-20 mt-5 flex flex-wrap">
                     <div class="mt-5 w-[100%] px-3">
                         <label>
                             <input
@@ -423,7 +430,7 @@ export default function RegistrationForm() {
                     />
                 ) : null}
 
-                <div class="-mx-3 mb-6 mt-5 mt-20 flex flex-wrap">
+                <div class="-mx-3 mb-6 mt-20 mt-5 flex flex-wrap">
                     <div class="mt-5 w-[100%] px-3">
                         <label>
                             <input
@@ -442,7 +449,7 @@ export default function RegistrationForm() {
                         {/* Submit button rechte seite */}
                         <button
                             type="submit"
-                            class="float-right self-center rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                            class="float-right self-center rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
                             onClick={(e) => registerFunction(e)}
                         >
                             Absenden

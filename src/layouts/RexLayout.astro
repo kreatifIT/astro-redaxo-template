@@ -31,6 +31,9 @@ interface Props {
     footerArticle: Article;
     path: string;
     article?: Article;
+    contextInstance?: any;
+    sessionContext?: any;
+    customer?: any;
 }
 const {
     clangs,
@@ -41,11 +44,19 @@ const {
     currentClang,
     path,
     article,
+    contextInstance,
+    customer,
+    sessionContext,
 } = Astro.props;
 ---
 
 <html lang={currentClang.code.toLowerCase()}>
     <head>
+        <ShopwareInit
+            contextInstance={contextInstance}
+            sessionContext={sessionContext}
+            customer={customer}
+        />
         <meta charset="utf-8" />
         <HrefLangs clangs={clangs} />
         <Favicons />
@@ -58,13 +69,15 @@ const {
         <meta name="generator" content={Astro.generator} />
         <Tracking />
         <Partytown />
-        <ShopwareInit />
     </head>
     <body class="overflow-x-hidden pt-16 xl:pt-24">
         <Header
             clangs={clangs}
             siteStartArticle={siteStartArticle}
             navigation={navigation}
+            contextInstance={contextInstance}
+            customer={customer}
+            sessionContext={sessionContext}
         />
         <main>
             <slot />

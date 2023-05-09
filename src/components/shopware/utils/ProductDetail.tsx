@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks';
 import { useStore } from '@nanostores/preact';
 import ProductWhistlist from '../atoms/ProductWhistlist';
 import AddToCart from '../atoms/AddToCart';
-import { getThumbnail } from '../helpers/client';
+import { formatPrice, getThumbnail } from '../helpers/client';
 import { getProduct, getProducts } from '@shopware-pwa/shopware-6-client';
 
 interface Props {
@@ -21,7 +21,6 @@ export default function ProductDetail({ product, configurator }: Props) {
     const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const [message, setMessage] = useState('');
-
     const switchOption = async (optionId: string) => {
         const form = document.getElementById(
             'variant_switcher',
@@ -105,7 +104,7 @@ export default function ProductDetail({ product, configurator }: Props) {
                             {_product.translated.name}
 
                             {customer && (
-                                <div class="absolute top-0 right-0 float-right h-12">
+                                <div class="absolute right-0 top-0 float-right h-12">
                                     <ProductWhistlist
                                         productId={_product.id}
                                         setLoading={undefined}
@@ -120,7 +119,7 @@ export default function ProductDetail({ product, configurator }: Props) {
                             </div>
                         )}
                         {configurator.length > 0 && (
-                            <div class="mt-5 mb-5">
+                            <div class="mb-5 mt-5">
                                 <p>Varianten eigenschaften</p>
                                 <form
                                     action={'' + _product.id + '/switch/'}
@@ -181,7 +180,7 @@ export default function ProductDetail({ product, configurator }: Props) {
 
                         {_product.calculatedPrices.length > 0 ? (
                             <>
-                                <div class="mt-10 mb-10">
+                                <div class="mb-10 mt-10">
                                     <div class="flex flex-wrap bg-gray-200 p-2">
                                         <div class="w-[50%]">Menge</div>
                                         <div class="w-[50%]">Stückzahl</div>
@@ -194,12 +193,8 @@ export default function ProductDetail({ product, configurator }: Props) {
                                                         {price.quantity}
                                                     </div>
                                                     <div class="w-[50%]">
-                                                        {price.unitPrice.toLocaleString(
-                                                            'de-DE',
-                                                            {
-                                                                style: 'currency',
-                                                                currency: 'EUR',
-                                                            },
+                                                        {formatPrice(
+                                                            price.unitPrice,
                                                         )}
                                                     </div>
                                                 </div>
@@ -210,16 +205,15 @@ export default function ProductDetail({ product, configurator }: Props) {
                             </>
                         ) : (
                             <>
-                                {_product.calculatedPrice.unitPrice.toLocaleString(
-                                    'de-DE',
-                                    { style: 'currency', currency: 'EUR' },
+                                {formatPrice(
+                                    _product.calculatedPrice.unitPrice,
                                 )}
                             </>
                         )}
 
                         {customer ? (
                             <>
-                                <div class="mt-5  mb-14">
+                                <div class="mb-14  mt-5">
                                     <AddToCart
                                         product={_product}
                                         showQuantity={true}
@@ -228,7 +222,7 @@ export default function ProductDetail({ product, configurator }: Props) {
                             </>
                         ) : (
                             <>
-                                <div class="mt-5  mb-14">
+                                <div class="mb-14  mt-5">
                                     <div class="bg-red-600 p-2 text-center text-white">
                                         Loggen Sie sich ein um Produkte in den
                                         Warenkorb zu legen

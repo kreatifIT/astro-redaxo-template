@@ -22,7 +22,15 @@ const {
     siteStartArticle,
 } = await getLayoutData(path, 2);
 
-await initShopwareSite(Astro, path ?? '/', currentClang.code ?? '');
+const {
+    component: Component,
+    data,
+    contextInstance,
+    sessionContext,
+    customer,
+    itemId,
+    redirect,
+} = await initShopwareSite(Astro, path ?? '/', currentClang.code ?? '');
 Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
     path: '/',
 });
@@ -37,6 +45,9 @@ Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
     navigation={navigation}
     siteStartArticle={siteStartArticle}
     path={path}
+    contextInstance={contextInstance}
+    sessionContext={sessionContext}
+    customer={customer}
 >
     {contentType.type === 'article' && <ModuleList article={article} />}
 </RexLayout>

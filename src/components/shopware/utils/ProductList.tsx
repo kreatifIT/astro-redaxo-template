@@ -5,9 +5,13 @@
 import { useEffect, useState } from 'preact/hooks';
 import AddToCart from '../atoms/AddToCart';
 import ProductWhistlist from '../atoms/ProductWhistlist';
-import { getShopwareUrl, getThumbnail } from '../helpers/client';
+import { formatPrice, getShopwareUrl, getThumbnail } from '../helpers/client';
 import { useStore } from '@nanostores/preact';
-import { ShopwareApiInstanceStore, customerStore } from './shopware-store';
+import {
+    ShopwareApiInstanceStore,
+    contextStore,
+    customerStore,
+} from './shopware-store';
 import { ShopwareURL } from '../helpers/url';
 import { getCategoryProducts } from '@shopware-pwa/shopware-6-client';
 
@@ -123,7 +127,7 @@ export default function ProductList({
                 setProducts,
             );
         }
-    }, [page, currentSorting, filter, contextInstance]);
+    }, [page, currentSorting, filter]);
 
     return (
         <>
@@ -277,7 +281,6 @@ export default function ProductList({
                                             href={
                                                 getShopwareUrl(
                                                     ShopwareURL.SHOP_ROOT,
-                                                    clangCode,
                                                 ) +
                                                 product.seoUrls[0].seoPathInfo
                                             }
@@ -306,25 +309,21 @@ export default function ProductList({
                                                 .hasRange ? (
                                                 <>
                                                     <p class="text-right">
-                                                        Ab{' '}
-                                                        {product.calculatedCheapestPrice.unitPrice.toLocaleString(
-                                                            'de-DE',
-                                                            {
-                                                                style: 'currency',
-                                                                currency: 'EUR',
-                                                            },
+                                                        Ab
+                                                        {formatPrice(
+                                                            product
+                                                                .calculatedCheapestPrice
+                                                                .unitPrice,
                                                         )}
                                                     </p>
                                                 </>
                                             ) : (
                                                 <>
                                                     <p class="text-right">
-                                                        {product.calculatedPrice.unitPrice.toLocaleString(
-                                                            'de-DE',
-                                                            {
-                                                                style: 'currency',
-                                                                currency: 'EUR',
-                                                            },
+                                                        {formatPrice(
+                                                            product
+                                                                .calculatedPrice
+                                                                .unitPrice,
                                                         )}
                                                     </p>
                                                 </>

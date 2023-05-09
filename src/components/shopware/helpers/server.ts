@@ -1,10 +1,11 @@
 import type { AstroGlobal } from 'astro';
-
 import {
     ShopwareApiInstance,
     createInstance,
     getCustomer,
+    getProduct,
     getSeoUrl,
+    getSeoUrls,
     getSessionContext,
 } from '@shopware-pwa/shopware-6-client';
 import { ShopwareURL, getShopwareUrlByLang, langToTarget } from './url';
@@ -24,8 +25,11 @@ import UserAddress from '@components/shopware/modules/UserAddress.astro';
 import UserAddressCreate from '@components/shopware/modules/UserAddressCreate.astro';
 import UserPayments from '@components/shopware/modules/UserPayments.astro';
 import UserOrder from '@components/shopware/modules/UserOrder.astro';
+import UserOrderEdit from '@components/shopware/modules/UserOrderEdit.astro';
 import Registration from '@components/shopware/modules/Registration.astro';
+
 import { getClangId } from '@helpers/cookies';
+import type { Metadata } from '@adapters/redaxo/@types';
 
 export const parseEnvironmentMapping = (
     mapping: string,
@@ -75,12 +79,24 @@ export const initShopwareSite = async (
     });
     const sessionContext = await getSessionContext(contextInstance);
 
-    Astro.cookies.set('sw-context-token', contextInstance.config.contextToken, {
-        path: '/',
-    });
-    Astro.cookies.set('sw-language-id', contextInstance.config.languageId, {
-        path: '/',
-    });
+    Astro.cookies.set(
+        'sw-context-token',
+        contextInstance.config.contextToken
+            ? contextInstance.config.contextToken
+            : '',
+        {
+            path: '/',
+        },
+    );
+    Astro.cookies.set(
+        'sw-language-id',
+        contextInstance.config.languageId
+            ? contextInstance.config.languageId
+            : '',
+        {
+            path: '/',
+        },
+    );
 
     Astro.cookies.set('context', sessionContext, { path: '/' });
 
@@ -107,12 +123,12 @@ export const initShopwareSite = async (
         },
         contextInstance as ShopwareApiInstance,
     ).catch((e) => {
-        console.log('error', e);
         return undefined;
     });
 
     const component = getShopwareComponent(path, lang);
 
+    // Mehrsprachig?
     if (!path.includes('recover/password')) {
         if (
             (path.includes('account') && customer == null) ||
@@ -122,13 +138,24 @@ export const initShopwareSite = async (
             return {
                 component: null,
                 data: '/',
+                contextInstance,
+                sessionContext,
+                customer,
+                itemId: null,
                 redirect: '/',
             };
         }
     }
 
     if (component) {
-        return { component };
+        return {
+            component,
+            undefined,
+            contextInstance,
+            sessionContext,
+            customer,
+            itemId: null,
+        };
     }
 
     // Kategorien brauchen enden Slash und Produkte nicht .....
@@ -156,27 +183,47 @@ export const initShopwareSite = async (
         contextInstance,
     );
 
-    if (_seoUrl.total == 0) {
-        // todo: handle 404
+    // ROOT SHOP PAGE??
+    if (path == '/') {
         return {
             component: ProductList,
             data: path,
+            contextInstance,
+            sessionContext,
+            customer,
+            itemId: sessionContext.salesChannel.navigationCategoryId,
+        };
+    } else if (_seoUrl.total == 0) {
+        // todo: handle 404
+        console.log('todo: handle 404');
+        return {
+            component: ProductList,
+            data: path,
+            contextInstance,
+            sessionContext,
+            customer,
+            itemId: null,
         };
     } else if (_seoUrl.elements[0].routeName == 'frontend.detail.page') {
-        Astro.cookies.set('productId', _seoUrl.elements[0].foreignKey, {
-            path: '/',
-        });
+        const productId = _seoUrl.elements[0].foreignKey;
+
         return {
             component: ProductDetail,
             data: path,
+            contextInstance,
+            sessionContext,
+            customer,
+            itemId: productId,
         };
     } else if (_seoUrl.elements[0].routeName == 'frontend.navigation.page') {
-        Astro.cookies.set('categoryId', _seoUrl.elements[0].foreignKey, {
-            path: '/',
-        });
+        const categoryId = _seoUrl.elements[0].foreignKey;
         return {
             component: ProductList,
             data: path,
+            contextInstance,
+            sessionContext,
+            customer,
+            itemId: categoryId,
         };
     } else {
         throw new Error('No component found for this path: ' + path);
@@ -187,6 +234,7 @@ const getShopwareComponent = (path: string, lang: string) => {
     const completePath = targetToComponent.get(
         langToTarget.get(lang)?.get(path)!,
     );
+
     if (completePath != undefined) {
         return completePath;
     }
@@ -208,6 +256,7 @@ const targetToComponent = new Map<ShopwareURL, any>([
     [ShopwareURL.USER_ADDRESS_CREATE, UserAddressCreate],
     [ShopwareURL.USER_PAYMENTS, UserPayments],
     [ShopwareURL.USER_ORDER, UserOrder],
+    [ShopwareURL.USER_ORDER_EDIT, UserOrderEdit],
 ]);
 
 export const getShopwareUrlByAstro = (

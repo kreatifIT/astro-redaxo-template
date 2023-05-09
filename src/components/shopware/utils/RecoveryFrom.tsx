@@ -9,17 +9,13 @@ import {
     ShopwareApiInstance,
     resetPassword,
 } from '@shopware-pwa/shopware-6-client';
+import { getShopwareUrl } from '../helpers/client';
+import { ShopwareURL } from '../helpers/url';
 
-interface Props {
-    clangCode: string;
-}
-
-export default function RecoveryForm({ clangCode }: Props) {
+export default function RecoveryForm() {
     const [errorMessage, setErrorMessage] = useState('');
     const [mailSend, setMailSend] = useState(false);
-    const contextInstance: ShopwareApiInstance = useStore(
-        ShopwareApiInstanceStore,
-    );
+    const contextInstance: any = useStore(ShopwareApiInstanceStore);
 
     const validateEmail = (email: any) => {
         return email.match(
@@ -34,11 +30,15 @@ export default function RecoveryForm({ clangCode }: Props) {
 
         if (formData.get('email') && validateEmail(formData.get('email'))) {
             setErrorMessage('');
+
+            let storefrontUrl =
+                window.location.origin + getShopwareUrl(ShopwareURL.SHOP_ROOT);
+            storefrontUrl = storefrontUrl.replace(/\/$/, '');
+
             const _response = await resetPassword(
                 {
                     email: formData.get('email') as string,
-                    storefrontUrl:
-                        'http://localhost:3000/' + clangCode + '/shop',
+                    storefrontUrl: storefrontUrl,
                 },
                 contextInstance,
             );
@@ -70,7 +70,7 @@ export default function RecoveryForm({ clangCode }: Props) {
                             type="email"
                             name="email"
                             placeholder="E-Mail"
-                            class="block w-full border py-2 px-3"
+                            class="block w-full border px-3 py-2"
                         />
                         <button
                             type="submit"

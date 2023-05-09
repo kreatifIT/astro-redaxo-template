@@ -1,8 +1,9 @@
 import { useStore } from '@nanostores/preact';
 import { cartStore } from '../utils/shopware-store';
+import { formatPrice } from '../helpers/client';
 
 export default function CheckoutSummary() {
-    const cart = useStore(cartStore);
+    const cart: any = useStore(cartStore);
 
     return (
         <>
@@ -11,21 +12,14 @@ export default function CheckoutSummary() {
                 <tr>
                     <td>Zwischensumme:</td>
                     <td class={'text-right'}>
-                        {cart?.price.positionPrice.toLocaleString('de-DE', {
-                            style: 'currency',
-                            currency: 'EUR',
-                        })}
+                        {formatPrice(cart?.price.positionPrice)}
                     </td>
                 </tr>
                 <tr>
                     <td>Versandkosten:</td>
                     <td class={'text-right'}>
-                        {cart?.deliveries[0]?.shippingCosts.totalPrice.toLocaleString(
-                            'de-DE',
-                            {
-                                style: 'currency',
-                                currency: 'EUR',
-                            },
+                        {formatPrice(
+                            cart?.deliveries?.[0]?.shippingCosts.totalPrice,
                         )}
                     </td>
                 </tr>
@@ -37,19 +31,13 @@ export default function CheckoutSummary() {
                 <tr>
                     <td>Gesamtsumme:</td>
                     <td class={'text-right'}>
-                        {cart?.price.totalPrice.toLocaleString('de-DE', {
-                            style: 'currency',
-                            currency: 'EUR',
-                        })}
+                        {formatPrice(cart?.price.totalPrice)}
                     </td>
                 </tr>
                 <tr>
                     <td>Gesamtnettosumme:</td>
                     <td class={'text-right'}>
-                        {cart?.price.netPrice.toLocaleString('de-DE', {
-                            style: 'currency',
-                            currency: 'EUR',
-                        })}
+                        {formatPrice(cart?.price.netPrice)}
                     </td>
                 </tr>
                 <tr>
@@ -57,13 +45,7 @@ export default function CheckoutSummary() {
                         zzgl. {cart?.price.calculatedTaxes[0]?.taxRate}% Mwst.
                     </td>
                     <td class={'text-right'}>
-                        {cart?.price.calculatedTaxes[0]?.tax.toLocaleString(
-                            'de-DE',
-                            {
-                                style: 'currency',
-                                currency: 'EUR',
-                            },
-                        )}
+                        {formatPrice(cart?.price.calculatedTaxes[0]?.tax)}
                     </td>
                 </tr>
             </table>

@@ -27,6 +27,12 @@ export default function UserAddressCreateModify({
     const [countries, setCountries] = useState<any>([]);
     const [address, setAddress] = useState<any>(undefined);
 
+    const [loadData, setLoadData] = useState(false);
+
+    if (contextInstance && customer) {
+        setLoadData(true);
+    }
+
     useEffect(() => {
         if (contextInstance) {
             const _getSalutations = async (
@@ -53,16 +59,14 @@ export default function UserAddressCreateModify({
             _getSalutations(contextInstance, setSalutations);
             _getCountries(contextInstance, setCountries);
 
-            console.log('addressId', addressId);
             if (addressId) {
-                console.log('customer', customer);
                 let address = customer?.addresses.find(
                     (a: any) => a.id === addressId,
                 );
                 setAddress(address);
             }
         }
-    }, [contextInstance, customer]);
+    }, [loadData]);
 
     const createAddress = async (e: any) => {
         e.preventDefault();

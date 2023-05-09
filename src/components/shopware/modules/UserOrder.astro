@@ -3,13 +3,13 @@ import UserMenu from '../atoms/UserMenu';
 import UserOrder from '../utils/UserOrder';
 ---
 
-<div class="row mt-5 mb-5">
+<div class="row mb-5 mt-5">
     <div class="flex w-full flex-row flex-wrap">
         <div class="w-[20%] pb-20">
             <UserMenu client:only="preact" />
         </div>
         <div class="w-[80%] pl-20">
-            <UserOrder client:visible />
+            <UserOrder client:only="preact" />
         </div>
     </div>
 </div>

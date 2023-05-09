@@ -22,9 +22,19 @@ interface Props {
     navigation: INavigationItem[];
     siteStartArticle: Article;
     clangs: Clang[];
+    contextInstance: any;
+    sessionContext: any;
+    customer: any;
 }
 
-const { navigation, siteStartArticle, clangs } = Astro.props;
+const {
+    navigation,
+    siteStartArticle,
+    clangs,
+    contextInstance,
+    sessionContext,
+    customer,
+} = Astro.props;
 ---
 
 <header
@@ -53,7 +63,10 @@ const { navigation, siteStartArticle, clangs } = Astro.props;
                                     />
                                 ))
                         }
-                        <ShopNav />
+                        <ShopNav
+                            contextInstance={contextInstance}
+                            sessionContext={sessionContext}
+                        />
                     </ul>
 
                     <div class="mr-5 flex flex-wrap">

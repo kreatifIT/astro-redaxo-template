@@ -3,6 +3,8 @@
 // eigene Seite erstellen oder kann die Bestelllung normal übernommen werden?
 
 import { useState } from 'preact/hooks';
+import { formatPrice, getShopwareUrl } from '../helpers/client';
+import { ShopwareURL } from '../helpers/url';
 
 interface Props {
     order: any;
@@ -10,6 +12,17 @@ interface Props {
 
 export default function OrderCard({ order }: Props) {
     const [showLineItems, setShowLineItems] = useState(false);
+    const [isPaymentNeeded, setIsPaymentNeeded] = useState(false);
+
+    const states = ['failed', 'reminded', 'unconfirmed', 'cancelled'];
+    const orderState = order.stateMachineState.technicalName;
+    const orderPaymentState =
+        order.transactions[0].stateMachineState.technicalName;
+
+    setIsPaymentNeeded(false);
+    if (orderState != 'cancelled' && states.includes(orderPaymentState)) {
+        setIsPaymentNeeded(true);
+    }
 
     const toggleLineItems = (e: any) => {
         e.preventDefault();
@@ -19,16 +32,33 @@ export default function OrderCard({ order }: Props) {
 
     return (
         <>
-            <div class="mb-10 w-full rounded-lg border bg-white py-4 px-8 shadow-lg">
+            <div class="mb-10 w-full rounded-lg border bg-white px-8 py-4 shadow-lg">
                 <div>
                     <h2>
-                        Bestellung: {order.orderDate}
-                        <span class="ml-2 rounded-full border px-5 py-1">
-                            {order.transactions[order.transactions.length - 1]
-                                .stateMachineState.technicalName == 'cancelled'
-                                ? 'Zahlung abgebrochen'
-                                : order.stateMachineState.translated.name}
-                        </span>
+                        Bestellung:{' '}
+                        {order.orderDate
+                            .split('T')[0]
+                            .split('-')
+                            .reverse()
+                            .join('.')}
+                        {isPaymentNeeded ? (
+                            <>
+                                <a
+                                    href={getShopwareUrl(
+                                        ShopwareURL.USER_ORDER_EDIT,
+                                        { order: order.id },
+                                    )}
+                                    class="ml-2 rounded-lg bg-red-500 px-2 py-1 text-white"
+                                >
+                                    {order.stateMachineState.translated.name}
+                                    (Zahlung abgebrochen)
+                                </a>
+                            </>
+                        ) : (
+                            <span class="ml-2 rounded-full border px-5 py-1">
+                                {order.stateMachineState.translated.name}
+                            </span>
+                        )}
                     </h2>
                     <p>
                         <span class="font-bold">Bestellnummer:</span>
@@ -64,9 +94,8 @@ export default function OrderCard({ order }: Props) {
                             </div>
                             <div class="py-2">
                                 {
-                                    order.transactions[
-                                        order.transactions.length - 1
-                                    ].paymentMethod.translated.name
+                                    order.transactions[0].paymentMethod
+                                        .translated.name
                                 }
                             </div>
                         </div>
@@ -87,7 +116,7 @@ export default function OrderCard({ order }: Props) {
                             </div>
                             <div class="py-2">
                                 <button
-                                    class="float-right rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                                    class="float-right rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
                                     onClick={(e) => toggleLineItems(e)}
                                 >
                                     {showLineItems ? 'Ausblenden' : 'Anzeigen'}
@@ -137,22 +166,10 @@ export default function OrderCard({ order }: Props) {
                                             {lineItem.quantity}
                                         </div>
                                         <div class="w-full p-2 text-center md:w-1/2 xl:w-1/5">
-                                            {lineItem.unitPrice.toLocaleString(
-                                                'de-DE',
-                                                {
-                                                    style: 'currency',
-                                                    currency: 'EUR',
-                                                },
-                                            )}
+                                            {formatPrice(lineItem.unitPrice)}
                                         </div>
                                         <div class="w-full p-2 text-right md:w-1/2 xl:w-1/5">
-                                            {lineItem.totalPrice.toLocaleString(
-                                                'de-DE',
-                                                {
-                                                    style: 'currency',
-                                                    currency: 'EUR',
-                                                },
-                                            )}
+                                            {formatPrice(lineItem.totalPrice)}
                                         </div>
                                     </div>
                                 </>
@@ -162,15 +179,27 @@ export default function OrderCard({ order }: Props) {
                                 <div class="w-full p-2 md:w-1/2">
                                     <table class="w-full">
                                         <tr>
-                                            <th align="left">Bestelldatum:</th>
-                                            <td>{order.orderDate}</td>
+                                            <th class="text-left">
+                                                Bestelldatum:
+                                            </th>
+                                            <td>
+                                                {order.orderDate
+                                                    .split('T')[0]
+                                                    .split('-')
+                                                    .reverse()
+                                                    .join('.')}
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <th align="left">Bestellnummer:</th>
+                                            <th class="text-left">
+                                                Bestellnummer:
+                                            </th>
                                             <td>{order.orderNumber}</td>
                                         </tr>
                                         <tr>
-                                            <th align="left">Zahlungsart:</th>
+                                            <th class="text-left">
+                                                Zahlungsart:
+                                            </th>
                                             <td>
                                                 {
                                                     order.transactions[
@@ -182,7 +211,9 @@ export default function OrderCard({ order }: Props) {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th align="left">Versandart:</th>
+                                            <th class="text-left">
+                                                Versandart:
+                                            </th>
                                             <td>
                                                 {
                                                     order.deliveries[0]
@@ -195,7 +226,7 @@ export default function OrderCard({ order }: Props) {
                                             ?.lenght > 0 && (
                                             <>
                                                 <tr>
-                                                    <th align="left">
+                                                    <th class="text-left">
                                                         Paketverfolgung:
                                                     </th>
                                                     <td>
@@ -219,27 +250,19 @@ export default function OrderCard({ order }: Props) {
                                 <div class="w-full p-2 md:w-1/2">
                                     <table class="w-full">
                                         <tr>
-                                            <th align="left">Versandkosten:</th>
+                                            <th class="text-left">
+                                                Versandkosten:
+                                            </th>
                                             <td>
-                                                {order.shippingTotal.toLocaleString(
-                                                    'de-DE',
-                                                    {
-                                                        style: 'currency',
-                                                        currency: 'EUR',
-                                                    },
-                                                )}
+                                                {formatPrice({order.shippingTotal)}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th align="left">Gesamtsumme:</th>
+                                            <th class="text-left">
+                                                Gesamtsumme:
+                                            </th>
                                             <td>
-                                                {order.price.totalPrice.toLocaleString(
-                                                    'de-DE',
-                                                    {
-                                                        style: 'currency',
-                                                        currency: 'EUR',
-                                                    },
-                                                )}
+                                                {formatPrice({order.price.totalPrice)}
                                             </td>
                                         </tr>
                                     </table>

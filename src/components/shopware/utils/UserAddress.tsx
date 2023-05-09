@@ -4,13 +4,9 @@ import DefaultShippingAddress from '../atoms/DefaultShippingAddress';
 import CustomerAddresses from '../atoms/CustomerAddresses';
 
 export default function UserAddress() {
-    const [billingAdressChanged, setBillingAdressChanged] = useState(false);
-    const [shippingAdressChanged, setShippingAdressChanged] = useState(false);
-    const [addressRemoved, setAddressRemoved] = useState(false);
-
     return (
         <>
-            {billingAdressChanged && (
+            {/* {billingAdressChanged && (
                 <div class="relative mt-5 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
                     <span class="block sm:inline">
                         Ihre Standard-Rechnungsadresse wurde geändert.
@@ -30,7 +26,7 @@ export default function UserAddress() {
                         Ihre Adresse wurde gelöscht.
                     </span>
                 </div>
-            )}
+            )} */}
 
             <div class="">
                 <h2 class="mb-5 border-b pb-2 font-bold">Adressen</h2>

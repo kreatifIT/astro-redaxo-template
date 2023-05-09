@@ -4,6 +4,7 @@ import { CLANG_ID_COOKIE_NAME } from '@helpers/cookies';
 import { getLayoutData } from '@helpers/layout';
 import SwLayout from '@layouts/SwLayout.astro';
 let { path, lang } = Astro.params;
+
 path ??= '/';
 
 if (path === 'sitemap.xml' || path === 'robots.txt') {
@@ -27,6 +28,10 @@ Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
 const {
     component: Component,
     data,
+    contextInstance,
+    sessionContext,
+    customer,
+    itemId,
     redirect,
 } = await initShopwareSite(Astro, path ?? '/', lang ?? '');
 
@@ -44,6 +49,10 @@ if (redirect) {
     navigation={navigation}
     siteStartArticle={siteStartArticle}
     path={path}
+    contextInstance={contextInstance}
+    sessionContext={sessionContext}
+    customer={customer}
+    itemId={itemId}
 >
-    {Component ? <Component /> : null}
+    {Component ? <Component itemId={itemId} /> : null}
 </SwLayout>

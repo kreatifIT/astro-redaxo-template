@@ -1,9 +1,16 @@
+import { useStore } from '@nanostores/preact';
 import { ShopwareURL, getShopwareUrlByLang } from './url';
+import { contextStore } from '../utils/shopware-store';
 
-export const getShopwareUrl = (target: ShopwareURL) => {
+export const getShopwareUrl = (target: ShopwareURL, params?: an) => {
     if (typeof window === 'undefined') return;
     const clangCode = getClangCodeFromCookie();
-    return getShopwareUrlByLang(clangCode, target);
+    let url = getShopwareUrlByLang(clangCode, target);
+
+    if (params) {
+        url = `${url}?${new URLSearchParams(params).toString()}`;
+    }
+    return url;
 };
 
 // get Thumbnail
@@ -47,6 +54,22 @@ export const getSwCookies = () => {
     });
 
     return { contextToken, swLangId };
+};
+
+export const formatPrice = (price: number | undefined) => {
+    if (typeof Intl === 'undefined') return price;
+
+    const context = useStore(contextStore);
+
+    const formatter = new Intl.NumberFormat('de-DE', {
+        style: 'currency',
+        currency:
+            context && context.currency.isoCode
+                ? context.currency.isoCode
+                : 'EUR',
+    });
+
+    return formatter.format(price);
 };
 
 export const getClangCodeFromCookie = () => {

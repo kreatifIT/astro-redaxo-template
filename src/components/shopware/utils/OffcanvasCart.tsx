@@ -1,4 +1,7 @@
-import { getShopwareUrl } from '@components/shopware/helpers/client';
+import {
+    formatPrice,
+    getShopwareUrl,
+} from '@components/shopware/helpers/client';
 import { useStore } from '@nanostores/preact';
 import { useEffect, useState } from 'preact/hooks';
 import {
@@ -17,7 +20,7 @@ export default function OffcanvasCart() {
     const customer = useStore(customerStore);
     const _showOffcanvasStore = useStore(showOffcanvasStore);
     const [showOffcanvas, setShowOffcanvas] = useState(false);
-    const cart = useStore(cartStore);
+    const cart: any = useStore(cartStore);
 
     useEffect(() => {
         const fetchData = async (contextInstance: any) => {
@@ -25,12 +28,12 @@ export default function OffcanvasCart() {
             cartStore.set(_response);
         };
 
-        if (_showOffcanvasStore && contextInstance) {
+        if (_showOffcanvasStore) {
             fetchData(contextInstance);
         }
 
         setShowOffcanvas(_showOffcanvasStore);
-    }, [_showOffcanvasStore, contextInstance]);
+    }, [_showOffcanvasStore]);
 
     const closeOffcanvas = () => {
         showOffcanvasStore.set(false);
@@ -41,7 +44,7 @@ export default function OffcanvasCart() {
             <div
                 class={
                     showOffcanvas
-                        ? 'fixed top-0 left-0 z-50 h-full w-full bg-black bg-opacity-50'
+                        ? 'fixed left-0 top-0 z-50 h-full w-full bg-black bg-opacity-50'
                         : ''
                 }
                 onClick={(e) => closeOffcanvas()}
@@ -49,8 +52,8 @@ export default function OffcanvasCart() {
             <div
                 class={
                     showOffcanvas
-                        ? 'fixed right-0 top-0 bottom-0  z-50 w-[414px] overflow-y-scroll border-l bg-white transition-all duration-300'
-                        : 'fixed top-0 bottom-0 -right-full z-50 w-[414px] border-l  bg-white transition-all duration-300'
+                        ? 'fixed bottom-0 right-0 top-0  z-50 w-[414px] overflow-y-scroll border-l bg-white transition-all duration-300'
+                        : 'fixed -right-full bottom-0 top-0 z-50 w-[414px] border-l  bg-white transition-all duration-300'
                 }
             >
                 <div
@@ -103,7 +106,7 @@ export default function OffcanvasCart() {
                                     <div className="col-12">
                                         {cart?.lineItems?.map((item: any) => (
                                             <>
-                                                <div className="card  border-b pt-5 pb-5">
+                                                <div className="card  border-b pb-5 pt-5">
                                                     <div className="flex-column flex flex-wrap">
                                                         <div className="w-[25%]">
                                                             {item.type ===
@@ -136,13 +139,10 @@ export default function OffcanvasCart() {
                                                                 </h5>
 
                                                                 <p className="card-text">
-                                                                    {item.price.totalPrice.toLocaleString(
-                                                                        'de-DE',
-                                                                        {
-                                                                            style: 'currency',
-                                                                            currency:
-                                                                                'EUR',
-                                                                        },
+                                                                    {formatPrice(
+                                                                        item
+                                                                            .price
+                                                                            .totalPrice,
                                                                     )}
                                                                 </p>
                                                             </div>
@@ -160,20 +160,16 @@ export default function OffcanvasCart() {
                                     <div className="col-12">
                                         <div className="card mb-3">
                                             <div className="card-body">
-                                                <AddCoupon cart={cart} />
+                                                <AddCoupon />
                                                 <table class="my-5 w-full">
                                                     <tr>
                                                         <th class="text-left">
                                                             Zwischensumme
                                                         </th>
                                                         <td class="text-right">
-                                                            {cart.price.totalPrice.toLocaleString(
-                                                                'de-DE',
-                                                                {
-                                                                    style: 'currency',
-                                                                    currency:
-                                                                        'EUR',
-                                                                },
+                                                            {formatPrice(
+                                                                cart?.price
+                                                                    ?.totalPrice,
                                                             )}
                                                         </td>
                                                     </tr>
@@ -182,13 +178,11 @@ export default function OffcanvasCart() {
                                                             Versandkosten
                                                         </th>
                                                         <td class="text-right">
-                                                            {cart?.deliveries[0].shippingCosts.totalPrice.toLocaleString(
-                                                                'de-DE',
-                                                                {
-                                                                    style: 'currency',
-                                                                    currency:
-                                                                        'EUR',
-                                                                },
+                                                            {formatPrice(
+                                                                cart
+                                                                    ?.deliveries[0]
+                                                                    .shippingCosts
+                                                                    .totalPrice,
                                                             )}
                                                         </td>
                                                     </tr>

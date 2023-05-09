@@ -54,7 +54,7 @@ export default function Checkout() {
         if (contextInstance) {
             _getCart();
         }
-    }, [customer, cartChanged, contextInstance]);
+    }, [cartChanged]);
 
     const [changeBillingAddress, setChangeBillingAddress] = useState(false); // change billing or delivery address
     const [changeShippingAddress, setChangeShippingAddress] = useState(false); // change billing or delivery address
@@ -118,7 +118,7 @@ export default function Checkout() {
             {changeBillingAddress && (
                 <>
                     <div
-                        class="fixed top-0 left-0 z-50 w-full bg-black bg-opacity-50"
+                        class="fixed left-0 top-0 z-50 w-full bg-black bg-opacity-50"
                         style="height: 100vh"
                         onClick={(e) => closeOverlay(e)}
                     ></div>
@@ -132,7 +132,7 @@ export default function Checkout() {
             {changeShippingAddress && (
                 <>
                     <div
-                        class="fixed top-0 left-0 z-50 w-full bg-black bg-opacity-50"
+                        class="fixed left-0 top-0 z-50 w-full bg-black bg-opacity-50"
                         style="height: 100vh"
                         onClick={(e) => closeOverlay(e)}
                     ></div>
@@ -156,7 +156,7 @@ export default function Checkout() {
 
             <div>
                 <h1>Bestellung abschließen</h1>
-                <div class="mt-5 mb-2 border-b pt-5 pb-5">
+                <div class="mb-2 mt-5 border-b pb-5 pt-5">
                     <label for="agbs">
                         <input
                             type="checkbox"
@@ -171,7 +171,7 @@ export default function Checkout() {
                 </div>
 
                 <div class="mb-5 mt-5 flex">
-                    <div class="mt-5 mb-2 w-[50%] pr-10">
+                    <div class="mb-2 mt-5 w-[50%] pr-10">
                         <DefaultBillingAddress closeOverlay={undefined} />
                         <span
                             class="mt-5 block cursor-pointer border p-2 text-center"
@@ -180,7 +180,7 @@ export default function Checkout() {
                             Rechnungsadresse ändern
                         </span>
                     </div>
-                    <div class="mt-5 mb-2 w-[50%] pr-10">
+                    <div class="mb-2 mt-5 w-[50%] pr-10">
                         <DefaultShippingAddress closeOverlay={undefined} />
                         <span
                             class="mt-5 block cursor-pointer border p-2 text-center"
@@ -194,10 +194,10 @@ export default function Checkout() {
                 </div>
 
                 <div class="mb-2 flex">
-                    <div class="mt-5 mb-2 w-[50%] pr-10">
-                        <UserPaymetns />
+                    <div class="mb-2 mt-5 w-[50%] pr-10">
+                        <UserPaymetns orderId={undefined} />
                     </div>
-                    <div class="mt-5 mb-2 w-[50%] pr-10">
+                    <div class="mb-2 mt-5 w-[50%] pr-10">
                         <ShppingMethods />
                     </div>
                 </div>
@@ -211,7 +211,7 @@ export default function Checkout() {
                 </div>
 
                 <LineItemList lineItems={cart?.lineItems} />
-                <div class="mt-20 mb-20 ml-auto w-[35%]">
+                <div class="mb-20 ml-auto mt-20 w-[35%]">
                     <AddCoupon />
 
                     <CheckoutSummary />
@@ -220,7 +220,7 @@ export default function Checkout() {
                         onClick={() => {
                             createOrderFromCart();
                         }}
-                        class="mt-5 block w-full rounded border border-black bg-green-900 py-3 px-2 text-center text-white"
+                        class="mt-5 block w-full rounded border border-black bg-green-900 px-2 py-3 text-center text-white"
                     >
                         Zahlungspflichtig bestellen
                     </button>

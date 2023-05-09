@@ -11,6 +11,13 @@ import Footer from '@layout/Footer.astro';
 import Header from '@layout/header/Header.astro';
 import ShopwareInit from '@atoms/ShopwareInit.astro';
 import OffcanvasCart from '@components/shopware/utils/OffcanvasCart';
+import StructuredData from '@layout/head/StructuredData.astro';
+import Iubenda from '@utils/iubenda/Iubenda.astro';
+import Tracking from '@layout/head/Tracking.astro';
+import Partytown from '@layout/head/Partytown.astro';
+import SEO from '@layout/head/SEO.astro';
+import { getCategory, getProduct } from '@shopware-pwa/shopware-6-client';
+
 interface Props {
     metadata: Metadata;
     currentClang: Clang;
@@ -20,6 +27,10 @@ interface Props {
     footerArticle: Article;
     path: string;
     article?: Article;
+    itemId?: string;
+    contextInstance?: any;
+    sessionContext?: any;
+    customer?: any;
 }
 const {
     clangs,
@@ -30,31 +41,73 @@ const {
     currentClang,
     path,
     article,
+    contextInstance,
+    customer,
+    sessionContext,
+    itemId,
 } = Astro.props;
+
+if (itemId) {
+    let _response = await getCategory(itemId, contextInstance)
+        .then((response) => {
+            console.log(response);
+            metadata.title = response.translated.name;
+            metadata.description = response.translated.description;
+            return true;
+        })
+        .catch((error) => {
+            return false;
+        });
+
+    if (_response === false) {
+        //Produkt Abfrage erstellen
+        await getProduct(itemId, {}, contextInstance)
+            .then((response) => {
+                metadata.title = response.product.translated.metaTitle
+                    ? response.product.translated.metaTitle
+                    : response.product.translated.name;
+                metadata.description = response.product.translated
+                    .metaDescription
+                    ? response.product.translated.metaDescription
+                    : response.product.translated.description;
+                metadata.type = 'Product';
+                console.log('metadata', metadata);
+            })
+            .catch((error) => {
+                return null;
+            });
+    }
+}
 ---
 
-<!--html lang={currentClang.code.toLowerCase()}-->
-<html>
+<html lang={currentClang.code.toLowerCase()}>
     <head>
-        <ShopwareInit />
+        <ShopwareInit
+            contextInstance={contextInstance}
+            sessionContext={sessionContext}
+            customer={customer}
+        />
         <meta charset="utf-8" />
         <HrefLangs clangs={clangs} />
         <Favicons />
-        <!--Iubenda clangs={clangs} /-->
-        <!--StructuredData
+        <Iubenda clangs={clangs} />
+        <StructuredData
             metadata={metadata}
             siteStartArticle={siteStartArticle}
-        /-->
-        <!--SEO metadata={metadata} path={path} /-->
+        />
+        <SEO metadata={metadata} path={path} />
         <meta name="generator" content={Astro.generator} />
-        <!--Tracking /-->
-        <!--Partytown /-->
+        <Tracking />
+        <Partytown />
     </head>
     <body class="overflow-x-hidden pt-16 xl:pt-24">
         <Header
             clangs={clangs}
             siteStartArticle={siteStartArticle}
             navigation={navigation}
+            contextInstance={contextInstance}
+            customer={customer}
+            sessionContext={sessionContext}
         />
         <main class="pt-20 md:pt-20 xl:pt-[200px]">
             <div
@@ -66,8 +119,6 @@ const {
             </div>
         </main>
         <Footer siteStartArticle={siteStartArticle} articleId={article?.id} />
-        <!--Properties /-->
-
         <OffcanvasCart client:only="preact" />
     </body>
 </html>

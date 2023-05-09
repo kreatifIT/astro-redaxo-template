@@ -1,7 +1,15 @@
 ---
+interface Props {
+    contextInstance: any;
+    sessionContext: any;
+    customer: any;
+}
+const { contextInstance, customer, sessionContext } = Astro.props;
 ---
 
 <script>
+    // import const { contextInstance, customer, sessionContext } ;
+
     import {
         getSwCookies,
         setSwCookie,
