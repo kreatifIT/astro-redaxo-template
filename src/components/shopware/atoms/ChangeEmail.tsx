@@ -10,12 +10,16 @@ import {
     contextStore,
     customerStore,
 } from '../utils/shopware-store';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 export default function ChangeEmail() {
-    const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const [errorChangeEmail, setErrorChangeEmail] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const afterEmailChange = async () => {
         const context = await getSessionContext(contextInstance as any);
@@ -32,7 +36,7 @@ export default function ChangeEmail() {
 
         let hasError = false;
         if (email == '' || email != confirm_email) {
-            setErrorChangeEmail('Die Email Addressen stimmen nicht überein');
+            setErrorChangeEmail(t('error_email_not_match'));
         } else {
             await updateEmail(
                 {
@@ -43,16 +47,14 @@ export default function ChangeEmail() {
                 contextInstance as any,
             )
                 .catch((e) => {
-                    setErrorChangeEmail('Bitte kontrollieren Sie ihre Eingabe');
+                    setErrorChangeEmail(t('check_input'));
                     hasError = true;
                 })
                 .then((e: any) => {
                     if (hasError === false) {
                         afterEmailChange();
                         setErrorChangeEmail('');
-                        setSuccessMessage(
-                            'Email Addresse wurde erfolgreich geändert',
-                        );
+                        setSuccessMessage(t('email_successfully_updated'));
                         afterEmailChange();
                         setTimeout(() => {
                             setSuccessMessage('');
@@ -67,7 +69,9 @@ export default function ChangeEmail() {
     return (
         <>
             <div class="mt-10">
-                <h2 class="mb-5 border-b pb-2 font-bold">E-Mail-Adresse</h2>
+                <h2 class="mb-5 border-b pb-2 font-bold">
+                    {t('email_address')}
+                </h2>
 
                 {successMessage && (
                     <>
@@ -118,7 +122,10 @@ export default function ChangeEmail() {
                 <form method="post" onSubmit={(e) => changeEmail(e)}>
                     <div class="flex">
                         <div class="w-[50%] pr-5">
-                            <label for="email">Neue E-Mail-Adresse*</label>
+                            <label for="email">
+                                {t('new_email_address')}
+                                {t('mandatory')}
+                            </label>
                             <input
                                 type="email"
                                 class="block w-full border"
@@ -128,7 +135,8 @@ export default function ChangeEmail() {
                         </div>
                         <div class="w-[50%] pl-5">
                             <label for="confirm_mail">
-                                E-Mail-Bestätigung*
+                                {t('new_email_confirm')}
+                                {t('mandatory')}
                             </label>
                             <input
                                 id="confirm_mail"
@@ -139,14 +147,11 @@ export default function ChangeEmail() {
                         </div>
                     </div>
                     <div class="mb-5 mt-5 w-[100%]">
-                        <p>
-                            Bitte geben Sie Ihr aktuelles Passwort ein, um die
-                            Änderungen zu bestätigen.
-                        </p>
+                        <p>{t('label_add_password')}</p>
                     </div>
                     <div class="flex">
                         <div class="w-[50%] pr-5">
-                            <label for="password">Passwort*</label>
+                            <label for="password">{t('password')}*</label>
                             <input
                                 type="password"
                                 class="block w-full border"
@@ -156,15 +161,12 @@ export default function ChangeEmail() {
                         </div>
                     </div>
                     <div class="mb-5 mt-5 w-[100%]">
-                        <p>
-                            Die mit einem Stern (*) markierten Felder sind
-                            Pflichtfelder.
-                        </p>
+                        <p>{t('label_mandatory_fields')}</p>
                         <button
                             type="submit"
                             class="mt-5 inline-block border p-2"
                         >
-                            Änderungen speichern
+                            {t('save_adjustments')}
                         </button>
                     </div>
                 </form>

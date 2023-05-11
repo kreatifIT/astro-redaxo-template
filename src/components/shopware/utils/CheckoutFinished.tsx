@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'preact/hooks';
 import {
     formatPrice,
+    getClangCodeFromCookie,
     getShopwareUrl,
 } from '@components/shopware/helpers/client';
 import { ShopwareURL } from '../helpers/url';
 import { useStore } from '@nanostores/preact';
 import { ShopwareApiInstanceStore, customerStore } from './shopware-store';
 import { getCustomerOrders } from '@shopware-pwa/shopware-6-client';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     orderId: string;
@@ -18,9 +20,12 @@ export default function CheckoutFinished({ orderId }: Props) {
     const [order, setOrder] = useState<any>(null);
     const [loadOrder, setLoadOrder] = useState(false);
 
-    if (contextInstance) {
-        setLoadOrder(true);
-    }
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
+
+    // if (contextInstance) {
+    //     setLoadOrder(true);
+    // }
 
     useEffect(() => {
         const getOrder = async () => {
@@ -77,14 +82,14 @@ export default function CheckoutFinished({ orderId }: Props) {
                     <div className="row">
                         <div className="col-12 mb-20 mt-5">
                             <h1 class={'text-center'}>
-                                Vielen Dank für Ihre Bestellung!
+                                {t('oder_complete_thanks')}
                             </h1>
                             <p class={'text-center'}>
-                                Ihre Bestellnummer:{' '}
+                                {t('oder_number_complete')}:{' '}
                                 <strong>{order?.orderNumber}</strong>
                             </p>
                             <p class={'text-center'}>
-                                Bestellbestätigungs-E-Mail wurde verschickt.
+                                {t('order_complete_mail_send')}
                             </p>
                         </div>
                     </div>
@@ -94,7 +99,7 @@ export default function CheckoutFinished({ orderId }: Props) {
                             <div class="mb-4 flex flex-col rounded-lg">
                                 <div class="mb-2 flex flex-row justify-between border-b">
                                     <div class=" text-sm font-semibold text-gray-600">
-                                        Rechnungsadresse
+                                        {t('billing_address')}
                                     </div>
                                 </div>
                                 <div class="">
@@ -120,7 +125,7 @@ export default function CheckoutFinished({ orderId }: Props) {
                             <div class="mb-4 flex flex-col rounded-lg">
                                 <div class="mb-2 flex flex-row justify-between border-b">
                                     <div class="text-sm font-semibold text-gray-600">
-                                        Lieferadresse
+                                        {t('shipping_address')}
                                     </div>
                                 </div>
                                 <div class="">
@@ -164,19 +169,19 @@ export default function CheckoutFinished({ orderId }: Props) {
                             <div class="mb-4 flex flex-col rounded-lg">
                                 <div class="mb-2 flex flex-row justify-between border-b">
                                     <div class="text-sm font-semibold text-gray-600">
-                                        Informationen
+                                        {t('order_complete_information')}
                                     </div>
                                 </div>
                                 <div>
                                     <p>
-                                        <b>Zahlungsart</b>:{' '}
+                                        <b>{t('payment_method')}</b>:{' '}
                                         {
                                             order?.transactions[0].paymentMethod
                                                 .translated.name
                                         }
                                     </p>
                                     <p>
-                                        <b>Versand</b>:{' '}
+                                        <b>{t('shipping')}</b>:{' '}
                                         {
                                             order.deliveries[0].shippingMethod
                                                 .translated.name
@@ -190,16 +195,16 @@ export default function CheckoutFinished({ orderId }: Props) {
                     <div class="line-items mb-10 mt-10">
                         <div class="flex-warp line-item-header flex border-b">
                             <div class=" w-2/5 flex-col">
-                                <b>Produkt</b>
+                                <b>{t('product')}</b>
                             </div>
                             <div class=" w-1/5 flex-col text-center">
-                                <b>Anzahl</b>
+                                <b>{t('amount')}</b>
                             </div>
                             <div class=" w-1/5 flex-col text-center">
-                                <b>Einzelpreis</b>
+                                <b>{t('unit_price')}</b>
                             </div>
                             <div class=" w-1/5 flex-col text-right">
-                                <b>Summe</b>
+                                <b>{t('sum')}</b>
                             </div>
                         </div>
                         <div class="line-items-liste">
@@ -243,17 +248,17 @@ export default function CheckoutFinished({ orderId }: Props) {
 
                     <div class="mb-20 ml-auto mt-20 w-[35%]">
                         <h2>
-                            <b>Zusammenfassung</b>
+                            <b>{t('summary')}</b>
                         </h2>
                         <table class="w-[100%]">
                             <tr>
-                                <td>Zwischensumem:</td>
+                                <td>{t('subtotal')}:</td>
                                 <td class="text-right">
                                     {formatPrice(order?.price?.rawTotal)}
                                 </td>
                             </tr>
                             <tr>
-                                <td>Versandkosten:</td>
+                                <td>{t('shipping_costs')}:</td>
                                 <td class="text-right">
                                     {formatPrice(
                                         order?.deliveries &&
@@ -268,22 +273,23 @@ export default function CheckoutFinished({ orderId }: Props) {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Gesamtsumme:</td>
+                                <td>{t('total')}:</td>
                                 <td class="text-right">
                                     {formatPrice(order?.price?.totalPrice)}
                                 </td>
                             </tr>
                             <tr>
-                                <td>Gesamtnettosumme:</td>
+                                <td>{t('total_netto')}:</td>
                                 <td class="text-right">
                                     {formatPrice(order?.price?.totalPrice)}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    zzgl.{' '}
-                                    {order?.price?.calculatedTaxes[0]?.taxRate}%
-                                    Mwst.
+                                    {t('excl_vat').replace(
+                                        '%tax%',
+                                        'order?.price?.calculatedTaxes[0]?.taxRate',
+                                    )}
                                 </td>
                                 <td class="text-right">
                                     {formatPrice(
@@ -299,18 +305,16 @@ export default function CheckoutFinished({ orderId }: Props) {
                     <div className="row">
                         <div className="col-12">
                             <h1 class="text-center">
-                                Bestellung nicht gefunden
+                                {t('error_order_complete')}
                             </h1>
                             <p class="text-center">
-                                Sehen Sie ihre Bestellungen unter "
                                 <a
                                     href={getShopwareUrl(
                                         ShopwareURL.USER_ORDER,
                                     )}
                                 >
-                                    Meine Bestellungen
+                                    {t('error_order_complete_text')}
                                 </a>
-                                " ein.
                             </p>
                         </div>
                     </div>

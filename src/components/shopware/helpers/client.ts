@@ -2,7 +2,7 @@ import { useStore } from '@nanostores/preact';
 import { ShopwareURL, getShopwareUrlByLang } from './url';
 import { contextStore } from '../utils/shopware-store';
 
-export const getShopwareUrl = (target: ShopwareURL, params?: an) => {
+export const getShopwareUrl = (target: ShopwareURL, params?: any) => {
     if (typeof window === 'undefined') return;
     const clangCode = getClangCodeFromCookie();
     let url = getShopwareUrlByLang(clangCode, target);
@@ -38,28 +38,10 @@ export const getThumbnail = (media: any, width: number, height: number) => {
     return url;
 };
 
-export const getSwCookies = () => {
-    if (typeof document === 'undefined') return;
-    const cookies = document?.cookie.split(';');
-    let contextToken = '';
-    let swLangId = '';
-
-    cookies.forEach((cookie) => {
-        if (cookie.includes('sw-context-token')) {
-            contextToken = cookie.split('=')[1];
-        }
-        if (cookie.includes('sw-language-id')) {
-            swLangId = cookie.split('=')[1];
-        }
-    });
-
-    return { contextToken, swLangId };
-};
-
 export const formatPrice = (price: number | undefined) => {
     if (typeof Intl === 'undefined') return price;
 
-    const context = useStore(contextStore);
+    const context: any = contextStore.get();
 
     const formatter = new Intl.NumberFormat('de-DE', {
         style: 'currency',
@@ -69,14 +51,14 @@ export const formatPrice = (price: number | undefined) => {
                 : 'EUR',
     });
 
-    return formatter.format(price);
+    return price ? formatter.format(price) : price;
 };
 
 export const getClangCodeFromCookie = () => {
-    if (typeof document === 'undefined') return;
+    if (typeof document === 'undefined') return 'de';
 
     const cookies = document?.cookie.split(';');
-    let clangCode = '';
+    let clangCode = 'de';
 
     cookies.forEach((cookie) => {
         if (cookie.includes('clangCode')) {

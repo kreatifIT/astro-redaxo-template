@@ -7,14 +7,18 @@ import {
 import { useEffect, useState } from 'preact/hooks';
 import ProductWhistlist from '../atoms/ProductWhistlist';
 import { getWishlistProducts } from '@shopware-pwa/shopware-6-client';
-import { formatPrice } from '../helpers/client';
+import { formatPrice, getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 export default function Whistlist() {
     const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const [_whishlist, setWhishlist] = useState([]);
+    const [_whishlist, setWhishlist] = useState<any>([]);
     const [loading, setLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(false);
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     if (contextInstance && customer) {
         setInitialLoading(true);
@@ -46,7 +50,9 @@ export default function Whistlist() {
         <>
             {customer ? (
                 <>
-                    <h1 class="mb-5 mt-5 text-center">Ihre Merkliste</h1>
+                    <h1 class="mb-5 mt-5 text-center">
+                        {t('personal_whisthlist')}
+                    </h1>
 
                     <div class="flex w-full flex-row flex-wrap">
                         {_whishlist?.products?.elements?.map((product: any) => (
@@ -80,7 +86,7 @@ export default function Whistlist() {
                 </>
             ) : (
                 <h1 class="mb-5 mt-5 text-center">
-                    Bitte loggen Sie sich ein um Ihre Merkliste zu sehen.
+                    {t('whishlist_not_logged_in')}
                 </h1>
             )}
         </>

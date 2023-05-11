@@ -3,8 +3,13 @@
 // eigene Seite erstellen oder kann die Bestelllung normal übernommen werden?
 
 import { useState } from 'preact/hooks';
-import { formatPrice, getShopwareUrl } from '../helpers/client';
+import {
+    formatPrice,
+    getClangCodeFromCookie,
+    getShopwareUrl,
+} from '../helpers/client';
 import { ShopwareURL } from '../helpers/url';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     order: any;
@@ -13,6 +18,9 @@ interface Props {
 export default function OrderCard({ order }: Props) {
     const [showLineItems, setShowLineItems] = useState(false);
     const [isPaymentNeeded, setIsPaymentNeeded] = useState(false);
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const states = ['failed', 'reminded', 'unconfirmed', 'cancelled'];
     const orderState = order.stateMachineState.technicalName;
@@ -35,7 +43,7 @@ export default function OrderCard({ order }: Props) {
             <div class="mb-10 w-full rounded-lg border bg-white px-8 py-4 shadow-lg">
                 <div>
                     <h2>
-                        Bestellung:{' '}
+                        {t('order')}:{' '}
                         {order.orderDate
                             .split('T')[0]
                             .split('-')
@@ -50,8 +58,7 @@ export default function OrderCard({ order }: Props) {
                                     )}
                                     class="ml-2 rounded-lg bg-red-500 px-2 py-1 text-white"
                                 >
-                                    {order.stateMachineState.translated.name}
-                                    (Zahlung abgebrochen)
+                                    {t('payment_aborted')}
                                 </a>
                             </>
                         ) : (
@@ -61,14 +68,14 @@ export default function OrderCard({ order }: Props) {
                         )}
                     </h2>
                     <p>
-                        <span class="font-bold">Bestellnummer:</span>
+                        <span class="font-bold">{t('order_number')}:</span>
                         {' ' + order.orderNumber}
                     </p>
 
                     <div class="flex-column mt-5 flex flex-wrap">
                         <div class="flex-auto">
                             <div class="border-b">
-                                <p class="font-bold">Lierferstatus</p>
+                                <p class="font-bold">{t('shipping_state')}</p>
                             </div>
                             <div class="py-2">
                                 {
@@ -79,7 +86,7 @@ export default function OrderCard({ order }: Props) {
                         </div>
                         <div class="flex-auto ">
                             <div class="border-b">
-                                <p class="font-bold">Zahlungsstatus</p>
+                                <p class="font-bold">{t('payment_state')}</p>
                             </div>
                             <div class="py-2">
                                 {
@@ -90,7 +97,7 @@ export default function OrderCard({ order }: Props) {
                         </div>
                         <div class="flex-auto ">
                             <div class="border-b">
-                                <p class="font-bold">Zahlungsart</p>
+                                <p class="font-bold">{t('payment_method')}</p>
                             </div>
                             <div class="py-2">
                                 {
@@ -101,7 +108,7 @@ export default function OrderCard({ order }: Props) {
                         </div>
                         <div class="flex-auto">
                             <div class="border-b">
-                                <p class="font-bold">Lieferart</p>
+                                <p class="font-bold">{t('delivery_method')}</p>
                             </div>
                             <div class="py-2">
                                 {
@@ -119,7 +126,7 @@ export default function OrderCard({ order }: Props) {
                                     class="float-right rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
                                     onClick={(e) => toggleLineItems(e)}
                                 >
-                                    {showLineItems ? 'Ausblenden' : 'Anzeigen'}
+                                    {showLineItems ? t('hide') : t('show')}
                                 </button>
                             </div>
                         </div>
@@ -129,16 +136,16 @@ export default function OrderCard({ order }: Props) {
                         <div class="mt-5 p-2">
                             <div class="flex flex-wrap border-b">
                                 <div class="w-full p-2 md:w-1/2 xl:w-2/5">
-                                    <b>Produkt</b>
+                                    <b>{t('product')}</b>
                                 </div>
                                 <div class="w-full p-2 text-center md:w-1/2 xl:w-1/5">
-                                    <b>Anzahl</b>
+                                    <b>{t('amount')}</b>
                                 </div>
                                 <div class="w-full p-2 text-center md:w-1/2 xl:w-1/5">
-                                    <b>Stückpreis</b>
+                                    <b>{t('unit_price')}</b>
                                 </div>
                                 <div class="w-full p-2 text-right md:w-1/2 xl:w-1/5">
-                                    <b>Gesamtpreis</b>
+                                    <b>{t('total_price')}</b>
                                 </div>
                             </div>
                             {order.lineItems.map((lineItem: any) => (
@@ -180,7 +187,7 @@ export default function OrderCard({ order }: Props) {
                                     <table class="w-full">
                                         <tr>
                                             <th class="text-left">
-                                                Bestelldatum:
+                                                {t('order_date')}:
                                             </th>
                                             <td>
                                                 {order.orderDate
@@ -192,13 +199,13 @@ export default function OrderCard({ order }: Props) {
                                         </tr>
                                         <tr>
                                             <th class="text-left">
-                                                Bestellnummer:
+                                                {t('order_number')}:
                                             </th>
                                             <td>{order.orderNumber}</td>
                                         </tr>
                                         <tr>
                                             <th class="text-left">
-                                                Zahlungsart:
+                                                {t('payment_method')}:
                                             </th>
                                             <td>
                                                 {
@@ -212,7 +219,7 @@ export default function OrderCard({ order }: Props) {
                                         </tr>
                                         <tr>
                                             <th class="text-left">
-                                                Versandart:
+                                                {t('shipping_method')}:
                                             </th>
                                             <td>
                                                 {
@@ -227,7 +234,7 @@ export default function OrderCard({ order }: Props) {
                                             <>
                                                 <tr>
                                                     <th class="text-left">
-                                                        Paketverfolgung:
+                                                        {t('parcel_tracking')}:
                                                     </th>
                                                     <td>
                                                         {order.deliveries[0].trackingCodes?.map(
@@ -251,18 +258,22 @@ export default function OrderCard({ order }: Props) {
                                     <table class="w-full">
                                         <tr>
                                             <th class="text-left">
-                                                Versandkosten:
+                                                {t('shipping_costs')}:
                                             </th>
                                             <td>
-                                                {formatPrice({order.shippingTotal)}
+                                                {formatPrice(
+                                                    order?.shippingTotal,
+                                                )}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="text-left">
-                                                Gesamtsumme:
+                                                {t('total')}:
                                             </th>
                                             <td>
-                                                {formatPrice({order.price.totalPrice)}
+                                                {formatPrice(
+                                                    order?.price?.totalPrice,
+                                                )}
                                             </td>
                                         </tr>
                                     </table>

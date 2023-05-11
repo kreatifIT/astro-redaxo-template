@@ -1,11 +1,15 @@
 ---
+import getTranslations from '@helpers/translations/server';
 import UserMenu from '../atoms/UserMenu';
+import { getClangCodeFromCookie } from '../helpers/client';
 import UserAddress from '../utils/UserAddress';
 
 const mod = Astro.url.searchParams.get('mod')! || '';
+const clangCode = getClangCodeFromCookie();
+const t = await getTranslations(clangCode, 'shopware');
 ---
 
-<div class="row mt-5 mb-5">
+<div class="row mb-5 mt-5">
     <div class="flex w-full flex-row flex-wrap">
         <div class="w-[20%] pb-20">
             <UserMenu client:only="preact" />
@@ -30,7 +34,7 @@ const mod = Astro.url.searchParams.get('mod')! || '';
                                     clip-rule="evenodd"
                                 />
                             </svg>
-                            <div>Neue Adresse wurde erfolgreich anglegt</div>
+                            <div>{t('new_address_created')}</div>
                         </div>
                     </>
                 )
@@ -54,7 +58,7 @@ const mod = Astro.url.searchParams.get('mod')! || '';
                                     clip-rule="evenodd"
                                 />
                             </svg>
-                            <div>Adresse wurde bearbeitet</div>
+                            <div>{t('address_modified')}</div>
                         </div>
                     </>
                 )

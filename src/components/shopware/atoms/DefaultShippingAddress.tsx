@@ -1,5 +1,7 @@
 import { useStore } from '@nanostores/preact';
 import { customerStore } from '../utils/shopware-store';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     closeOverlay: any | undefined;
@@ -7,11 +9,13 @@ interface Props {
 
 export default function DefaultShippingAddress({ closeOverlay }: Props) {
     const customer: any = useStore(customerStore);
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     return (
         <>
             <h2 class="mb-5 border-b pb-2 font-bold">
-                Standard-Lieferadresse
+                {t('default_shipping_address')}
                 {closeOverlay && (
                     <button
                         class="float-right"

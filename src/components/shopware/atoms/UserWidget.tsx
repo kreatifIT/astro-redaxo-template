@@ -1,14 +1,21 @@
 import { useState } from 'preact/hooks';
-import { getShopwareUrl } from '@components/shopware/helpers/client';
+import {
+    getClangCodeFromCookie,
+    getShopwareUrl,
+} from '@components/shopware/helpers/client';
 import UserMenu from './UserMenu';
 import LoginForm from './LoginForm';
 import { ShopwareURL } from '../helpers/url';
 import { useStore } from '@nanostores/preact';
 import { customerStore } from '../utils/shopware-store';
+import useTranslations from '@helpers/translations/client';
 
 export default function UserWidget() {
     const [showLogin, setShowLogin] = useState(false);
     const customer = useStore(customerStore);
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
+
     const showLoginFunction = () => {
         setShowLogin(!showLogin);
     };
@@ -40,7 +47,7 @@ export default function UserWidget() {
                         <div class="">
                             <LoginForm />
                             <p>
-                                Sie haben noch keinen Account?
+                                {t('no_accout')}
                                 <br />
                                 <a
                                     href={getShopwareUrl(
@@ -48,7 +55,7 @@ export default function UserWidget() {
                                     )}
                                     class="cursor-pointer text-blue-600"
                                 >
-                                    Hier Registrieren
+                                    {t('register_here')}
                                 </a>
                             </p>
                         </div>

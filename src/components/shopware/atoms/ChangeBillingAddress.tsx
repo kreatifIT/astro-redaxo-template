@@ -4,6 +4,8 @@ import CustomerAddresses from './CustomerAddresses';
 import UserAddressCreateModify from '../utils/UserAddressCreateModify';
 import { useStore } from '@nanostores/preact';
 import { customerStore } from '../utils/shopware-store';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     setFunction: any | undefined;
@@ -18,6 +20,9 @@ export default function ChangeBillingAddress({
     const [showAllAddresses, setShowAllAddresses] = useState(false);
     const [showCreateAddress, setShowCreateAddress] = useState(false);
     const [showModifyAddress, setShowModifyAddress] = useState(false);
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const toggleShowAllAddresses = () => {
         setShowCreateAddress(false);
@@ -38,7 +43,7 @@ export default function ChangeBillingAddress({
 
     return (
         <div
-            class="fixed top-1/2 left-1/2 z-50 w-full max-w-3xl -translate-x-1/2 -translate-y-1/2 transform overflow-scroll  bg-white p-10"
+            class="fixed left-1/2 top-1/2 z-50 w-full max-w-3xl -translate-x-1/2 -translate-y-1/2 transform overflow-scroll  bg-white p-10"
             style="max-height: 90vh"
         >
             <div class="overflow-scroll">
@@ -46,24 +51,24 @@ export default function ChangeBillingAddress({
                     <DefaultBillingAddress closeOverlay={closeOverlay} />
                 </div>
 
-                <div class="flex-column mt-5 mb-5 flex flex-wrap justify-between">
+                <div class="flex-column mb-5 mt-5 flex flex-wrap justify-between">
                     <button
-                        class="shrink flex-grow border py-2 px-3"
+                        class="shrink flex-grow border px-3 py-2"
                         onClick={(e) => toggleModifyAddress()}
                     >
-                        Adresse bearbeiten
+                        {t('modify_address')}
                     </button>
                     <button
-                        class="mr-5 ml-5 shrink flex-grow border py-2 px-3"
+                        class="ml-5 mr-5 shrink flex-grow border px-3 py-2"
                         onClick={(e) => toggleShowAllAddresses()}
                     >
-                        Adresse wählen
+                        {t('select_address')}
                     </button>
                     <button
-                        class="shrink flex-grow border py-2 px-3"
+                        class="shrink flex-grow border px-3 py-2"
                         onClick={(e) => toggleShowCreateAddress()}
                     >
-                        Neue Adresse hinzufügen
+                        {t('add_new_address')}
                     </button>
                 </div>
 
@@ -72,7 +77,7 @@ export default function ChangeBillingAddress({
                         <UserAddressCreateModify
                             redirect={false}
                             setFunction={toggleModifyAddress}
-                            address={customer?.defaultBillingAddress}
+                            addressId={customer?.defaultBillingAddress.id}
                         />
                     </>
                 )}
@@ -94,7 +99,7 @@ export default function ChangeBillingAddress({
                         <UserAddressCreateModify
                             redirect={false}
                             setFunction={toggleShowCreateAddress}
-                            address={undefined}
+                            addressId={undefined}
                         />
                     </>
                 )}

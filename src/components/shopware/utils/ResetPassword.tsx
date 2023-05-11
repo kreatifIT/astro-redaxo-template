@@ -1,5 +1,8 @@
 import { useState } from 'preact/hooks';
-import { getShopwareUrl } from '@components/shopware/helpers/client';
+import {
+    getClangCodeFromCookie,
+    getShopwareUrl,
+} from '@components/shopware/helpers/client';
 import { ShopwareURL } from '../helpers/url';
 import {
     ShopwareApiInstance,
@@ -7,6 +10,7 @@ import {
 } from '@shopware-pwa/shopware-6-client';
 import { useStore } from '@nanostores/preact';
 import { ShopwareApiInstanceStore } from './shopware-store';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     pwHash: string;
@@ -18,12 +22,8 @@ export default function ResetPassword({ pwHash }: Props) {
     const contextInstance: ShopwareApiInstance = useStore(
         ShopwareApiInstanceStore,
     );
-
-    const validateEmail = (email: string) => {
-        return email.match(
-            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        );
-    };
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const recoveryFunction = async (e: any) => {
         e.preventDefault();
@@ -58,16 +58,14 @@ export default function ResetPassword({ pwHash }: Props) {
                             setErrorMessage('');
                             setError(true);
                         } else {
-                            setErrorMessage(
-                                'Bitte kontrollieren Sie ihre eingabe und versuchen Sie es erneut.',
-                            );
+                            setErrorMessage(t('check_input'));
                         }
                     });
             } else {
-                setErrorMessage('Die Passwörter stimmen nicht überein.');
+                setErrorMessage(t('password_not_match'));
             }
         } else {
-            setErrorMessage('Bitte geben Sie ein gültiges Passwort an.');
+            setErrorMessage(t('enter_valid_password'));
         }
         return false;
     };
@@ -77,34 +75,32 @@ export default function ResetPassword({ pwHash }: Props) {
             {error ? (
                 <>
                     <p>
-                        Anfragezeit überschritten. Bitte fragen Sie{' '}
                         <a href={getShopwareUrl(ShopwareURL.PASSWORD_RECOVERY)}>
-                            erneut an
+                            {t('recovery_invalid_hash')}
                         </a>
-                        .
                     </p>
                 </>
             ) : (
                 <>
                     <p>{errorMessage ? errorMessage : ''}</p>
                     <form id="recoveryForm" class="mt-5">
-                        <label for="password">Neus Passwort</label>
+                        <label for="password">{t('new_password')}</label>
                         <input
                             id="password"
                             type="password"
                             name="password"
-                            placeholder="Neus Passwort"
+                            placeholder={t('new_password')}
                             class="block w-full border px-3 py-2"
                         />
 
                         <label class="mt-5 block" for="c_password">
-                            Passwort wiederholen
+                            {t('new_password_confirm')}
                         </label>
                         <input
                             id="c_password"
                             type="password"
                             name="c_password"
-                            placeholder="Passwort wiederholen"
+                            placeholder={t('new_password_confirm')}
                             class="block w-full border px-3 py-2"
                         />
 
@@ -113,7 +109,7 @@ export default function ResetPassword({ pwHash }: Props) {
                             class="mt-2 mt-5 border px-5 py-2"
                             onClick={(e) => recoveryFunction(e)}
                         >
-                            Senden
+                            {t('send')}
                         </button>
                     </form>
                 </>

@@ -5,6 +5,8 @@ import {
     showOffcanvasStore,
 } from '../utils/shopware-store';
 import { addProductToCart } from '@shopware-pwa/shopware-6-client';
+import useTranslations from '@helpers/translations/client';
+import { getClangCodeFromCookie } from '../helpers/client';
 
 interface Props {
     product: any;
@@ -14,6 +16,8 @@ interface Props {
 export default function AddToCart({ product, showQuantity }: Props) {
     const _showOffcanvasStore = useStore(showOffcanvasStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const addToCart = async (
         e: any,
@@ -57,9 +61,9 @@ export default function AddToCart({ product, showQuantity }: Props) {
                         onClick={(e) =>
                             addToCart(e, product.id, product.minPurchase)
                         }
-                        class="block w-1/2 cursor-pointer rounded bg-green-600 py-2 px-0.5 text-center text-white"
+                        class="block w-1/2 cursor-pointer rounded bg-green-600 px-0.5 py-2 text-center text-white"
                     >
-                        In den Warenkorb
+                        {t('add_to_cart')}
                     </a>
                 )}
             </div>

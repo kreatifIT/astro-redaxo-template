@@ -1,29 +1,15 @@
 ---
-import {
-    ShopwareApiInstance,
-    createInstance,
-    getCategoryProducts,
-} from '@shopware-pwa/shopware-6-client';
+import { getCategoryProducts } from '@shopware-pwa/shopware-6-client';
 import ProductList from '../utils/ProductList';
 import Container from '@utils/grid/Container.astro';
 
-const { itemId } = Astro.props;
+const { itemId, contextInstance, sessionContext } = Astro.props;
 const productStep = 6;
-const context = Astro.cookies.get('context').json();
-const contextToken = Astro.cookies.get('sw-context-token').value;
-const swLangId = Astro.cookies.get('sw-language-id').value;
 
 let activeCatId = itemId || null;
 if (activeCatId == null) {
-    activeCatId = context.salesChannel.navigationCategoryId;
+    activeCatId = sessionContext.salesChannel.navigationCategoryId;
 }
-
-const contextInstance: ShopwareApiInstance = createInstance({
-    endpoint: import.meta.env.SHOPWARE_ENDPOINT,
-    accessToken: import.meta.env.SHOPWARE_ACCESS_KEY,
-    languageId: swLangId,
-    contextToken: contextToken,
-});
 
 const productListing = await getCategoryProducts(
     activeCatId,

@@ -1,8 +1,9 @@
-// TODO
-// Abfrage ob der Benutzer die Berechtigung hat die Bestellung zu bearbeiten
-
 import { useEffect, useState } from 'preact/hooks';
-import { formatPrice, getShopwareUrl } from '../helpers/client';
+import {
+    formatPrice,
+    getClangCodeFromCookie,
+    getShopwareUrl,
+} from '../helpers/client';
 import { ShopwareURL } from '../helpers/url';
 import { useStore } from '@nanostores/preact';
 import { ShopwareApiInstanceStore, customerStore } from './shopware-store';
@@ -16,6 +17,7 @@ import type { ShopwareApiInstance } from '@shopware-pwa/shopware-6-client';
 import UserPaymetns from './UserPayments';
 import ShppingMethods from '../atoms/ShppingMethods';
 import { changeDefaultPaymentMethod } from '@adapters/shopware';
+import useTranslations from '@helpers/translations/client';
 
 export default function UserOrderEdit() {
     const customer = useStore(customerStore);
@@ -28,6 +30,9 @@ export default function UserOrderEdit() {
     const [order, setOrder] = useState<any>([]);
     const [showPayment, setShowPayment] = useState(false);
     const [loadOrderData, setLoadOrderData] = useState(false);
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     if (customer && contextInstance) {
         setLoadOrderData(true);
@@ -92,18 +97,18 @@ export default function UserOrderEdit() {
                 const swLangId = contextInstance.config.languageId;
 
                 if (defaultPaymentMethodId) {
-                    const _response = await setCurrentPaymentMethod(
+                    await setCurrentPaymentMethod(
                         defaultPaymentMethodId,
                         contextInstance as any,
                     );
 
-                    const _responseCustomer = await changeDefaultPaymentMethod(
+                    await changeDefaultPaymentMethod(
                         defaultPaymentMethodId,
                         contextToken as string,
                         swLangId as string,
                     );
 
-                    const _responseOrder = await changeOrderPaymentMethod(
+                    await changeOrderPaymentMethod(
                         _order.id,
                         defaultPaymentMethodId,
                         contextInstance as any,
@@ -156,15 +161,15 @@ export default function UserOrderEdit() {
             {showPayment ? (
                 <>
                     <div class="mb-5 mt-5 ">
-                        <h1>Zahlung abschließen</h1>
+                        <h1>{t('complete_payment')}</h1>
 
-                        <h2>AGB und Widerrufsbelehrung</h2>
-                        <p>Sie haben bereits die AGB akzeptiert.</p>
+                        <h2>{t('agb_headline')}</h2>
+                        <p>{t('agb_already_accepted')}</p>
                     </div>
                     <div class="mb-5 mt-5 flex">
                         <div class="mb-2 mt-5 w-[50%] pr-10">
                             <h2 class="mb-5 border-b pb-2 font-bold">
-                                Standard-Rechnugnsadresse
+                                {t('default_billing_address')}
                             </h2>
                             <div>
                                 <p>
@@ -186,7 +191,7 @@ export default function UserOrderEdit() {
                         </div>
                         <div class="mb-2 mt-5 w-[50%] pr-10">
                             <h2 class="mb-5 border-b pb-2 font-bold">
-                                Standard-Lieferadresse
+                                {t('default_shipping_address')}
                             </h2>
                             <div>
                                 <p>
@@ -229,7 +234,7 @@ export default function UserOrderEdit() {
                         </div>
                         <div class="mb-2 mt-5 w-[50%] pr-10">
                             <h2 class="mb-5 border-b pb-2 font-bold">
-                                Liefermethode
+                                {t('delivery_methods')}
                             </h2>
                             {
                                 order?.deliveries?.[0]?.shippingMethod
@@ -241,16 +246,16 @@ export default function UserOrderEdit() {
                     <div class="line-items mb-10 mt-10">
                         <div class="flex-warp line-item-header flex border-b">
                             <div class=" w-2/5 flex-col">
-                                <b>Produkt</b>
+                                <b>{t('product')}</b>
                             </div>
                             <div class=" w-1/5 flex-col text-center">
-                                <b>Anzahl</b>
+                                <b>{t('amount')}</b>
                             </div>
                             <div class=" w-1/5 flex-col text-center">
-                                <b>Einzelpreis</b>
+                                <b>{t('unit_price')}</b>
                             </div>
                             <div class=" w-1/5 flex-col text-right">
-                                <b>Summe</b>
+                                <b>{t('sum')}</b>
                             </div>
                         </div>
 
@@ -294,17 +299,17 @@ export default function UserOrderEdit() {
                     </div>
                     <div class="mb-20 ml-auto mt-20 w-[35%]">
                         <h2>
-                            <b>Zusammenfassung</b>
+                            <b>{t('summary')}</b>
                         </h2>
                         <table class="w-[100%]">
                             <tr>
-                                <td>Zwischensumem:</td>
+                                <td>{t('subtotal')}:</td>
                                 <td class="text-right">
                                     {formatPrice(order?.price?.rawTotal)}
                                 </td>
                             </tr>
                             <tr>
-                                <td>Versandkosten:</td>
+                                <td>{t('shipping_costs')}:</td>
                                 <td class="text-right">
                                     {formatPrice(
                                         order?.deliveries &&
@@ -319,22 +324,24 @@ export default function UserOrderEdit() {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Gesamtsumme:</td>
+                                <td>{t('total')}:</td>
                                 <td class="text-right">
                                     {formatPrice(order?.price?.totalPrice)}
                                 </td>
                             </tr>
                             <tr>
-                                <td>Gesamtnettosumme:</td>
+                                <td>{t('total_netto')}:</td>
                                 <td class="text-right">
                                     {formatPrice(order?.price?.netPrice)}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    zzgl.{' '}
-                                    {order?.price?.calculatedTaxes[0]?.taxRate}%
-                                    Mwst.
+                                    {t('excl_vat').replace(
+                                        '%tax%',
+                                        order?.price?.calculatedTaxes[0]
+                                            ?.taxRate,
+                                    )}
                                 </td>
                                 <td class="text-right">
                                     {formatPrice(
@@ -351,7 +358,7 @@ export default function UserOrderEdit() {
                             }}
                             class="mt-5 block w-full rounded border border-black bg-green-900 px-2 py-3 text-center text-white"
                         >
-                            Zahlungspflichtig bestellen
+                            {t('pay_order')}
                         </button>
                     </div>
                 </>
@@ -359,10 +366,10 @@ export default function UserOrderEdit() {
                 <>
                     <div class="mb-5 mt-5 text-center">
                         <p>
-                            Keine Bestellung gefunden.
+                            {t('error_order_complete')}
                             <br />
                             <a href={getShopwareUrl(ShopwareURL.USER_ORDER)}>
-                                Bestellungen
+                                {t('error_order_complete_text')}
                             </a>
                         </p>
                     </div>

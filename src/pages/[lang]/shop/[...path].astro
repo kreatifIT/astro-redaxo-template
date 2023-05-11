@@ -6,10 +6,7 @@ import SwLayout from '@layouts/SwLayout.astro';
 let { path, lang } = Astro.params;
 
 path ??= '/';
-
-if (path === 'sitemap.xml' || path === 'robots.txt') {
-    return Astro.redirect(`${import.meta.env.REDAXO_ROOT}/${path}`, 301);
-}
+let rexPath = '/';
 
 const {
     contentType,
@@ -19,7 +16,7 @@ const {
     currentClang,
     navigation,
     siteStartArticle,
-} = await getLayoutData(path, 2);
+} = await getLayoutData(rexPath, 2);
 
 Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
     path: '/',
@@ -54,5 +51,13 @@ if (redirect) {
     customer={customer}
     itemId={itemId}
 >
-    {Component ? <Component itemId={itemId} /> : null}
+    {
+        Component ? (
+            <Component
+                itemId={itemId}
+                contextInstance={contextInstance}
+                sessionContext={sessionContext}
+            />
+        ) : null
+    }
 </SwLayout>

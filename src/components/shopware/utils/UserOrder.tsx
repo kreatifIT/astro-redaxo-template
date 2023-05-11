@@ -3,10 +3,15 @@ import OrderCard from '../atoms/OrderCard';
 import { ShopwareApiInstanceStore } from './shopware-store';
 import { useStore } from '@nanostores/preact';
 import { getCustomerOrders } from '@shopware-pwa/shopware-6-client';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
-export default function UserOrder() {
+interface Props {
+    itemId: string | undefined;
+}
+
+export default function UserOrder({ itemId }: Props) {
     const contextInstance = useStore(ShopwareApiInstanceStore);
-
     const [customerOrders, setCustomerOrders] = useState<any>([]);
     const [loadOrder, setLoadOrder] = useState(false);
     // page aus get parameter auslesen
@@ -17,26 +22,37 @@ export default function UserOrder() {
     const step = 10;
     const [initialPage, setInitialPage] = useState(true);
 
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
+
     if (contextInstance) {
         setLoadOrder(true);
     }
 
     useEffect(() => {
         const _getCustomerOrders = async (
+            itemId: string | undefined,
             contextInstance: any,
             setCustomerOrders: any,
         ) => {
-            const _response = await getCustomerOrders(
-                {
+            let bodyParams: any = {};
+            if (itemId) {
+                bodyParams = {
                     page: page,
                     limit: step,
+                    filter: [
+                        {
+                            type: 'equals',
+                            field: 'deepLinkCode',
+                            value: itemId,
+                        },
+                    ],
                     sort: [
                         {
                             field: 'orderDateTime',
                             order: 'desc',
                         },
                     ],
-
                     associations: {
                         transactions: {
                             sort: [
@@ -62,7 +78,47 @@ export default function UserOrder() {
                         },
                     },
                     'total-count-mode': 1,
-                },
+                };
+            } else {
+                bodyParams = {
+                    page: page,
+                    limit: step,
+                    sort: [
+                        {
+                            field: 'orderDateTime',
+                            order: 'desc',
+                        },
+                    ],
+                    associations: {
+                        transactions: {
+                            sort: [
+                                {
+                                    field: 'createdAt',
+                                    order: 'desc',
+                                },
+                            ],
+
+                            associations: {
+                                paymentMethod: {},
+                            },
+                        },
+                        lineItems: {
+                            associations: {
+                                cover: {},
+                            },
+                        },
+                        deliveries: {
+                            associations: {
+                                shippingMethod: {},
+                            },
+                        },
+                    },
+                    'total-count-mode': 1,
+                };
+            }
+
+            const _response = await getCustomerOrders(
+                bodyParams,
                 contextInstance,
             );
 
@@ -72,7 +128,7 @@ export default function UserOrder() {
         };
 
         if (contextInstance) {
-            _getCustomerOrders(contextInstance, setCustomerOrders);
+            _getCustomerOrders(itemId, contextInstance, setCustomerOrders);
 
             if (initialPage === false) {
                 history.pushState(null, '', `?page=${page}`);
@@ -84,13 +140,13 @@ export default function UserOrder() {
 
     return (
         <div>
-            <h2 class="mb-5 border-b pb-2 font-bold">Bestellungen</h2>
+            <h2 class="mb-5 border-b pb-2 font-bold">{t('orders')}</h2>
             {customerOrders && (
                 <>
                     <div class="mt-5">
                         {customerOrders.total > 0 ? (
                             <>
-                                <p>Ihre letzten Bestellungen:</p>
+                                <p>{t('last_orders')}:</p>
                                 {customerOrders.elements.map((order: any) => (
                                     <>
                                         <OrderCard order={order} />
@@ -98,7 +154,7 @@ export default function UserOrder() {
                                 ))}
                             </>
                         ) : (
-                            <p>Sie haben noch keine Bestellungen.</p>
+                            <p>{t('no_orders')}</p>
                         )}
                     </div>
 
@@ -108,7 +164,7 @@ export default function UserOrder() {
                                 onClick={() => setPage(page - 1)}
                                 class="mr-2"
                             >
-                                Prev
+                                {t('pagination_prev')}
                             </button>
                         )}
                         {page < total / step && (
@@ -116,7 +172,7 @@ export default function UserOrder() {
                                 onClick={() => setPage(page + 1)}
                                 class="ml-2"
                             >
-                                Next
+                                {t('pagination_next')}
                             </button>
                         )}
                     </div>

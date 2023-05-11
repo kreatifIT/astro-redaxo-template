@@ -6,7 +6,10 @@
 // Stripe?
 // Mollie?
 
-import { getShopwareUrl } from '@components/shopware/helpers/client';
+import {
+    getClangCodeFromCookie,
+    getShopwareUrl,
+} from '@components/shopware/helpers/client';
 import { useEffect, useState } from 'preact/hooks';
 import DefaultBillingAddress from '../atoms/DefaultBillingAddress';
 import DefaultShippingAddress from '../atoms/DefaultShippingAddress';
@@ -17,11 +20,7 @@ import CheckoutSummary from '../atoms/CheckoutSummary';
 import UserPaymetns from './UserPayments';
 import { ShopwareURL } from '../helpers/url';
 import { useStore } from '@nanostores/preact';
-import {
-    ShopwareApiInstanceStore,
-    cartStore,
-    customerStore,
-} from './shopware-store';
+import { ShopwareApiInstanceStore, cartStore } from './shopware-store';
 import {
     createOrder,
     getCart,
@@ -29,13 +28,19 @@ import {
 } from '@shopware-pwa/shopware-6-client';
 import ChangeBillingAddress from '../atoms/ChangeBillingAddress';
 import ChangeShippingAddress from '../atoms/ChangeShippingAddress';
+import useTranslations from '@helpers/translations/client';
 
 export default function Checkout() {
-    const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const cart = useStore(cartStore);
+    const cart: any = useStore(cartStore);
     const [cartChanged, setCartChanged] = useState(false);
     const [showMessage, setShowMessage] = useState('');
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
+
+    if (contextInstance) {
+        setCartChanged(true);
+    }
 
     useEffect(() => {
         const _getCart = async () => {
@@ -83,19 +88,27 @@ export default function Checkout() {
     const createOrderFromCart = async () => {
         const agbs = document.getElementById('agbs') as HTMLInputElement;
         if (!agbs.checked) {
-            setShowMessage('Bitte akzeptieren Sie die AGBs');
+            setShowMessage(t('agb_error_text'));
             window.scrollTo(0, 0);
             return;
         }
 
-        const base_url = window.location.origin;
-        const finishUrl =
-            base_url + getShopwareUrl(ShopwareURL.CHECKOUT_FINISHED);
-        const errorUrl = finishUrl;
         const _response = await createOrder({}, contextInstance as any);
         const order = _response;
 
         if (order && order.id) {
+            const base_url = window.location.origin;
+            const finishUrl =
+                base_url +
+                getShopwareUrl(ShopwareURL.CHECKOUT_FINISHED, {
+                    orderId: order.id,
+                });
+            const errorUrl =
+                base_url +
+                getShopwareUrl(ShopwareURL.CHECKOUT_FINISHED, {
+                    error: 'true',
+                });
+
             const orderPayment = await handlePayment(
                 {
                     orderId: order.id,
@@ -155,7 +168,7 @@ export default function Checkout() {
             )}
 
             <div>
-                <h1>Bestellung abschließen</h1>
+                <h1>{t('complete_order')}</h1>
                 <div class="mb-2 mt-5 border-b pb-5 pt-5">
                     <label for="agbs">
                         <input
@@ -165,8 +178,7 @@ export default function Checkout() {
                             required={true}
                             class="mr-2"
                         />
-                        Ich habe die AGB gelesen und bin mit ihnen
-                        einverstanden.
+                        {t('agb_text')}
                     </label>
                 </div>
 
@@ -177,7 +189,7 @@ export default function Checkout() {
                             class="mt-5 block cursor-pointer border p-2 text-center"
                             onClick={(e) => changeAddressFunction(e, 'billing')}
                         >
-                            Rechnungsadresse ändern
+                            {t('change_billing_address')}
                         </span>
                     </div>
                     <div class="mb-2 mt-5 w-[50%] pr-10">
@@ -188,7 +200,7 @@ export default function Checkout() {
                                 changeAddressFunction(e, 'shipping')
                             }
                         >
-                            Lieferadresse ändern
+                            {t('change_shipping_address')}
                         </span>
                     </div>
                 </div>
@@ -203,10 +215,10 @@ export default function Checkout() {
                 </div>
 
                 <div class="mb-25 flex">
-                    <div class="w-5/12 px-5">Produkt</div>
-                    <div class="w-2/12 px-5">Anzahl</div>
-                    <div class="w-2/12 px-5">Stückpreis</div>
-                    <div class="w-2/12 px-5">Summe</div>
+                    <div class="w-5/12 px-5">{t('product')}</div>
+                    <div class="w-2/12 px-5">{t('amount')}</div>
+                    <div class="w-2/12 px-5">{t('unit_price')}</div>
+                    <div class="w-2/12 px-5">{t('sum')}</div>
                     <div class="w-1/12 px-5"></div>
                 </div>
 
@@ -222,7 +234,7 @@ export default function Checkout() {
                         }}
                         class="mt-5 block w-full rounded border border-black bg-green-900 px-2 py-3 text-center text-white"
                     >
-                        Zahlungspflichtig bestellen
+                        {t('pay_order')}
                     </button>
                 </div>
             </div>

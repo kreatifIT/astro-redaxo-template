@@ -1,35 +1,34 @@
 import { useStore } from '@nanostores/preact';
 import { customerStore } from './shopware-store';
 import UserMenu from '../atoms/UserMenu';
-import { getShopwareUrl } from '../helpers/client';
+import { getClangCodeFromCookie, getShopwareUrl } from '../helpers/client';
 import { ShopwareURL } from '../helpers/url';
 import DefaultBillingAddress from '../atoms/DefaultBillingAddress';
 import DefaultShippingAddress from '../atoms/DefaultShippingAddress';
+import useTranslations from '@helpers/translations/client';
 
 export default function UserOverview() {
-    const customer = useStore(customerStore);
+    const customer: any = useStore(customerStore);
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     return (
         <>
-            <div class="row mt-5 mb-5">
+            <div class="row mb-5 mt-5">
                 <div class="flex w-full flex-row flex-wrap">
                     <div class="w-[20%] pb-20">
                         <UserMenu />
                     </div>
                     <div class="w-[80%] pl-20">
-                        <h1>Übersicht</h1>
-                        <p>
-                            Hier haben Sie direkten Zugriff auf Ihre
-                            Profilinformationen, hinterlegte Adressen und die
-                            Standard-Zahlungsart.
-                        </p>
+                        <h1>{t('overview')}</h1>
+                        <p>{t('overview_text')}</p>
 
                         {customer && (
                             <>
                                 <div class="mt-10 flex w-full flex-row flex-wrap">
                                     <div class="w-[50%] pr-10">
                                         <h2 class="mb-5 border-b pb-2 font-bold">
-                                            Persönliche Daten
+                                            {t('personal_data')}
                                         </h2>
                                         <div class="">
                                             <p>
@@ -44,13 +43,13 @@ export default function UserOverview() {
                                                 )}
                                                 class="mt-2 inline-block border p-2"
                                             >
-                                                Profil ändern
+                                                {t('change_profile')}
                                             </a>
                                         </div>
                                     </div>
                                     <div class="w-[50%] pl-10">
                                         <h2 class="mb-5 border-b pb-2 font-bold">
-                                            Standard-Zahlungsarten
+                                            {t('standard_payment_methods')}
                                         </h2>
                                         <p class="font-bold">
                                             {
@@ -70,7 +69,7 @@ export default function UserOverview() {
                                             )}
                                             class="mt-2 inline-block border p-2"
                                         >
-                                            Zahlungsart ändern
+                                            {t('change_payment_method')}
                                         </a>
                                     </div>
                                 </div>
@@ -87,7 +86,7 @@ export default function UserOverview() {
                                                 )}
                                                 class="mt-2 inline-block border p-2"
                                             >
-                                                Rechnungsadresse ändern
+                                                {t('change_billing_address')}
                                             </a>
                                         </div>
                                     </div>
@@ -102,7 +101,7 @@ export default function UserOverview() {
                                                 )}
                                                 class="mt-2 inline-block border p-2"
                                             >
-                                                Lieferadresse ändern
+                                                {t('change_shipping_address')}
                                             </a>
                                         </div>
                                     </div>

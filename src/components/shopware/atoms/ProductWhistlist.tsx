@@ -39,10 +39,8 @@ export default function ProductWhistlist({ productId, setLoading }: Props) {
             setCurrentWhistList(_respons);
         };
 
-        if (contextInstance) {
-            fetchWhistList();
-        }
-    }, [contextInstance]);
+        fetchWhistList();
+    }, []);
 
     const addToWhishlist = async () => {
         const _response = await addWishlistProduct(
@@ -65,7 +63,7 @@ export default function ProductWhistlist({ productId, setLoading }: Props) {
 
     return (
         <>
-            <span class="absolute top-0 right-0 h-12 w-12 cursor-pointer p-2">
+            <span class="absolute right-0 top-0 h-12 w-12 cursor-pointer p-2">
                 {isOnWishlist ? (
                     <>
                         <span onClick={() => removeFromWhishlist()}>

@@ -7,8 +7,9 @@ import {
     getAvailableSalutations,
     register,
 } from '@shopware-pwa/shopware-6-client';
-import { getShopwareUrl } from '../helpers/client';
+import { getClangCodeFromCookie, getShopwareUrl } from '../helpers/client';
 import { ShopwareURL } from '../helpers/url';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     salutations: any;
@@ -135,6 +136,9 @@ export default function RegistrationForm() {
     const [errorMessage, setErrorMessage] = useState('');
     const [showAdditionalForm, setShowAdditionalForm] = useState(false);
 
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
+
     const [loadData, setLoadData] = useState(false);
 
     if (contextInstance) {
@@ -258,13 +262,11 @@ export default function RegistrationForm() {
                 let additaionlError = '';
                 error.messages.map((error: any) => {
                     if (error.code === 'VIOLATION::CUSTOMER_EMAIL_NOT_UNIQUE') {
-                        additaionlError =
-                            'Die E-Mail Adresse ist bereits registriert.';
+                        additaionlError = t('registration_error_mail');
                     }
                 });
                 setErrorMessage(
-                    'Bitte kontrollieren und füllen Sie alle Pflichtfleder aus. ' +
-                        additaionlError,
+                    t('registration_error_check_fields') + additaionlError,
                 );
             });
         return false;
@@ -281,14 +283,16 @@ export default function RegistrationForm() {
 
                 <div class="-mx-3 mb-6 mt-10 flex flex-wrap">
                     <div class="w-full px-3">
-                        <label for={salutations?.entity}>Anrede *</label>
+                        <label for={salutations?.entity}>
+                            {t('salutation')} {t('mandatory')}
+                        </label>
                         <select
                             name="salutationId"
                             class="block border px-3 py-2"
                             id={salutations?.entity}
                         >
                             <option disabled={true} selected={true} value="">
-                                Anrede eingeben ...
+                                {t('salutation')}
                             </option>
                             {salutations?.elements?.map((salutation: any) => (
                                 <option value={salutation.id}>
@@ -298,104 +302,114 @@ export default function RegistrationForm() {
                         </select>
                     </div>
                     <div class="mt-5 w-[50%] px-3">
-                        <label for="first_name">Vorname *</label>
+                        <label for="first_name">
+                            {t('firstname')} {t('mandatory')}
+                        </label>
                         <input
                             type="text"
                             name="firstName"
                             required={true}
-                            placeholder="Vorname"
+                            placeholder={t('firstname')}
                             class="block w-full border px-3 py-2"
                             id="first_name"
                         />
                     </div>
                     <div class="mt-5 w-[50%] px-3">
-                        <label for="last_name">Nachname *</label>
+                        <label for="last_name">
+                            {t('lastname')} {t('mandatory')}
+                        </label>
                         <input
                             type="text"
                             name="lastName"
                             required={true}
-                            placeholder="Nachname"
+                            placeholder={t('lastname')}
                             class="block w-full border px-3 py-2"
                             id="last_name"
                         />
                     </div>
 
                     <div class="mt-5 w-[50%] px-3">
-                        <label for="mail">Email *</label>
+                        <label for="mail">
+                            {t('email')} {t('mandatory')}
+                        </label>
                         <input
                             type="mail"
                             name="email"
                             required={true}
-                            placeholder="E-Mail"
+                            placeholder={t('email')}
                             class="block w-full border px-3 py-2"
                             id="mail"
                         />
                     </div>
                     <div class="mt-5 w-[50%] px-3">
-                        <label for="password">Passwort *</label>
+                        <label for="password">
+                            {t('password')} {t('mandatory')}
+                        </label>
                         <input
                             type="password"
                             name="password"
                             required={true}
-                            placeholder="Passwort"
+                            placeholder={t('password')}
                             class="block w-full border px-3 py-2"
                             id="password"
                         />
-                        <p class="mt-1 text-xs">
-                            Das Passwort muss mindestens 8 Zeichen lang sein.
-                        </p>
+                        <p class="mt-1 text-xs">{t('password_requirements')}</p>
                     </div>
                 </div>
 
                 <div class="-mx-3 mb-6 mt-10 mt-20 flex flex-wrap">
                     <div class="mt-5 w-[100%] px-3">
                         <h2 class="mb-2 border-b pb-2">
-                            <b>Ihre Addresse</b>
+                            <b>{t('your_address')}</b>
                         </h2>
                     </div>
 
                     <div class="mt-5 w-[50%] px-3">
-                        <label for="street">Straße und Hausnummer *</label>
+                        <label for="street">
+                            {t('street_and_number')} {t('mandatory')}
+                        </label>
                         <input
                             type="text"
                             name="street"
                             required={true}
-                            placeholder="Straße"
+                            placeholder={t('street_and_number')}
                             class="block w-full border px-3 py-2"
                             id="street"
                         />
                     </div>
                     <div class="mt-5 w-[15%] px-3">
-                        <label for="plz">PLZ *</label>
+                        <label for="plz">
+                            {t('zipcode')} {t('mandatory')}
+                        </label>
                         <input
                             type="text"
                             name="plz"
                             required={true}
-                            placeholder="PLZ"
+                            placeholder={t('zipcode')}
                             class="block w-full border px-3 py-2"
                             id="plz"
                         />
                     </div>
                     <div class="mt-5 w-[35%] px-3">
-                        <label for="city">Ort *</label>
+                        <label for="city">{t('city')} *</label>
                         <input
                             type="text"
                             name="city"
                             required={true}
-                            placeholder="Ort"
+                            placeholder={t('city')}
                             class="block w-full border px-3 py-2"
                             id="city"
                         />
                     </div>
                     <div class="mt-5 w-[50%] px-3">
-                        <label for="country">Land *</label>
+                        <label for="country">{t('country')} *</label>
                         <select
                             name="countryId"
                             class="block w-full border px-3 py-2"
                             id="country"
                         >
                             <option disabled={true} selected={true} value="">
-                                Land auswählen ...
+                                {t('select_country')}
                             </option>
                             {countries?.elements?.map((country: any) => (
                                 <option value={country.id}>
@@ -417,8 +431,7 @@ export default function RegistrationForm() {
                                     setShowAdditionalForm(!showAdditionalForm)
                                 }
                             />
-                            Die Lieferadresse weicht von der Rechnungsadresse
-                            ab.
+                            {t('billing_address_different_to_shipping_address')}
                         </label>
                     </div>
                 </div>
@@ -439,20 +452,17 @@ export default function RegistrationForm() {
                                 class="mr-2"
                                 required={true}
                             />
-                            Ich habe die{' '}
-                            <a href="#todo">Datenschutzerklärung</a> gelesen und
-                            akzeptiere diese.
+                            {t('accept_privacy')}
                         </label>
                     </div>
 
                     <div class="mt-5 w-[100%] items-end px-3">
-                        {/* Submit button rechte seite */}
                         <button
                             type="submit"
                             class="float-right self-center rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
                             onClick={(e) => registerFunction(e)}
                         >
-                            Absenden
+                            {t('submit')}
                         </button>
                     </div>
                 </div>

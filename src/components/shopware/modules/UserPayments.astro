@@ -1,22 +1,28 @@
 ---
+import getTranslations from '@helpers/translations/server';
 import UserMenu from '../atoms/UserMenu';
+import { getClangCodeFromCookie } from '../helpers/client';
 import UserPaymetns from '../utils/UserPayments';
+
+const clangCode = getClangCodeFromCookie();
+const t = await getTranslations(clangCode, 'shopware');
 ---
 
-<div class="row mt-5 mb-5">
+<div class="row mb-5 mt-5">
     <div class="flex w-full flex-row flex-wrap">
         <div class="w-[20%] pb-20">
             <UserMenu client:only="preact" />
         </div>
         <div class="w-[80%] pl-20">
             <div class="mb-10">
-                <h2 class="mb-5 border-b pb-2 font-bold">Zahlungsarten</h2>
+                <h2 class="mb-5 border-b pb-2 font-bold">
+                    {t('payment_methods')}
+                </h2>
                 <p>
-                    Hier finden sie alle verfügbaren Zahlungsarten und können
-                    eine Standard-Zahlungsart wählen.
+                    {t('payment_methods_text')}
                 </p>
             </div>
-            <UserPaymetns client:visible />
+            <UserPaymetns client:visible orderId={undefined} />
         </div>
     </div>
 </div>

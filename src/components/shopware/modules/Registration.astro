@@ -1,26 +1,35 @@
-<!-- ---
+---
 import RegistrationForm from '../utils/Registration';
 import LoginForm from '../atoms/LoginForm';
+import getTranslations from '@helpers/translations/server';
+import { getClangCodeFromCookie } from '../helpers/client';
+
+const clangCode = getClangCodeFromCookie();
+const t = await getTranslations(clangCode, 'shopware');
 ---
 
-<div class="mt-20 mb-20 flex">
+<div class="mb-20 mt-20 flex">
     <div class="w-[30%] pr-5">
-        <h2 class="mb-2 border-b pb-2"><b>Ich bin bereits Kunde</b></h2>
-        <p>Einloggen mit E-Mail-Adresse und Passwort</p>
+        <h2 class="mb-2 border-b pb-2">
+            <b>{t('login_already_customer_text')}</b>
+        </h2>
+        <p>{t('login_text')}</p>
         <LoginForm client:only="preact" />
 
         <div class="mt-5">
-            <p><b>Vorteile einer Registrierung:</b></p>
-            <ul class="mt-2 ml-7 list-disc">
-                <li>Schnelles Einkaufen</li>
-                <li>Speichern Sie Ihre Daten und Einstellungen.</li>
-                <li>Bestellübersicht und Versandinformationen</li>
-                <li>Verwalten Sie Ihr Newsletter-Abonnement</li>
+            <p><b>{t('login_privilegs')}:</b></p>
+            <ul class="ml-7 mt-2 list-disc">
+                <li>{t('login_privilegs_1')}</li>
+                <li>{t('login_privilegs_2')}</li>
+                <li>{t('login_privilegs_3')}</li>
+                <li>{t('login_privilegs_4')}</li>
             </ul>
         </div>
     </div>
     <div class="w-[70%] pl-5">
-        <h2 class="mb-2 border-b pb-2"><b>Ich bin Neukunde</b></h2>
+        <h2 class="mb-2 border-b pb-2">
+            <b>{t('login_new_customer_text')}</b>
+        </h2>
         <RegistrationForm client:only="preact" />
     </div>
-</div> -->
+</div>

@@ -5,15 +5,17 @@
 import { useEffect, useState } from 'preact/hooks';
 import AddToCart from '../atoms/AddToCart';
 import ProductWhistlist from '../atoms/ProductWhistlist';
-import { formatPrice, getShopwareUrl, getThumbnail } from '../helpers/client';
-import { useStore } from '@nanostores/preact';
 import {
-    ShopwareApiInstanceStore,
-    contextStore,
-    customerStore,
-} from './shopware-store';
+    formatPrice,
+    getClangCodeFromCookie,
+    getShopwareUrl,
+    getThumbnail,
+} from '../helpers/client';
+import { useStore } from '@nanostores/preact';
+import { ShopwareApiInstanceStore, customerStore } from './shopware-store';
 import { ShopwareURL } from '../helpers/url';
 import { getCategoryProducts } from '@shopware-pwa/shopware-6-client';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     productStep: number;
@@ -21,17 +23,17 @@ interface Props {
     clangCode: string;
 }
 
-export default function ProductList({
-    productStep,
-    productListing,
-    clangCode,
-}: Props) {
+export default function ProductList({ productStep, productListing }: Props) {
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const customer = useStore(customerStore);
 
     const [page, setPage] = useState(1);
     const [products, setProducts] = useState(productListing.elements);
     const [filter, setFilter] = useState(productListing.currentFilters);
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
+
     const [currentSorting, setCurrentSorting] = useState(
         productListing.sorting,
     );
@@ -155,7 +157,7 @@ export default function ProductList({
                             <div class="py-5">
                                 <details class="group">
                                     <summary class="flex cursor-pointer list-none items-center justify-between font-medium">
-                                        <span>Hersteller</span>
+                                        <span>{t('manufacturer')}</span>
                                         <span class="transition group-open:rotate-180">
                                             <svg
                                                 fill="none"
@@ -343,8 +345,7 @@ export default function ProductList({
                                             </>
                                         ) : (
                                             <div class="bg-red-600 p-2 text-center text-white">
-                                                Loggen Sie sich ein um Produkte
-                                                in den Warenkorb zu legen
+                                                {t('login_to_add_to_cart')}
                                             </div>
                                         )}
                                     </div>
@@ -357,7 +358,7 @@ export default function ProductList({
                                     onClick={() => setPage(page - 1)}
                                     class="mr-2"
                                 >
-                                    Prev
+                                    {t('pagination_next')}
                                 </button>
                             )}
                             {page < total / step && (
@@ -365,7 +366,7 @@ export default function ProductList({
                                     onClick={() => setPage(page + 1)}
                                     class="ml-2"
                                 >
-                                    Next
+                                    {t('pagination_previous')}
                                 </button>
                             )}
                         </div>

@@ -2,11 +2,15 @@ import { useStore } from '@nanostores/preact';
 import { useState } from 'preact/hooks';
 import { ShopwareApiInstanceStore, cartStore } from '../utils/shopware-store';
 import { addPromotionCode } from '@shopware-pwa/shopware-6-client';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 export default function AddCoupon() {
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const [couponCodeSucces, setCouponCodeSucces] = useState('');
     const [couponCodeError, setCouponCodeError] = useState('');
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const addCoupon = async (e: any) => {
         e.preventDefault();
@@ -44,7 +48,7 @@ export default function AddCoupon() {
         <>
             <form
                 method="post"
-                class="mt-10 mb-10"
+                class="mb-10 mt-10"
                 onSubmit={(e) => addCoupon(e)}
             >
                 {couponCodeSucces && (
@@ -63,14 +67,14 @@ export default function AddCoupon() {
                     <input
                         type="text"
                         class="w-full rounded-lg border border-gray-400 p-2"
-                        placeholder="Coupon ..."
+                        placeholder={t('coupon_code')}
                         name="couponCode"
                     />
                     <button
                         type="submit"
                         class="ml-2 rounded-lg bg-blue-500 p-2 text-white hover:bg-blue-600"
                     >
-                        Copuon
+                        {t('add_coupon')}
                     </button>
                 </div>
             </form>

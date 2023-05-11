@@ -12,6 +12,8 @@ import {
     getSessionContext,
     setCurrentShippingMethod,
 } from '@shopware-pwa/shopware-6-client';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 export default function ShppingMethods() {
     const customer = useStore(customerStore);
@@ -19,6 +21,9 @@ export default function ShppingMethods() {
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const [shippingMethods, setShippingMethods] = useState<any>([]);
     const [successMessage, setSuccessMessage] = useState<string>('');
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     useEffect(() => {
         const _getShippingMethods = async (setShippingMethods: any) => {
@@ -56,15 +61,17 @@ export default function ShppingMethods() {
 
     return (
         <>
-            <h2 class="mb-5 border-b pb-2 font-bold">Liefermethode</h2>
+            <h2 class="mb-5 border-b pb-2 font-bold">
+                {t('delivery_methods')}
+            </h2>
             {successMessage && (
-                <div class="relative mt-5 mb-5 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
+                <div class="relative mb-5 mt-5 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
                     <span class="block sm:inline">{successMessage}</span>
                 </div>
             )}
 
             {shippingMethods?.elements?.map((shippingMethod: any) => (
-                <div class="flex pt-2 pb-2">
+                <div class="flex pb-2 pt-2">
                     <div class="w-1/12 px-5">
                         <input
                             type="radio"

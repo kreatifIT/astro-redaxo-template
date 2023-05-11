@@ -10,12 +10,17 @@ import {
     contextStore,
     customerStore,
 } from '../utils/shopware-store';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 export default function ChangePassword() {
     const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const [errorChangePassword, setErrorChangePassword] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const afterPasswordChanged = async () => {
         const context = await getSessionContext(contextInstance as any);
@@ -32,9 +37,9 @@ export default function ChangePassword() {
         const oldPasword = formData.get('old_password');
 
         if (newPasword === '' || newPasword != confirmNewPasword) {
-            setErrorChangePassword('neue Passwörter stimmen nicht überein');
+            setErrorChangePassword(t('error_password_not_match'));
         } else if (oldPasword === '') {
-            setErrorChangePassword('Bitte das Aktuelle Passwort eingeben');
+            setErrorChangePassword(t('label_add_password'));
         } else {
             await updatePassword(
                 {
@@ -45,14 +50,14 @@ export default function ChangePassword() {
                 contextInstance as any,
             )
                 .then((e: any) => {
-                    setSuccessMessage('Passwort wurde erfolgreich geändert');
+                    setSuccessMessage(t('password_successfully_updated'));
                     afterPasswordChanged();
                     setTimeout(() => {
                         setSuccessMessage('');
                     }, 5000);
                 })
                 .catch((e: any) => {
-                    setErrorChangePassword('Bitte überprüfe die Eingabe');
+                    setErrorChangePassword(t('check_input'));
                     setTimeout(() => {
                         setErrorChangePassword('');
                     }, 5000);
@@ -65,7 +70,7 @@ export default function ChangePassword() {
     return (
         <>
             <div class="mt-10">
-                <h2 class="mb-5 border-b pb-2 font-bold">Passwort</h2>
+                <h2 class="mb-5 border-b pb-2 font-bold">{t('password')}</h2>
 
                 {successMessage && (
                     <>
@@ -116,7 +121,10 @@ export default function ChangePassword() {
                 <form method="post" onSubmit={(e) => changePassword(e)}>
                     <div class="flex">
                         <div class="w-[50%] pr-5">
-                            <label for="new_password">Neues Passwort*</label>
+                            <label for="new_password">
+                                {t('new_password')}
+                                {t('mandatory')}
+                            </label>
                             <input
                                 type="password"
                                 class="block w-full border"
@@ -126,7 +134,8 @@ export default function ChangePassword() {
                         </div>
                         <div class="w-[50%] pl-5">
                             <label for="confirm_password">
-                                Passwort-Bestätigung*
+                                {t('new_password_confirm')}
+                                {t('mandatory')}
                             </label>
                             <input
                                 id="confirm_password"
@@ -136,16 +145,14 @@ export default function ChangePassword() {
                             />
                         </div>
                     </div>
-                    <div class="mt-5 mb-5 w-[100%]">
-                        <p>
-                            Bitte geben Sie Ihr aktuelles Passwort ein, um die
-                            Änderungen zu bestätigen.
-                        </p>
+                    <div class="mb-5 mt-5 w-[100%]">
+                        <p>{t('label_add_password')}</p>
                     </div>
                     <div class="flex">
                         <div class="w-[50%] pr-5">
                             <label for="old_password">
-                                Aktuelles Passwort*
+                                {t('current_password')}
+                                {t('mandatory')}
                             </label>
                             <input
                                 type="password"
@@ -155,16 +162,13 @@ export default function ChangePassword() {
                             />
                         </div>
                     </div>
-                    <div class="mt-5 mb-5 w-[100%]">
-                        <p>
-                            Die mit einem Stern (*) markierten Felder sind
-                            Pflichtfelder.
-                        </p>
+                    <div class="mb-5 mt-5 w-[100%]">
+                        <p>{t('label_mandatory_fields')}</p>
                         <button
                             type="submit"
                             class="mt-5 inline-block border p-2"
                         >
-                            Änderungen speichern
+                            {t('save_adjustments')}
                         </button>
                     </div>
                 </form>

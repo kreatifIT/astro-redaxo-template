@@ -30,6 +30,7 @@ import Registration from '@components/shopware/modules/Registration.astro';
 
 import { getClangId } from '@helpers/cookies';
 import type { Metadata } from '@adapters/redaxo/@types';
+import { pathToArray } from 'graphql/jsutils/Path';
 
 export const parseEnvironmentMapping = (
     mapping: string,
@@ -126,7 +127,17 @@ export const initShopwareSite = async (
         return undefined;
     });
 
-    const component = getShopwareComponent(path, lang);
+    let component = getShopwareComponent(path, lang);
+    let itemId = null;
+
+    if (!component) {
+        // Mehrsprachig?
+        if (path.includes('account/order')) {
+            const pathArray = path.split('/');
+            itemId = pathArray[pathArray.length - 1];
+            component = getShopwareComponent('account/order', lang);
+        }
+    }
 
     // Mehrsprachig?
     if (!path.includes('recover/password')) {
@@ -154,7 +165,7 @@ export const initShopwareSite = async (
             contextInstance,
             sessionContext,
             customer,
-            itemId: null,
+            itemId: itemId,
         };
     }
 
@@ -183,19 +194,8 @@ export const initShopwareSite = async (
         contextInstance,
     );
 
-    // ROOT SHOP PAGE??
-    if (path == '/') {
-        return {
-            component: ProductList,
-            data: path,
-            contextInstance,
-            sessionContext,
-            customer,
-            itemId: sessionContext.salesChannel.navigationCategoryId,
-        };
-    } else if (_seoUrl.total == 0) {
+    if (_seoUrl.total == 0) {
         // todo: handle 404
-        console.log('todo: handle 404');
         return {
             component: ProductList,
             data: path,
@@ -231,7 +231,7 @@ export const initShopwareSite = async (
 };
 
 const getShopwareComponent = (path: string, lang: string) => {
-    const completePath = targetToComponent.get(
+    let completePath = targetToComponent.get(
         langToTarget.get(lang)?.get(path)!,
     );
 
@@ -240,9 +240,15 @@ const getShopwareComponent = (path: string, lang: string) => {
     }
 
     const pathArray = path.split('/');
-    return targetToComponent.get(langToTarget.get(lang)?.get(pathArray[0])!);
+    completePath = targetToComponent.get(
+        langToTarget.get(lang)?.get(pathArray[0])!,
+    );
+    if (completePath != undefined) {
+        return completePath;
+    }
 };
 const targetToComponent = new Map<ShopwareURL, any>([
+    [ShopwareURL.SHOP_ROOT, ProductList],
     [ShopwareURL.REGISTRATION, Registration],
     [ShopwareURL.CART, Cart],
     [ShopwareURL.CHECKOUT, Checkout],

@@ -9,6 +9,8 @@ import {
     updateCustomerAddress,
 } from '@shopware-pwa/shopware-6-client';
 import { ShopwareURL, getShopwareUrlByLang } from '../helpers/url';
+import useTranslations from '@helpers/translations/client';
+import { getClangCodeFromCookie } from '../helpers/client';
 
 interface Props {
     redirect: boolean;
@@ -21,13 +23,16 @@ export default function UserAddressCreateModify({
     setFunction,
     addressId,
 }: Props) {
-    const customer = useStore(customerStore);
+    const customer: any = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const [salutations, setSalutations] = useState<any>([]);
     const [countries, setCountries] = useState<any>([]);
     const [address, setAddress] = useState<any>(undefined);
 
     const [loadData, setLoadData] = useState(false);
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     if (contextInstance && customer) {
         setLoadData(true);
@@ -146,12 +151,12 @@ export default function UserAddressCreateModify({
     return (
         <>
             <div class="">
-                <h2 class="mb-5 border-b pb-2 font-bold">Neue Adresse</h2>
+                <h2 class="mb-5 border-b pb-2 font-bold">{t('new_address')}</h2>
 
                 <form method={'post'} onSubmit={(e) => createAddress(e)}>
                     <div class="flex flex-row flex-wrap">
                         <div class="w-[50%] pr-5">
-                            <label for="salutation">Anrede</label>
+                            <label for="salutation">{t('salutation')}</label>
                             <select
                                 name="salutation"
                                 required={true}
@@ -160,7 +165,7 @@ export default function UserAddressCreateModify({
                                 {!address && (
                                     <>
                                         <option disabled={true} selected={true}>
-                                            Anrede eingeben ...
+                                            {t('salutation')}
                                         </option>
                                     </>
                                 )}
@@ -184,7 +189,9 @@ export default function UserAddressCreateModify({
                     </div>
                     <div class="mt-5 flex flex-row flex-wrap">
                         <div class="w-[50%] pr-5">
-                            <label for="firstname">Vorname*</label>
+                            <label for="firstname">
+                                {t('firstname')} {t('mandatory')}
+                            </label>
                             <input
                                 type="text"
                                 name="firstname"
@@ -194,7 +201,9 @@ export default function UserAddressCreateModify({
                             />
                         </div>
                         <div class="w-[50%] pl-5">
-                            <label for="lastname">Nachname*</label>
+                            <label for="lastname">
+                                {t('lastname')} {t('mandatory')}
+                            </label>
                             <input
                                 type="text"
                                 name="lastname"
@@ -206,7 +215,9 @@ export default function UserAddressCreateModify({
                     </div>
                     <div class="mt-5 flex flex-row flex-wrap">
                         <div class="w-[50%] pr-5">
-                            <label for="street">Straße und Hausnummer*</label>
+                            <label for="street">
+                                {t('street_and_number')} {t('mandatory')}
+                            </label>
                             <input
                                 type="text"
                                 name="street"
@@ -216,7 +227,9 @@ export default function UserAddressCreateModify({
                             />
                         </div>
                         <div class="w-[20%] pl-5">
-                            <label for="zipcode">PLZ*</label>
+                            <label for="zipcode">
+                                {t('zipcode')} {t('mandatory')}
+                            </label>
                             <input
                                 type="text"
                                 name="zipcode"
@@ -226,7 +239,9 @@ export default function UserAddressCreateModify({
                             />
                         </div>
                         <div class="w-[30%] pl-5">
-                            <label for="city">Ort*</label>
+                            <label for="city">
+                                {t('city')} {t('mandatory')}
+                            </label>
                             <input
                                 type="text"
                                 name="city"
@@ -238,7 +253,9 @@ export default function UserAddressCreateModify({
                     </div>
                     <div class="mt-5 flex flex-row flex-wrap">
                         <div class="w-[50%] pr-5">
-                            <label for="country">Land*</label>
+                            <label for="country">
+                                {t('country')} {t('mandatory')}
+                            </label>
                             <select
                                 name="country"
                                 required={true}
@@ -251,7 +268,7 @@ export default function UserAddressCreateModify({
                                             value=""
                                             selected={true}
                                         >
-                                            Land auswählen ...
+                                            {t('select_country')}
                                         </option>
                                     </>
                                 )}
@@ -270,13 +287,10 @@ export default function UserAddressCreateModify({
                     </div>
 
                     <div class="mt-5">
-                        <p>
-                            Die mit einem Stern (*) markierten Felder sind
-                            Pflichtfelder.
-                        </p>
+                        <p>{t('label_mandatory_fields')}</p>
 
                         <button type="submit" class="mt-5 border px-5 py-2">
-                            Adresse speichern
+                            {t('save_address')}
                         </button>
                     </div>
                 </form>

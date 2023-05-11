@@ -50,7 +50,6 @@ const {
 if (itemId) {
     let _response = await getCategory(itemId, contextInstance)
         .then((response) => {
-            console.log(response);
             metadata.title = response.translated.name;
             metadata.description = response.translated.description;
             return true;
@@ -71,7 +70,6 @@ if (itemId) {
                     ? response.product.translated.metaDescription
                     : response.product.translated.description;
                 metadata.type = 'Product';
-                console.log('metadata', metadata);
             })
             .catch((error) => {
                 return null;

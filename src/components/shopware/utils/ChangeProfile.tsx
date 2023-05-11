@@ -4,11 +4,15 @@ import { customerStore } from './shopware-store';
 import ChangeProfileData from '../atoms/ChangeProfileData';
 import ChangeEmail from '../atoms/ChangeEmail';
 import ChangePassword from '../atoms/ChangePassword';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 export default function ChangeProfile() {
-    const customer = useStore(customerStore);
+    const customer: any = useStore(customerStore);
     const [showChangePassword, setShowChangePassword] = useState(false);
     const [showChangEmail, setShowChangEmail] = useState(false);
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const toggleEmailForm = (e: any) => {
         setShowChangEmail(!showChangEmail);
@@ -23,15 +27,17 @@ export default function ChangeProfile() {
     return (
         <>
             <div class="mt-10">
-                <h2 class="mb-5 border-b pb-2 font-bold">Persönliche Daten</h2>
+                <h2 class="mb-5 border-b pb-2 font-bold">
+                    {t('personal_data')}
+                </h2>
                 <ChangeProfileData />
             </div>
 
             <div class="mt-10">
-                <h2 class="mb-5 border-b pb-2 font-bold">Zugangsdaten</h2>
+                <h2 class="mb-5 border-b pb-2 font-bold">{t('credentials')}</h2>
                 <div class="flex">
                     <div class="flex-auto">
-                        <span class="font-bold">E-Mail-Adresse: </span>
+                        <span class="font-bold">{t('email_address')}: </span>
                         {customer?.email}
                     </div>
                     <div class="flex-auto">
@@ -39,7 +45,7 @@ export default function ChangeProfile() {
                             class="cursor-pointer"
                             onClick={(e) => toggleEmailForm(e)}
                         >
-                            E-Mail-Adresse ändern
+                            {t('change_email_address')}
                         </a>
                     </div>
                     <div class="flex-auto">
@@ -47,7 +53,7 @@ export default function ChangeProfile() {
                             class="cursor-pointer"
                             onClick={(e) => togglePasswordForm(e)}
                         >
-                            Passwort ändern
+                            {t('change_password')}
                         </a>
                     </div>
                 </div>

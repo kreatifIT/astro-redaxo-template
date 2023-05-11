@@ -1,5 +1,6 @@
 import {
     formatPrice,
+    getClangCodeFromCookie,
     getShopwareUrl,
 } from '@components/shopware/helpers/client';
 import { useStore } from '@nanostores/preact';
@@ -7,20 +8,21 @@ import { useEffect, useState } from 'preact/hooks';
 import {
     ShopwareApiInstanceStore,
     cartStore,
-    customerStore,
     showOffcanvasStore,
 } from './shopware-store';
 import RemoveLineItem from '../atoms/RemoveLineItem';
 import { ShopwareURL } from '../helpers/url';
 import AddCoupon from '../atoms/AddCoupon';
 import { getCart } from '@shopware-pwa/shopware-6-client';
+import useTranslations from '@helpers/translations/client';
 
 export default function OffcanvasCart() {
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const customer = useStore(customerStore);
     const _showOffcanvasStore = useStore(showOffcanvasStore);
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const cart: any = useStore(cartStore);
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     useEffect(() => {
         const fetchData = async (contextInstance: any) => {
@@ -81,7 +83,7 @@ export default function OffcanvasCart() {
                                     d="M15 19l-7-7 7-7"
                                 />
                             </svg>
-                            Weiter einkaufen
+                            {t('checkout_continue_shopping')}
                         </span>
                     </div>
 
@@ -92,10 +94,10 @@ export default function OffcanvasCart() {
                                     className="offcanvas-title"
                                     id="offcanvasCartLabel"
                                 >
-                                    <b>Warenkorb</b>
+                                    <b>{t('cart')}</b>
                                 </h5>
                                 <span class="">
-                                    {cart?.lineItems?.length} Produkte
+                                    {cart?.lineItems?.length} {t('products')}
                                 </span>
                             </div>
                         </div>
@@ -164,7 +166,7 @@ export default function OffcanvasCart() {
                                                 <table class="my-5 w-full">
                                                     <tr>
                                                         <th class="text-left">
-                                                            Zwischensumme
+                                                            {t('subtotal')}
                                                         </th>
                                                         <td class="text-right">
                                                             {formatPrice(
@@ -175,7 +177,9 @@ export default function OffcanvasCart() {
                                                     </tr>
                                                     <tr>
                                                         <th class="text-left">
-                                                            Versandkosten
+                                                            {t(
+                                                                'shipping_costs',
+                                                            )}
                                                         </th>
                                                         <td class="text-right">
                                                             {formatPrice(
@@ -188,8 +192,9 @@ export default function OffcanvasCart() {
                                                     </tr>
                                                 </table>
                                                 <p class="mt-5 text-xs">
-                                                    * Preise inkl. MwSt. zzgl.
-                                                    Versandkosten
+                                                    {t(
+                                                        'checkout_price_incl_vat',
+                                                    )}
                                                 </p>
                                                 <a
                                                     href={getShopwareUrl(
@@ -197,7 +202,7 @@ export default function OffcanvasCart() {
                                                     )}
                                                     class="btn btn-primary mt-5 inline-block w-full w-full border border-primary bg-primary px-3 py-2 text-center text-white transition-all"
                                                 >
-                                                    Zur Kasse
+                                                    {t('action_to_checkout')}
                                                 </a>
 
                                                 <a
@@ -206,7 +211,7 @@ export default function OffcanvasCart() {
                                                     )}
                                                     class="mt-5 mt-5 inline-block w-full text-center"
                                                 >
-                                                    Warenkorb anzeigen
+                                                    {t('action_to_cart')}
                                                 </a>
                                             </div>
                                         </div>
@@ -220,7 +225,7 @@ export default function OffcanvasCart() {
                                         <div className="card mb-3">
                                             <div className="card-body">
                                                 <h5 className="card-title">
-                                                    Ihr Warenkorb is leer
+                                                    {t('cart_empty')}
                                                 </h5>
                                             </div>
                                         </div>

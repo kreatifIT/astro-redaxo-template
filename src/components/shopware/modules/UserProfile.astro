@@ -1,16 +1,21 @@
 ---
+import getTranslations from '@helpers/translations/server';
 import UserMenu from '../atoms/UserMenu';
+import { getClangCodeFromCookie } from '../helpers/client';
 import ChangeProfile from '../utils/ChangeProfile';
+
+const clangCode = getClangCodeFromCookie();
+const t = await getTranslations(clangCode, 'shopware');
 ---
 
-<div class="row mt-5 mb-5">
+<div class="row mb-5 mt-5">
     <div class="flex w-full flex-row flex-wrap">
         <div class="w-[20%] pb-20">
             <UserMenu client:only="preact" />
         </div>
         <div class="w-[80%] pl-20">
-            <h1 class="font-bold">Persönliches Profil</h1>
-            <p>Überprüfen Sie Ihre persönlichen Daten.</p>
+            <h1 class="font-bold">{t('presonal_profile')}</h1>
+            <p>{t('presonal_profile_text')}</p>
 
             <ChangeProfile client:only="preact" />
         </div>

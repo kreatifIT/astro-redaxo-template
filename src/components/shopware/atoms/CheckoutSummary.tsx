@@ -1,22 +1,25 @@
 import { useStore } from '@nanostores/preact';
 import { cartStore } from '../utils/shopware-store';
-import { formatPrice } from '../helpers/client';
+import { formatPrice, getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 export default function CheckoutSummary() {
     const cart: any = useStore(cartStore);
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     return (
         <>
-            <p>Zusammenfassung</p>
+            <p>{t('summary')}</p>
             <table class="w-full">
                 <tr>
-                    <td>Zwischensumme:</td>
+                    <td>{t('subtotal')}:</td>
                     <td class={'text-right'}>
                         {formatPrice(cart?.price.positionPrice)}
                     </td>
                 </tr>
                 <tr>
-                    <td>Versandkosten:</td>
+                    <td>{t('shipping_costs')}:</td>
                     <td class={'text-right'}>
                         {formatPrice(
                             cart?.deliveries?.[0]?.shippingCosts.totalPrice,
@@ -29,20 +32,23 @@ export default function CheckoutSummary() {
                     </td>
                 </tr>
                 <tr>
-                    <td>Gesamtsumme:</td>
+                    <td>{t('total')}:</td>
                     <td class={'text-right'}>
                         {formatPrice(cart?.price.totalPrice)}
                     </td>
                 </tr>
                 <tr>
-                    <td>Gesamtnettosumme:</td>
+                    <td>{t('total_netto')}:</td>
                     <td class={'text-right'}>
                         {formatPrice(cart?.price.netPrice)}
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        zzgl. {cart?.price.calculatedTaxes[0]?.taxRate}% Mwst.
+                        {t('incl_vat').replace(
+                            '%tax%',
+                            cart?.price.calculatedTaxes[0]?.taxRate,
+                        )}
                     </td>
                     <td class={'text-right'}>
                         {formatPrice(cart?.price.calculatedTaxes[0]?.tax)}

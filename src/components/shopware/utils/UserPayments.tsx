@@ -12,32 +12,48 @@ import {
     setCurrentPaymentMethod,
 } from '@shopware-pwa/shopware-6-client';
 import { changeDefaultPaymentMethod } from '@adapters/shopware';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     orderId: string | undefined;
 }
 
 export default function UserPaymetns({ orderId }: Props) {
-    const [paymentMethods, setPaymentMethods] = useState<any>([]);
-    const customer = useStore(customerStore);
+    const customer: any = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const context = useStore(contextStore);
+
     const [successMessage, setSuccessMessage] = useState('');
+    const [paymentMethods, setPaymentMethods] = useState<any>([]);
+    const [initLoading, setInitLoading] = useState(false);
+    const [currentPaymentMethod, setCurrentPaymentMethod] = useState<any>();
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
+
+    if (contextInstance) {
+        setInitLoading(true);
+    }
 
     useEffect(() => {
+        if (customer) {
+            setCurrentPaymentMethod(customer.defaultPaymentMethodId);
+        }
+    }, [customer]);
+
+    useEffect(() => {
+        const _getPaymentMethods = async (
+            contextInstance: any,
+            setPaymentMethods: any,
+        ) => {
+            const _response = await getAvailablePaymentMethods(contextInstance);
+            setPaymentMethods(_response);
+        };
         if (contextInstance) {
-            const _getPaymentMethods = async (
-                contextInstance: any,
-                setPaymentMethods: any,
-            ) => {
-                const _response = await getAvailablePaymentMethods(
-                    contextInstance,
-                );
-                setPaymentMethods(_response);
-            };
             _getPaymentMethods(contextInstance, setPaymentMethods);
         }
-    }, []);
+    }, [initLoading]);
 
     const _changeDefaultPaymentMethod = async (e: any) => {
         e.preventDefault();
@@ -88,6 +104,7 @@ export default function UserPaymetns({ orderId }: Props) {
         );
 
         customerStore.set(_customer);
+
         setSuccessMessage('Zahlungsart wurde erfolgreich geändert.');
         setTimeout(() => {
             setSuccessMessage('');
@@ -98,7 +115,7 @@ export default function UserPaymetns({ orderId }: Props) {
 
     return (
         <>
-            <h2 class="mb-5 border-b pb-2 font-bold">Zahlungsart</h2>
+            <h2 class="mb-5 border-b pb-2 font-bold">{t('payment_method')}</h2>
             {successMessage && (
                 <div class="relative mb-5 mt-5 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
                     <span class="block sm:inline">{successMessage}</span>
@@ -115,8 +132,7 @@ export default function UserPaymetns({ orderId }: Props) {
                                 id={paymentMethod.translated.name}
                                 onChange={(e) => _changeDefaultPaymentMethod(e)}
                                 checked={
-                                    paymentMethod.id ===
-                                    customer?.defaultPaymentMethodId
+                                    paymentMethod.id === currentPaymentMethod
                                         ? true
                                         : false
                                 }

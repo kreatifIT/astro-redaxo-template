@@ -1,6 +1,12 @@
 ---
 import UserMenu from '../atoms/UserMenu';
 import UserOrder from '../utils/UserOrder';
+
+interface Props {
+    itemId: string | undefined;
+}
+
+const { itemId } = Astro.props;
 ---
 
 <div class="row mb-5 mt-5">
@@ -9,7 +15,7 @@ import UserOrder from '../utils/UserOrder';
             <UserMenu client:only="preact" />
         </div>
         <div class="w-[80%] pl-20">
-            <UserOrder client:only="preact" />
+            <UserOrder client:only="preact" itemId={itemId} />
         </div>
     </div>
 </div>

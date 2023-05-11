@@ -1,5 +1,8 @@
 import { useState } from 'preact/hooks';
-import { getShopwareUrl } from '@components/shopware/helpers/client';
+import {
+    getClangCodeFromCookie,
+    getShopwareUrl,
+} from '@components/shopware/helpers/client';
 import { ShopwareURL } from '../helpers/url';
 import {
     ShopwareApiInstanceStore,
@@ -7,11 +10,14 @@ import {
 } from '../utils/shopware-store';
 import { useStore } from '@nanostores/preact';
 import { getCustomer, login } from '@shopware-pwa/shopware-6-client';
+import useTranslations from '@helpers/translations/client';
 
 export default function LoginForm() {
     const contextInstance = useStore(ShopwareApiInstanceStore);
-
     const [errorMessage, setErrorMessage] = useState('');
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const loginFunction = async (e: any) => {
         e.preventDefault();
@@ -24,7 +30,7 @@ export default function LoginForm() {
                 formValues[input.getAttribute('name')] = input.value;
                 setErrorMessage('');
             } else {
-                setErrorMessage('Bitte füllen Sie alle Felder aus.');
+                setErrorMessage(t('error_fill_all_fields'));
                 customerStore.set(null);
             }
         });
@@ -36,7 +42,7 @@ export default function LoginForm() {
             )
                 .catch((e) => {
                     customerStore.set(null);
-                    setErrorMessage('E-Mail oder das Passwort ist falsch.');
+                    setErrorMessage(t('error_email_or_password'));
                 })
                 .then((e) => {
                     if (e) {
@@ -64,7 +70,7 @@ export default function LoginForm() {
                     type="email"
                     name="username"
                     required={true}
-                    placeholder="E-Mail"
+                    placeholder={t('email')}
                     class="border px-5 py-3"
                 />
                 <br />
@@ -73,7 +79,7 @@ export default function LoginForm() {
                     type="password"
                     name="password"
                     required={true}
-                    placeholder="Passwort"
+                    placeholder={t('password')}
                     class="border px-5 py-3"
                 />
                 <p class="mt-5">
@@ -81,12 +87,12 @@ export default function LoginForm() {
                         href={getShopwareUrl(ShopwareURL.PASSWORD_RECOVERY)}
                         class="text-blue-600"
                     >
-                        Passwort vergessen?
+                        {t('forgot_password')}
                     </a>
                 </p>
                 <br />
                 <button type="submit" class="border  px-5 py-3">
-                    Login
+                    {t('login')}
                 </button>
             </form>
         </>

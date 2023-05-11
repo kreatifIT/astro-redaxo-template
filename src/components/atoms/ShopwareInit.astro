@@ -7,13 +7,7 @@ interface Props {
 const { contextInstance, customer, sessionContext } = Astro.props;
 ---
 
-<script>
-    // import const { contextInstance, customer, sessionContext } ;
-
-    import {
-        getSwCookies,
-        setSwCookie,
-    } from '@components/shopware/helpers/client';
+<script define:vars={{ contextInstance, customer, sessionContext }} lang="">
     import {
         ShopwareApiInstanceStore,
         cartStore,
@@ -22,36 +16,13 @@ const { contextInstance, customer, sessionContext } = Astro.props;
     } from '@components/shopware/utils/shopware-store';
     import {
         ShopwareApiInstance,
-        createInstance,
         getCart,
         getCustomer,
         getSessionContext,
     } from '@shopware-pwa/shopware-6-client';
 
-    const { contextToken, swLangId } = getSwCookies();
+    const contextInstance = ShopwareApiInstanceStore.get();
 
-    let contextInstance: ShopwareApiInstance = createInstance({
-        endpoint: 'https://sw.kreatif.it', //import.meta.env.SHOPWARE_ENDPOINT,
-        accessToken: 'SWSCNWLLYWLHSW9OZ0QWDJJWCW', // import.meta.env.SHOPWARE_ACCESS_KEY,
-        languageId: swLangId,
-        contextToken: contextToken,
-    });
-
-    if (contextInstance) {
-        ShopwareApiInstanceStore.set(contextInstance);
-    }
-
-    contextInstance.onConfigChange(({ config }) => {
-        let contextInstance = ShopwareApiInstanceStore.get();
-        if (contextInstance) {
-            contextInstance.config = config;
-            ShopwareApiInstanceStore.set(contextInstance);
-
-            if (config.contextToken) {
-                setSwCookie('sw-context-token', config.contextToken);
-            }
-        }
-    });
     const context = await getSessionContext(contextInstance);
     contextStore.set(context); //addresses
     let customer = null;

@@ -1,16 +1,15 @@
 import { useStore } from '@nanostores/preact';
-import {
-    cartStore,
-    customerStore,
-    showOffcanvasStore,
-} from '../utils/shopware-store';
+import { cartStore, showOffcanvasStore } from '../utils/shopware-store';
 import { useEffect, useState } from 'preact/hooks';
+import { getClangCodeFromCookie } from '../helpers/client';
+import useTranslations from '@helpers/translations/client';
 
 export default function CartWidget() {
     const [cartCount, setCartCount] = useState(0);
     const cart = useStore(cartStore);
     const showOffcanvas = useStore(showOffcanvasStore);
-    const customer = useStore(customerStore);
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     useEffect(() => {
         if (cart && cart.lineItems) {
@@ -32,9 +31,9 @@ export default function CartWidget() {
                     onClick={(e) => toggleOffcanvas()}
                     class="cursor-pointer"
                 >
-                    Warenkorb
+                    {t('cart')}
                 </span>
-                <span className="cart__count absoulte -right-0.5 -top-0.5 rounded-full bg-green-800 px-2 py-1 text-white">
+                <span className="cart__count absoulte -right-0.5 -top-0.5 ml-1 rounded-full bg-green-800 px-2 py-1 text-white">
                     {cartCount}
                 </span>
             </p>

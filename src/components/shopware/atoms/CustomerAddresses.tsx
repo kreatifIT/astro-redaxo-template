@@ -11,8 +11,9 @@ import {
     setDefaultCustomerBillingAddress,
     setDefaultCustomerShippingAddress,
 } from '@shopware-pwa/shopware-6-client';
-import { getShopwareUrl } from '../helpers/client';
+import { getClangCodeFromCookie, getShopwareUrl } from '../helpers/client';
 import { ShopwareURL } from '../helpers/url';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     showChangeBilling: boolean;
@@ -28,7 +29,9 @@ export default function CustomerAddresses({
     setFunction,
 }: Props) {
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const customer = useStore(customerStore);
+    const customer: any = useStore(customerStore);
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
 
     const getNewCustomer = async () => {
         const context = await getSessionContext(contextInstance as any);
@@ -93,7 +96,9 @@ export default function CustomerAddresses({
     return (
         <>
             <div class="w-[100%]">
-                <h2 class="mb-5 border-b pb-2 font-bold">Alle Adressen</h2>
+                <h2 class="mb-5 border-b pb-2 font-bold">
+                    {t('all_addresses')}
+                </h2>
             </div>
             {customer?.addresses?.map((address: any) => (
                 <>
@@ -133,7 +138,7 @@ export default function CustomerAddresses({
                                         }
                                         class="mb-2 bg-gray-300 p-2 text-left"
                                     >
-                                        Als Standard-Rechnungsadresse verwenden
+                                        {t('use_default_billing_address')}
                                     </button>
                                 )}
                             {showChangeShipping &&
@@ -148,7 +153,7 @@ export default function CustomerAddresses({
                                         }
                                         class="bg-gray-300 p-2 text-left"
                                     >
-                                        Als Standard-Lieferadresse verwenden
+                                        {t('use_default_shipping_address')}
                                     </button>
                                 )}
                         </div>
@@ -164,7 +169,7 @@ export default function CustomerAddresses({
                                     }
                                     class="mr-2 border px-5 py-3"
                                 >
-                                    Bearbeiten
+                                    {t('modify')}
                                 </a>
                                 {address.id !=
                                     customer.defaultShippingAddress.id &&
@@ -176,7 +181,7 @@ export default function CustomerAddresses({
                                                 removeAddress(e, address.id)
                                             }
                                         >
-                                            Löschen
+                                            {t('delete')}
                                         </button>
                                     )}
                             </div>

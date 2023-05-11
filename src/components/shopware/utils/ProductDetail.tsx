@@ -3,8 +3,13 @@ import { useState } from 'preact/hooks';
 import { useStore } from '@nanostores/preact';
 import ProductWhistlist from '../atoms/ProductWhistlist';
 import AddToCart from '../atoms/AddToCart';
-import { formatPrice, getThumbnail } from '../helpers/client';
+import {
+    formatPrice,
+    getClangCodeFromCookie,
+    getThumbnail,
+} from '../helpers/client';
 import { getProduct, getProducts } from '@shopware-pwa/shopware-6-client';
+import useTranslations from '@helpers/translations/client';
 
 interface Props {
     product: any;
@@ -21,6 +26,10 @@ export default function ProductDetail({ product, configurator }: Props) {
     const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const [message, setMessage] = useState('');
+
+    const clangCode = getClangCodeFromCookie();
+    const t = useTranslations(clangCode, 'shopware');
+
     const switchOption = async (optionId: string) => {
         const form = document.getElementById(
             'variant_switcher',
@@ -90,19 +99,15 @@ export default function ProductDetail({ product, configurator }: Props) {
                 <div class="flex">
                     <div class="w-[40%]">
                         {_product?.media?.map((media: any) => (
-                            // Responsive images
-                            <>
-                                <img
-                                    src={getThumbnail(media.media, 400, 400)}
-                                    alt={media.alt ? media.alt : media.fileName}
-                                />
-                            </>
+                            <img
+                                src={getThumbnail(media.media, 400, 400)}
+                                alt={media.alt ? media.alt : media.fileName}
+                            />
                         ))}
                     </div>
                     <div class="ml-auto w-[50%]">
                         <h1 class="pr-15	relative mb-2 text-5xl">
                             {_product.translated.name}
-
                             {customer && (
                                 <div class="absolute right-0 top-0 float-right h-12">
                                     <ProductWhistlist
@@ -120,7 +125,6 @@ export default function ProductDetail({ product, configurator }: Props) {
                         )}
                         {configurator.length > 0 && (
                             <div class="mb-5 mt-5">
-                                <p>Varianten eigenschaften</p>
                                 <form
                                     action={'' + _product.id + '/switch/'}
                                     method="GET"
@@ -182,8 +186,10 @@ export default function ProductDetail({ product, configurator }: Props) {
                             <>
                                 <div class="mb-10 mt-10">
                                     <div class="flex flex-wrap bg-gray-200 p-2">
-                                        <div class="w-[50%]">Menge</div>
-                                        <div class="w-[50%]">Stückzahl</div>
+                                        <div class="w-[50%]">{t('amount')}</div>
+                                        <div class="w-[50%]">
+                                            {t('quantity')}
+                                        </div>
                                     </div>
                                     {_product.calculatedPrices.map(
                                         (price: any) => (
@@ -212,23 +218,18 @@ export default function ProductDetail({ product, configurator }: Props) {
                         )}
 
                         {customer ? (
-                            <>
-                                <div class="mb-14  mt-5">
-                                    <AddToCart
-                                        product={_product}
-                                        showQuantity={true}
-                                    />
-                                </div>
-                            </>
+                            <div class="mb-14  mt-5">
+                                <AddToCart
+                                    product={_product}
+                                    showQuantity={true}
+                                />
+                            </div>
                         ) : (
-                            <>
-                                <div class="mb-14  mt-5">
-                                    <div class="bg-red-600 p-2 text-center text-white">
-                                        Loggen Sie sich ein um Produkte in den
-                                        Warenkorb zu legen
-                                    </div>
+                            <div class="mb-14  mt-5">
+                                <div class="bg-red-600 p-2 text-center text-white">
+                                    {t('login_to_add_to_cart')}
                                 </div>
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>
