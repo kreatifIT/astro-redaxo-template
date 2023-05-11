@@ -1,5 +1,5 @@
-import type { Link } from '@adapters/redaxo/@types';
 import type { ComponentChild } from 'preact';
+import type { Link } from 'redaxo-adapter';
 
 interface Props {
     link: Link;

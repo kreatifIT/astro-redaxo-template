@@ -1,4 +1,4 @@
-import type { Social } from '@adapters/kreatif-redaxo-adapter/@types';
+import type { Social } from '@adapters/redaxo/@types';
 
 const socialMediaClasses = new Map<string, string>([
     ['facebook', 'hover:before:bg-socials-facebook'],

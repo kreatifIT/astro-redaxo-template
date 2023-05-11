@@ -1,6 +1,6 @@
-import type { ProjectSettings } from '@adapters/kreatif-redaxo-adapter/@types';
+import type { ProjectSettings } from '@adapters/redaxo/@types';
 import type { AstroGlobal } from 'astro';
-import type { Wildcard } from '@adapters/redaxo/@types';
+import type { Wildcard } from 'redaxo-adapter';
 import { getClangId } from './cookies';
 
 /**

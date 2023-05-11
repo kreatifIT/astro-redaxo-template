@@ -1,9 +1,10 @@
 ---
-import type { Link, ModuleProps } from '@adapters/redaxo/@types';
+import type { Link } from 'redaxo-adapter';
 import Container from '@utils/grid/Container.astro';
 import Heading from '@utils/heading/Heading';
 import RexLink from '@utils/RexLink';
 import RichText from '@utils/rich-text/RichText';
+import type { ModuleProps } from '@helpers/@types';
 
 interface Props extends ModuleProps {}
 
@@ -20,7 +21,6 @@ interface Values {
 const { slice } = Astro.props;
 
 const values = slice.values as Values;
-console.log(values);
 ---
 
 <Container>

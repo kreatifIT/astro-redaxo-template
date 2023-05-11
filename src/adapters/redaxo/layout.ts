@@ -3,19 +3,16 @@ import {
     REX_ORGANIZATION_FRAGMENT,
     REX_TOKEN_FRAGMENT,
 } from './fragments';
-import type {
+import {
     Article,
     Clang,
     NavigationItem,
+    RedaxoAdapter,
     Wildcard,
-} from '@adapters/redaxo/@types';
-import GraphQLClient from '@adapters/redaxo/client';
-import { REX_SEO_FRAGMENT } from '@adapters/redaxo/fragments';
-import { REX_BREADCRUMB_FRAGMENT } from '@adapters/redaxo/fragments';
-import {
+    REX_BREADCRUMB_FRAGMENT,
     REX_ARTICLE_SLICE_FRAGMENT,
     REX_NAVIGATION_ITEM_FRAGMENT,
-} from '@adapters/redaxo/fragments';
+} from 'redaxo-adapter';
 import gql from 'graphql-tag';
 import type { ContentType, ProjectSettings } from './@types';
 
@@ -110,7 +107,7 @@ export async function getInitialData(
     wildCards: Wildcard[];
     contentType: ContentType;
 }> {
-    const { data } = await GraphQLClient.query(
+    const { data } = await RedaxoAdapter.query(
         KREATIF_LAYOUT_QRY,
         {
             navigationDepth,

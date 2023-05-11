@@ -1,5 +1,5 @@
 import type { AstroGlobal } from 'astro';
-import type { Clang } from '@adapters/redaxo/@types';
+import type { Clang } from 'redaxo-adapter';
 import { t } from '@helpers/wildcards';
 import { getClangId } from './cookies';
 

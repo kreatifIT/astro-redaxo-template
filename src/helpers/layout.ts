@@ -1,6 +1,6 @@
-import { getInitialData } from '@adapters/kreatif-redaxo-adapter/layout';
+import { getInitialData } from '@adapters/redaxo/layout';
 import WildcardCache from './wildcards';
-import type { Clang } from '@adapters/redaxo/@types';
+import type { Clang } from 'redaxo-adapter';
 
 export async function getLayoutData(path: string, navigationDepth: number) {
     const {
