@@ -16,6 +16,8 @@ import HrefLangs from '@layout/head/HrefLangs.astro';
 import SEO from '@layout/head/SEO.astro';
 import ShopwareInit from '@atoms/ShopwareInit.astro';
 import OffcanvasCart from '@components/shopware/utils/OffcanvasCart';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Props {
     metadata: Metadata;
@@ -43,6 +45,8 @@ const {
     customer,
     sessionContext,
 } = Astro.props;
+
+const notify = () => toast('Wow so easy!');
 ---
 
 <html lang={currentClang.code.toLowerCase()}>
@@ -81,5 +85,6 @@ const {
         <Footer siteStartArticle={siteStartArticle} articleId={article?.id} />
 
         <OffcanvasCart client:only="preact" />
+        <ToastContainer />
     </body>
 </html>

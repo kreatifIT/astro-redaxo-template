@@ -22,13 +22,13 @@ export default function Search({ limit, results, searchParam }: Props) {
     const [searchResult, setSearchResult] = useState(results);
     const [filter, setFilter] = useState(results?.currentFilters);
     const [currentSorting, setCurrentSorting] = useState(results?.sorting);
-    const [param, setSearchParam] = useState(searchParam);
+    const [total, setTotal] = useState(results?.total);
 
     const clangCode = getClangCodeFromCookie();
     const t = useTranslations(clangCode, 'shopware');
 
     const step = limit;
-    const total = results?.total;
+    const param = searchParam;
     const sortings = results?.availableSortings;
     const filters = results?.aggregations;
 
@@ -50,6 +50,7 @@ export default function Search({ limit, results, searchParam }: Props) {
 
     useEffect(() => {
         if (searchParam) {
+            console.log('currentSorting', currentSorting);
             productSearchFilter(
                 searchParam,
                 contextInstance,
@@ -58,6 +59,7 @@ export default function Search({ limit, results, searchParam }: Props) {
                 step,
                 currentSorting,
             ).then((response: any) => {
+                setTotal(response.total);
                 setSearchResult(response);
             });
         }
@@ -65,8 +67,6 @@ export default function Search({ limit, results, searchParam }: Props) {
 
     return (
         <div class="search__container">
-            {searchResult}
-
             {searchResult?.total > 0 ? (
                 <>
                     <div class="mb-10 w-[100%] text-center">

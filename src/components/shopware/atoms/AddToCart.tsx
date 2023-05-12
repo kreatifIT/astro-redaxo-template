@@ -37,6 +37,7 @@ export default function AddToCart({ product, showQuantity }: Props) {
             quantity as number,
             contextInstance as any,
         );
+
         showOffcanvasStore.set(!_showOffcanvasStore);
         return false;
     };

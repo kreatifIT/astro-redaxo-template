@@ -107,3 +107,32 @@ export function changeDefaultPaymentMethod(
         languageId,
     );
 }
+
+export function searchProductsAdapter(
+    term: string,
+    contextToken: string,
+    languageId: string,
+    page: number,
+    limit: number,
+    postFilter: any,
+    sorting: any,
+) {
+    return ShopwareAdapter.post(
+        'store-api/search?search=' + term + '&p=' + page + '&limit=' + limit,
+        {
+            page: page,
+            limit: limit,
+            associations: {
+                seoUrls: {},
+                cover: {},
+                manufacturer: {},
+                properties: {},
+                options: {},
+            },
+            'post-filter': postFilter,
+            order: sorting,
+        },
+        contextToken,
+        languageId,
+    );
+}

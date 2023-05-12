@@ -41,11 +41,11 @@ export default function SearchWidget() {
     };
 
     const onFocusOut = () => {
-        setShowResults(false);
+        //setShowResults(false);
     };
 
     const onFocusIn = () => {
-        setShowResults(true);
+        //setShowResults(true);
     };
 
     const onSubmit = (e: any) => {
@@ -59,7 +59,11 @@ export default function SearchWidget() {
     };
 
     return (
-        <div class="search relative">
+        <div
+            class="search relative"
+            onfocusout={onFocusOut}
+            onfocusin={onFocusIn}
+        >
             <form
                 action={getShopwareUrl(ShopwareURL.SEARCH)}
                 method="GET"
@@ -71,50 +75,55 @@ export default function SearchWidget() {
                     placeholder="Suche"
                     name="search"
                     onInput={handleChange}
-                    onfocusout={onFocusOut}
-                    onfocusin={onFocusIn}
                 />
             </form>
 
             {showResults && (
                 <div className="search_result absolute border border-black bg-white">
-                    <ul>
-                        {searchResult?.elements?.map((product: any) => (
-                            <li>
-                                <div key={product.id} class="border-b p-2">
-                                    <a
-                                        href={
-                                            getShopwareUrl(
-                                                ShopwareURL.SHOP_ROOT,
-                                            ) + product.seoUrls[0].seoPathInfo
-                                        }
-                                        title={product.translated.name}
-                                    >
-                                        {product.name}
-                                    </a>
-                                </div>
-                            </li>
-                        ))}
+                    {searchResult?.elements?.length === 0 ? (
+                        <div class="p-2">
+                            {t('suggest_search_result_no_result')}
+                        </div>
+                    ) : (
+                        <ul>
+                            {searchResult?.elements?.map((product: any) => (
+                                <li>
+                                    <div key={product.id} class="border-b p-2">
+                                        <a
+                                            href={
+                                                getShopwareUrl(
+                                                    ShopwareURL.SHOP_ROOT,
+                                                ) +
+                                                product.seoUrls[0].seoPathInfo
+                                            }
+                                            title={product.translated.name}
+                                        >
+                                            {product.name}
+                                        </a>
+                                    </div>
+                                </li>
+                            ))}
 
-                        {searchResult?.elements?.length > 0 && (
-                            <li class="bg-gray-600 p-2  text-white">
-                                <>
-                                    {searchResult?.total}{' '}
-                                    {t('suggest_search_result_total')}
-                                    <br />
-                                    <a
-                                        href={getShopwareUrl(
-                                            ShopwareURL.SEARCH,
-                                            { search: searchParam },
-                                        )}
-                                        class="text-white"
-                                    >
-                                        {t('suggest_serach_show_more')}
-                                    </a>
-                                </>
-                            </li>
-                        )}
-                    </ul>
+                            {searchResult?.elements?.length > 0 && (
+                                <li class="bg-gray-600 p-2  text-white">
+                                    <>
+                                        {searchResult?.total}{' '}
+                                        {t('suggest_search_result_total')}
+                                        <br />
+                                        <a
+                                            href={getShopwareUrl(
+                                                ShopwareURL.SEARCH,
+                                                { search: searchParam },
+                                            )}
+                                            class="text-white"
+                                        >
+                                            {t('suggest_serach_show_more')}
+                                        </a>
+                                    </>
+                                </li>
+                            )}
+                        </ul>
+                    )}
                 </div>
             )}
         </div>

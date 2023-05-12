@@ -23,6 +23,7 @@ export default function ProductList({ productStep, productListing }: Props) {
     const [page, setPage] = useState(1);
     const [products, setProducts] = useState(productListing.elements);
     const [filter, setFilter] = useState(productListing.currentFilters);
+    const [total, setTotal] = useState(productListing.total);
     const clangCode = getClangCodeFromCookie();
     const t = useTranslations(clangCode, 'shopware');
 
@@ -30,12 +31,13 @@ export default function ProductList({ productStep, productListing }: Props) {
         productListing.sorting,
     );
     const step = productStep;
-    const total = productListing.total;
+
     const sortings = productListing.availableSortings;
     const filters = productListing.aggregations;
 
     // add selected filter to filter object
     const addFilter = (e: any) => {
+        setPage(1);
         if (e.target.checked) {
             setFilter({
                 ...filter,
@@ -60,7 +62,8 @@ export default function ProductList({ productStep, productListing }: Props) {
             step,
             currentSorting,
         ).then((response: any) => {
-            setProducts(response);
+            setProducts(response.elements);
+            setTotal(response.total);
         });
     }, [page, currentSorting, filter]);
 

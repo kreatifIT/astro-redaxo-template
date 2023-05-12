@@ -1,32 +1,32 @@
 ---
 import { searchProducts } from '@shopware-pwa/shopware-6-client';
 import Search from '../utils/Search';
+import { searchProductsAdapter } from '@adapters/shopware';
 
 const { contextInstance, sessionContext } = Astro.props;
 
 const page = Astro.url.searchParams.get('page')! || 1;
-const limit = 10;
+const limit = 16;
 
 const searchParam = Astro.url.searchParams.get('search')! || '';
 let _response = null;
-if (searchParam) {
-    _response = await searchProducts(
-        {
-            query: searchParam,
-            page: page,
-            limit: limit,
-            'total-count-mode': 1,
-        },
-        contextInstance as any,
-    );
 
-    console.log(_response);
+if (searchParam) {
+    _response = await searchProductsAdapter(
+        searchParam,
+        contextInstance.config.contextToken,
+        contextInstance.config.languageId,
+        page,
+        limit,
+        {},
+        '',
+    );
 }
 ---
 
 <Search
     client:only="preact"
     limit={limit}
-    results={_response}
+    results={_response?.data}
     searchParam={searchParam}
 />

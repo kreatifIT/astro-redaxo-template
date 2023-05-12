@@ -1,3 +1,4 @@
+import { searchProductsAdapter } from '@adapters/shopware';
 import {
     getCategoryProducts,
     searchProducts,
@@ -65,7 +66,7 @@ export async function productListFilter(
             },
             contextInstance as any,
         );
-        return _respons.elements;
+        return _respons;
     }
 }
 
@@ -79,22 +80,28 @@ export async function productSearchFilter(
 ) {
     let postFilter: any = [];
     generateFilter(postFilter, filter);
-
-
-    // add page to queryparams 
-    
-
-    const _response = await searchProducts(
-        {
-            query: searchParam,
-            page: page,
-            limit: productStep,
-            order: sorting,
-            'total-count-mode': 1,
-            'post-filter': postFilter,
-        },
-        contextInstance as any,
+    console.log('currentSorting 2', sorting);
+    const _respons = await searchProductsAdapter(
+        searchParam,
+        contextInstance.config.contextToken,
+        contextInstance.config.languageId,
+        page,
+        productStep,
+        postFilter,
+        sorting,
     );
+    console.log(_respons);
 
-    return _response;
+    // const _response = await searchProducts(
+    //     {
+    //         search: searchParam,
+    //         page: page,
+    //         limit: 10,
+    //         term: searchParam,
+    //         order: sorting,
+    //         'total-count-mode': 1,
+    //     },
+    //     contextInstance as any,
+    // );
+    return _respons.data;
 }

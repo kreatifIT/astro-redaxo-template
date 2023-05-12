@@ -16,7 +16,9 @@ export default function AddCoupon() {
         e.preventDefault();
 
         const formData = new FormData(e.target);
-        const couponCode = formData.get('couponCode');
+        const couponCode = formData.get('couponCode')
+            ? formData.get('couponCode')
+            : ' ';
 
         const _response = await addPromotionCode(
             formData.get('couponCode') as string,
@@ -28,13 +30,17 @@ export default function AddCoupon() {
                     'promotion-not-found'
             ) {
                 setCouponCodeError(
-                    'Der Gutschein-Code "' + couponCode + '" existiert nicht.',
+                    t('coupon_code_does_not_exist').replace(
+                        '%couponCode%',
+                        couponCode as string,
+                    ),
                 );
+
                 setTimeout(() => {
                     setCouponCodeError('');
                 }, 5000);
             } else {
-                setCouponCodeSucces('Coupon wurde hinzugefügt');
+                setCouponCodeSucces(t('coupon_added'));
                 setTimeout(() => {
                     setCouponCodeSucces('');
                 }, 5000);
