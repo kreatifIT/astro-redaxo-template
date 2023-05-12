@@ -4,7 +4,7 @@ import ProductList from '../utils/ProductList';
 import Container from '@utils/grid/Container.astro';
 
 const { itemId, contextInstance, sessionContext } = Astro.props;
-const productStep = 6;
+const productStep = 2;
 
 let activeCatId = itemId || null;
 if (activeCatId == null) {
@@ -20,8 +20,6 @@ const productListing = await getCategoryProducts(
     },
     contextInstance,
 );
-
-const clangCode = Astro.cookies.get('clangCode').value || 'de';
 ---
 
 <Container>
@@ -29,6 +27,5 @@ const clangCode = Astro.cookies.get('clangCode').value || 'de';
         client:only="preact"
         productStep={productStep}
         productListing={productListing}
-        clangCode={clangCode}
     />
 </Container>

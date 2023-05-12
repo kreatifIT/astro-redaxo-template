@@ -3,9 +3,7 @@ import {
     ShopwareApiInstance,
     createInstance,
     getCustomer,
-    getProduct,
     getSeoUrl,
-    getSeoUrls,
     getSessionContext,
 } from '@shopware-pwa/shopware-6-client';
 import { ShopwareURL, getShopwareUrlByLang, langToTarget } from './url';
@@ -27,10 +25,9 @@ import UserPayments from '@components/shopware/modules/UserPayments.astro';
 import UserOrder from '@components/shopware/modules/UserOrder.astro';
 import UserOrderEdit from '@components/shopware/modules/UserOrderEdit.astro';
 import Registration from '@components/shopware/modules/Registration.astro';
+import Search from '@components/shopware/modules/Search.astro';
 
 import { getClangId } from '@helpers/cookies';
-import type { Metadata } from '@adapters/redaxo/@types';
-import { pathToArray } from 'graphql/jsutils/Path';
 
 export const parseEnvironmentMapping = (
     mapping: string,
@@ -263,6 +260,7 @@ const targetToComponent = new Map<ShopwareURL, any>([
     [ShopwareURL.USER_PAYMENTS, UserPayments],
     [ShopwareURL.USER_ORDER, UserOrder],
     [ShopwareURL.USER_ORDER_EDIT, UserOrderEdit],
+    [ShopwareURL.SEARCH, Search],
 ]);
 
 export const getShopwareUrlByAstro = (

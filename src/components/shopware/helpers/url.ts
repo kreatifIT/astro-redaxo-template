@@ -30,6 +30,7 @@ export enum ShopwareURL {
     USER_PAYMENTS,
     USER_ORDER,
     USER_ORDER_EDIT,
+    SEARCH,
 }
 
 export const langToTarget = new Map<string, Map<string, ShopwareURL>>([
@@ -37,6 +38,7 @@ export const langToTarget = new Map<string, Map<string, ShopwareURL>>([
         'de',
         new Map<string, any>([
             ['/', ShopwareURL.SHOP_ROOT],
+            ['search', ShopwareURL.SEARCH],
             ['warenkorb', ShopwareURL.CART],
             ['checkout', ShopwareURL.CHECKOUT],
             ['checkout-finished', ShopwareURL.CHECKOUT_FINISHED],
@@ -58,6 +60,7 @@ export const langToTarget = new Map<string, Map<string, ShopwareURL>>([
         'it',
         new Map<string, any>([
             ['/', ShopwareURL.SHOP_ROOT],
+            ['search', ShopwareURL.SEARCH],
             ['registration', ShopwareURL.REGISTRATION],
             ['warenkorb', ShopwareURL.CART],
             ['checkout', ShopwareURL.CHECKOUT],
@@ -79,6 +82,7 @@ export const langToTarget = new Map<string, Map<string, ShopwareURL>>([
         'en',
         new Map<string, any>([
             ['/', ShopwareURL.SHOP_ROOT],
+            ['search', ShopwareURL.SEARCH],
             ['registration', ShopwareURL.REGISTRATION],
             ['cart', ShopwareURL.CART],
             ['checkout', ShopwareURL.CHECKOUT],

@@ -147,5 +147,9 @@
     "submit": "Absenden",
     "complete_payment": "Zahlung abschließen",
     "personal_whisthlist": "Ihre Wunschliste",
-    "whishlist_not_logged_in": "Bitte loggen Sie sich ein um Ihre Merkliste zu sehen."
+    "whishlist_not_logged_in": "Bitte loggen Sie sich ein um Ihre Merkliste zu sehen.",
+    "suggest_search_result_total": "Produkte gefunden",
+    "suggest_serach_show_more": "Alle Produkte anzeigen",
+    "label_from": "Ab", 
+    "search_result_total": " Zu '%param%' wurden %total% Produkte gefunden"
 }

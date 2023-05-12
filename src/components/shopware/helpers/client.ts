@@ -1,4 +1,3 @@
-import { useStore } from '@nanostores/preact';
 import { ShopwareURL, getShopwareUrlByLang } from './url';
 import { contextStore } from '../utils/shopware-store';
 
