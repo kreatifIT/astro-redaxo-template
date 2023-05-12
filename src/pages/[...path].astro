@@ -8,11 +8,12 @@ import { RedaxoAdapter } from 'redaxo-adapter';
 let { path } = Astro.params;
 path ??= '/';
 if (path === 'sitemap.xml' || path === 'robots.txt') {
-    return Astro.redirect(`${import.meta.env.REDAXO_ROOT}/${path}`, 301);
+    return Astro.redirect(`${import.meta.env.PUBLIC_REDAXO_ROOT}/${path}`, 301);
 }
 RedaxoAdapter.init(
-    import.meta.env.REDAXO_ENDPOINT,
-    import.meta.env.REDAXO_ROOT,
+    import.meta.env.PUBLIC_REDAXO_ENDPOINT,
+    import.meta.env.PUBLIC_REDAXO_ROOT,
+    import.meta.env.REDAXO_SHARED_SECRET,
 );
 const {
     contentType,
