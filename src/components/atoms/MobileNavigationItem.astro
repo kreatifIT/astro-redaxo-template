@@ -1,5 +1,5 @@
 ---
-import type { NavigationItem } from '@adapters/redaxo/@types';
+import type { NavigationItem } from 'redaxo-adapter';
 import Icon from '@utils/Icon';
 interface Props extends NavigationItem {
     children?: NavigationItem[];
@@ -47,7 +47,7 @@ const { url, label, active, children = [] } = Astro.props;
                     {children.map((child) => (
                         <a
                             href={child.url}
-                            class="block py-2 text-gray-600 transition-colors first:mt-0 hover:text-primary"
+                            class="hover:text-primary block py-2 text-gray-600 transition-colors first:mt-0"
                         >
                             {child.label}
                         </a>

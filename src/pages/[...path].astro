@@ -4,14 +4,19 @@ import { getLayoutData } from '@helpers/layout';
 import ModuleList from '@layout/ModuleList.astro';
 import { initShopwareSite } from '@components/shopware/helpers/server';
 import { CLANG_ID_COOKIE_NAME } from '@helpers/cookies';
+import { RedaxoAdapter } from 'redaxo-adapter';
 
 let { path } = Astro.params;
 
 path ??= '/';
 if (path === 'sitemap.xml' || path === 'robots.txt') {
-    return Astro.redirect(`${import.meta.env.REDAXO_ROOT}/${path}`, 301);
+    return Astro.redirect(`${import.meta.env.PUBLIC_REDAXO_ROOT}/${path}`, 301);
 }
-
+RedaxoAdapter.init(
+    import.meta.env.PUBLIC_REDAXO_ENDPOINT,
+    import.meta.env.PUBLIC_REDAXO_ROOT,
+    import.meta.env.REDAXO_SHARED_SECRET,
+);
 const {
     contentType,
     article,

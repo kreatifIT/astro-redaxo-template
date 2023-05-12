@@ -24,12 +24,15 @@ export default defineConfig({
             ],
         },
         define: {
-            'process.env.REDAXO_ENDPOINT': JSON.stringify(
-                process.env.REDAXO_ENDPOINT,
+            'process.env.PUBLIC_REDAXO_ENDPOINT': JSON.stringify(
+                process.env.PUBLIC_REDAXO_ENDPOINT,
             ),
-            'process.env.REDAXO_ROOT': JSON.stringify(process.env.REDAXO_ROOT),
+            'process.env.PUBLIC_REDAXO_ROOT': JSON.stringify(process.env.PUBLIC_REDAXO_ROOT),
             'process.env.FRONTEND_ROOT': JSON.stringify(
                 process.env.FRONTEND_ROOT,
+            ),
+            'process.env.REDAXO_SHARED_SECRET': JSON.stringify(
+                process.env.REDAXO_SHARED_SECRET,
             ),
         },
     },

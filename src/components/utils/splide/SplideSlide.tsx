@@ -4,7 +4,7 @@ import useIubendaPreferences from '@utils/iubenda/useIubendaPreferences';
 import type { JSX } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { splideStore } from './splide-store';
-import type { Media } from '@adapters/redaxo/@types';
+import type { Media } from 'redaxo-adapter';
 
 export interface Props {
     id: string;
