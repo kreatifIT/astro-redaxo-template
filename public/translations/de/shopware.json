@@ -2,7 +2,9 @@
     "add_to_cart": "In den Warenkorb",
     "cart_empty":"Warenkorb ist leer",
     "coupon_code": "Gutschein Code",
-    "apply": "Anwenden",
+    "coupon_added": "Coupon wurde hinzugefügt",
+    "coupon_code_does_not_exist": "Der Gutschein-Code '%couponCode%' existiert nicht.",
+    "apply": "Anwenden", 
     "cart": "Warenkorb",
     "modify_address": "Adresse bearbeiten",
     "save_address": "Adresse bearbeiten",
@@ -151,5 +153,6 @@
     "suggest_search_result_total": "Produkte gefunden",
     "suggest_serach_show_more": "Alle Produkte anzeigen",
     "label_from": "Ab", 
-    "search_result_total": " Zu '%param%' wurden %total% Produkte gefunden"
+    "search_result_total": " Zu '%param%' wurden %total% Produkte gefunden",
+    "suggest_search_result_no_result": "Keine Produkte gefunden"
 }
