@@ -17,8 +17,8 @@ export const setShowOffcanvas = (show: boolean) => {
 const cookies = getSwCookies();
 
 let contextInstance: ShopwareApiInstance = createInstance({
-    endpoint: 'https://sw.kreatif.it', //import.meta.env.SHOPWARE_ENDPOINT,
-    accessToken: 'SWSCNWLLYWLHSW9OZ0QWDJJWCW', // import.meta.env.SHOPWARE_ACCESS_KEY,
+    endpoint: import.meta.env.PUBLIC_SHOPWARE_ENDPOINT,
+    accessToken: import.meta.env.PUBLIC_SHOPWARE_ACCESS_KEY,
     languageId: cookies?.swLangId,
     contextToken: cookies?.contextToken,
 });

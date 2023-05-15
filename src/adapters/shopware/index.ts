@@ -1,7 +1,7 @@
 export type RequestBody = Record<string, any>;
 export default class ShopwareAdapter {
-    private static BASE_URL = 'https://sw.kreatif.it/';
-    private static ACCESS_TOKEN = 'SWSCNWLLYWLHSW9OZ0QWDJJWCW';
+    private static BASE_URL = import.meta.env.PUBLIC_SHOPWARE_ENDPOINT;
+    private static ACCESS_TOKEN = import.meta.env.PUBLIC_SHOPWARE_ACCESS_KEY;
 
     private static executeQuery(
         endpoint: string,

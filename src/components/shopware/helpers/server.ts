@@ -70,8 +70,8 @@ export const initShopwareSite = async (
     let contextToken = Astro.cookies.get('sw-context-token').value;
 
     const contextInstance: ShopwareApiInstance = createInstance({
-        endpoint: import.meta.env.SHOPWARE_ENDPOINT,
-        accessToken: import.meta.env.SHOPWARE_ACCESS_KEY,
+        endpoint: import.meta.env.PUBLIC_SHOPWARE_ENDPOINT,
+        accessToken: import.meta.env.PUBLIC_SHOPWARE_ACCESS_KEY,
         languageId: swLang,
         contextToken: contextToken ? contextToken : undefined,
     });
