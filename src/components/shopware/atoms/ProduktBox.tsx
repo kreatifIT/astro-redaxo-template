@@ -38,6 +38,7 @@ export default function ProductBox({ product }: Props) {
                                 ? product.cover.media.alt
                                 : product.cover.media.fileName
                         }
+                        class="mx-auto max-h-36"
                     />
 
                     <p class="font-bold">{product.translated.name}</p>

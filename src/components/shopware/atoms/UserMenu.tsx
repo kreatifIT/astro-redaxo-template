@@ -24,8 +24,7 @@ export default function UserMenu() {
     return (
         <>
             <h2 class="mb-5 border-b pb-2 font-bold">
-                {t('greeting')},{customer?.firstName}
-                {customer?.lastName}
+                {t('greeting')},{customer?.firstName} {customer?.lastName}
             </h2>
             <div class="">
                 <ul>
