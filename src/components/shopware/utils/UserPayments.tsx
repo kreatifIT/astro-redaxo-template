@@ -27,7 +27,7 @@ export default function UserPaymetns({ orderId }: Props) {
     const [successMessage, setSuccessMessage] = useState('');
     const [paymentMethods, setPaymentMethods] = useState<any>([]);
     const [initLoading, setInitLoading] = useState(false);
-    const [currentPaymentMethod, setCurrentPaymentMethod] = useState<any>();
+    const [defaultPaymentMethod, setDefaultPaymentMethod] = useState('');
 
     const clangCode = getClangCodeFromCookie();
     const t = useTranslations(clangCode, 'shopware');
@@ -38,7 +38,7 @@ export default function UserPaymetns({ orderId }: Props) {
 
     useEffect(() => {
         if (customer) {
-            setCurrentPaymentMethod(customer.defaultPaymentMethodId);
+            setDefaultPaymentMethod(customer.defaultPaymentMethodId);
         }
     }, [customer]);
 
@@ -59,6 +59,8 @@ export default function UserPaymetns({ orderId }: Props) {
         e.preventDefault();
         let contextToken = contextInstance.config.contextToken;
         let swLangId = contextInstance.config.languageId;
+
+        setDefaultPaymentMethod(e.target.value);
 
         const _response = await setCurrentPaymentMethod(
             e.target.value,
@@ -132,7 +134,7 @@ export default function UserPaymetns({ orderId }: Props) {
                                 id={paymentMethod.translated.name}
                                 onChange={(e) => _changeDefaultPaymentMethod(e)}
                                 checked={
-                                    paymentMethod.id === currentPaymentMethod
+                                    paymentMethod.id === defaultPaymentMethod
                                         ? true
                                         : false
                                 }

@@ -27,7 +27,7 @@ export default function ProductBox({ product }: Props) {
                 <a
                     href={
                         getShopwareUrl(ShopwareURL.SHOP_ROOT) +
-                        product.seoUrls[0].seoPathInfo
+                        product.seoUrls?.[0]?.seoPathInfo
                     }
                     title={product.translated.name}
                 >

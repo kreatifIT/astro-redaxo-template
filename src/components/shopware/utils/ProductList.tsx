@@ -65,6 +65,8 @@ export default function ProductList({ productStep, productListing }: Props) {
             setProducts(response.elements);
             setTotal(response.total);
         });
+
+        history.pushState(null, '', `?page=${page}`);
     }, [page, currentSorting, filter]);
 
     return (

@@ -112,8 +112,8 @@ export default function Checkout() {
             const orderPayment = await handlePayment(
                 {
                     orderId: order.id,
-                    finishUrl: finishUrl + '?orderId=' + order.id,
-                    errorUrl: errorUrl + '?error=true',
+                    finishUrl: finishUrl,
+                    errorUrl: errorUrl,
                 },
                 contextInstance as any,
             );

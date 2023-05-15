@@ -7,6 +7,7 @@ import { ShopwareURL } from '../helpers/url';
 import useTranslations from '@helpers/translations/client';
 
 export default function SearchWidget() {
+    const searchLimit = 8;
     const contextInstance = useStore(ShopwareApiInstanceStore);
 
     const [searchResult, setSearchResult] = useState<any>([]);
@@ -26,7 +27,7 @@ export default function SearchWidget() {
             const searchResponse = await searchSuggestedProducts(
                 {
                     query: search,
-                    limit: 2,
+                    limit: searchLimit,
                     'total-count-mode': 1,
                 },
                 contextInstance as any,
@@ -98,7 +99,7 @@ export default function SearchWidget() {
                                             }
                                             title={product.translated.name}
                                         >
-                                            {product.name}
+                                            {product.translated.name}
                                         </a>
                                     </div>
                                 </li>
