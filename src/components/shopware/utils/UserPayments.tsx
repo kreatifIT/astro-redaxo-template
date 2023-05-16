@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
-import {
-    ShopwareApiInstanceStore,
-    contextStore,
-    customerStore,
-} from './shopware-store';
+import { ShopwareApiInstanceStore, customerStore } from './shopware-store';
 import { useStore } from '@nanostores/preact';
 import {
     changeOrderPaymentMethod,
@@ -22,7 +18,6 @@ interface Props {
 export default function UserPaymetns({ orderId }: Props) {
     const customer: any = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const context = useStore(contextStore);
 
     const [successMessage, setSuccessMessage] = useState('');
     const [paymentMethods, setPaymentMethods] = useState<any>([]);
@@ -48,6 +43,7 @@ export default function UserPaymetns({ orderId }: Props) {
             setPaymentMethods: any,
         ) => {
             const _response = await getAvailablePaymentMethods(contextInstance);
+
             setPaymentMethods(_response);
         };
         if (contextInstance) {
@@ -60,8 +56,6 @@ export default function UserPaymetns({ orderId }: Props) {
         let contextToken = contextInstance.config.contextToken;
         let swLangId = contextInstance.config.languageId;
 
-        setDefaultPaymentMethod(e.target.value);
-
         const _response = await setCurrentPaymentMethod(
             e.target.value,
             contextInstance as any,
@@ -69,8 +63,8 @@ export default function UserPaymetns({ orderId }: Props) {
 
         const _responseCustomer = await changeDefaultPaymentMethod(
             e.target.value,
-            contextToken,
-            swLangId,
+            contextToken as string,
+            swLangId as string,
         );
 
         if (orderId) {
@@ -123,34 +117,95 @@ export default function UserPaymetns({ orderId }: Props) {
                     <span class="block sm:inline">{successMessage}</span>
                 </div>
             )}
+
             {paymentMethods?.elements?.map((paymentMethod: any) => (
-                <div class="mb-10">
-                    <div class="flex flex-wrap">
-                        <div class="flex-auto grow-0">
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value={paymentMethod.id}
-                                id={paymentMethod.translated.name}
-                                onChange={(e) => _changeDefaultPaymentMethod(e)}
-                                checked={
-                                    paymentMethod.id === defaultPaymentMethod
-                                        ? true
-                                        : false
-                                }
-                            />
+                <>
+                    <div class="mb-10">
+                        <div class="flex flex-wrap">
+                            <div class="flex-auto grow-0">
+                                <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value={paymentMethod.id}
+                                    id={paymentMethod.translated.name}
+                                    onChange={(e) =>
+                                        _changeDefaultPaymentMethod(e)
+                                    }
+                                    checked={
+                                        paymentMethod.id ===
+                                        defaultPaymentMethod
+                                            ? true
+                                            : false
+                                    }
+                                />
+                            </div>
+                            <div class="ml-5 flex-1">
+                                <label
+                                    class="font-bold"
+                                    for={paymentMethod.translated.name}
+                                >
+                                    {paymentMethod.translated.name}
+                                </label>
+                                <p>{paymentMethod.translated.description}</p>
+                            </div>
                         </div>
-                        <div class="ml-5 flex-1">
-                            <label
-                                class="font-bold"
-                                for={paymentMethod.translated.name}
-                            >
-                                {paymentMethod.translated.name}
-                            </label>
-                            <p>{paymentMethod.translated.description}</p>
-                        </div>
+
+                        {paymentMethod.id === defaultPaymentMethod &&
+                            paymentMethod.shortName ===
+                                'stripe.shopware_payment.payment_handler.card' && (
+                                <div class="mt-5">
+                                    <form
+                                        method={'POST'}
+                                        id={'stripe-credit-card-form'}
+                                    >
+                                        <div class="flex flex-wrap">
+                                            <div class={'w-full pr-5 md:w-1/2'}>
+                                                <label>Karteninhaber *</label>
+                                                <input
+                                                    type="text"
+                                                    required={true}
+                                                    name={'cardholder'}
+                                                    class="mb-3 w-full rounded border border-gray-300 px-4 py-2 leading-tight focus:border-gray-500 focus:bg-white focus:outline-none"
+                                                />
+                                            </div>
+                                            <div class={'w-full pl-5 md:w-1/2'}>
+                                                <label>Kartennummer *</label>
+                                                {/* TODO Kreatidkarten Input feld 4 x 4 Zahlen mit Leerzeichen dazwischen  */}
+                                                <input
+                                                    type="number"
+                                                    max={8}
+                                                    min={8}
+                                                    required={true}
+                                                    name={'cardnumber'}
+                                                    class="mb-3 w-full rounded border border-gray-300 px-4 py-2 leading-tight focus:border-gray-500 focus:bg-white focus:outline-none"
+                                                />
+                                            </div>
+                                            <div class={'w-full pr-5 md:w-1/2'}>
+                                                <label>
+                                                    Gültig bis (Monat/Jahr) *
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    required={true}
+                                                    name={'cardexpiry'}
+                                                    class="mb-3 w-full rounded border border-gray-300 px-4 py-2 leading-tight focus:border-gray-500 focus:bg-white focus:outline-none"
+                                                />
+                                            </div>
+                                            <div class={'w-full pl-5 md:w-1/2'}>
+                                                <label>CSC *</label>
+                                                <input
+                                                    type="text"
+                                                    required={true}
+                                                    name={'cardcvc'}
+                                                    class="mb-3 w-full rounded border border-gray-300 px-4 py-2 leading-tight focus:border-gray-500 focus:bg-white focus:outline-none"
+                                                />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            )}
                     </div>
-                </div>
+                </>
             ))}
         </>
     );

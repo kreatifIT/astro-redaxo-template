@@ -93,6 +93,23 @@ export default function Checkout() {
             return;
         }
 
+        // const creditCardForm = document.getElementById(
+        //     'stripe-credit-card-form',
+        // ) as HTMLFormElement;
+
+        // if (creditCardForm) {
+        //     const formData = new FormData(creditCardForm);
+        //     const cardHolder = formData.get('cardholder') as string,
+        //         cardNumber = formData.get('cardnumber') as string,
+        //         cardExpiry = formData.get('cardexpiry') as string,
+        //         cardCvc = formData.get('cardcvc') as string;
+
+        //     console.log('cardHolder', cardHolder);
+        //     console.log('cardNumber', cardNumber);
+        //     console.log('cardExpiry', cardExpiry);
+        //     console.log('cardCvc', cardCvc);
+        // }
+
         const _response = await createOrder({}, contextInstance as any);
         const order = _response;
 
