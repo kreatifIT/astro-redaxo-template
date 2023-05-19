@@ -13,12 +13,14 @@ const { contextInstance, customer, sessionContext } = Astro.props;
         cartStore,
         contextStore,
         customerStore,
+        customerWhishlistStore,
     } from '@components/shopware/utils/shopware-store';
     import {
         ShopwareApiInstance,
         getCart,
         getCustomer,
         getSessionContext,
+        getWishlistProducts,
     } from '@shopware-pwa/shopware-6-client';
 
     const contextInstance = ShopwareApiInstanceStore.get();
@@ -26,6 +28,7 @@ const { contextInstance, customer, sessionContext } = Astro.props;
     const context = await getSessionContext(contextInstance);
     contextStore.set(context); //addresses
     let customer = null;
+    let customerWhishlist = null;
     if (context.customer) {
         customer = await getCustomer(
             {
@@ -50,9 +53,15 @@ const { contextInstance, customer, sessionContext } = Astro.props;
             },
             contextInstance as ShopwareApiInstance,
         );
+
+        customerWhishlist = await getWishlistProducts(
+            {},
+            contextInstance as ShopwareApiInstance,
+        );
     }
 
     customerStore.set(customer);
+    customerWhishlistStore.set(customerWhishlist);
 
     const cart = await getCart(contextInstance);
     cartStore.set(cart);

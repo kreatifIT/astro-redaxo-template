@@ -2,8 +2,6 @@ import { atom } from 'nanostores';
 import {
     ShopwareApiInstance,
     createInstance,
-    getCustomer,
-    getSessionContext,
 } from '@shopware-pwa/shopware-6-client';
 import { getSwCookies } from '../helpers/cookies';
 import { setSwCookie } from '../helpers/client';
@@ -28,7 +26,6 @@ contextInstance.onConfigChange(({ config }) => {
     if (contextInstance) {
         contextInstance.config = config;
         ShopwareApiInstanceStore.set(contextInstance);
-
         if (config.contextToken) {
             setSwCookie('sw-context-token', config.contextToken);
         }
@@ -38,5 +35,6 @@ contextInstance.onConfigChange(({ config }) => {
 export const ShopwareApiInstanceStore = atom(contextInstance);
 export const contextStore = atom();
 export const customerStore = atom();
+export const customerWhishlistStore = atom();
 export const cartStore = atom(null);
 export const customerWhistListStore = atom(null);

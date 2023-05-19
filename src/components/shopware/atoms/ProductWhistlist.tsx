@@ -1,6 +1,9 @@
 import { useStore } from '@nanostores/preact';
 import { useEffect, useState } from 'preact/hooks';
-import { ShopwareApiInstanceStore } from '../utils/shopware-store';
+import {
+    ShopwareApiInstanceStore,
+    customerWhishlistStore,
+} from '../utils/shopware-store';
 import {
     addWishlistProduct,
     getWishlistProducts,
@@ -18,29 +21,18 @@ interface Props {
  */
 export default function ProductWhistlist({ productId, setLoading }: Props) {
     const contextInstance = useStore(ShopwareApiInstanceStore);
+    const customerWhistList = useStore(customerWhishlistStore);
 
     const [isOnWishlist, setIsOnWishlist] = useState(false);
     const [currentWhistList, setCurrentWhistList]: any = useState([]);
 
     useEffect(() => {
-        currentWhistList?.products?.elements?.map(function (product: any) {
+        customerWhistList?.products?.elements?.map(function (product: any) {
             if (product.id === productId) {
                 setIsOnWishlist(true);
             }
         });
-    }, [currentWhistList]);
-
-    useEffect(() => {
-        const fetchWhistList = async () => {
-            let _respons = await getWishlistProducts(
-                {},
-                contextInstance as any,
-            );
-            setCurrentWhistList(_respons);
-        };
-
-        fetchWhistList();
-    }, []);
+    }, [customerWhistList]);
 
     const addToWhishlist = async () => {
         const _response = await addWishlistProduct(

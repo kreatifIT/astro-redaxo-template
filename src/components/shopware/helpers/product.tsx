@@ -80,7 +80,6 @@ export async function productSearchFilter(
 ) {
     let postFilter: any = [];
     generateFilter(postFilter, filter);
-    console.log('currentSorting 2', sorting);
     const _respons = await searchProductsAdapter(
         searchParam,
         contextInstance.config.contextToken,
@@ -90,18 +89,5 @@ export async function productSearchFilter(
         postFilter,
         sorting,
     );
-    console.log(_respons);
-
-    // const _response = await searchProducts(
-    //     {
-    //         search: searchParam,
-    //         page: page,
-    //         limit: 10,
-    //         term: searchParam,
-    //         order: sorting,
-    //         'total-count-mode': 1,
-    //     },
-    //     contextInstance as any,
-    // );
     return _respons.data;
 }

@@ -62,6 +62,7 @@ export default function Whistlist() {
                                         <img
                                             src={product.cover.media.url}
                                             alt={product.cover.media.alt}
+                                            class="mx-auto max-h-36"
                                         />
                                         <p class="font-bold">
                                             {product.translated.name}

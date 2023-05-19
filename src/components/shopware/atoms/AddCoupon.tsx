@@ -20,33 +20,35 @@ export default function AddCoupon() {
             ? formData.get('couponCode')
             : ' ';
 
-        const _response = await addPromotionCode(
-            formData.get('couponCode') as string,
-            contextInstance as any,
-        ).then((response) => {
-            if (
-                response.errors &&
-                response.errors['promotion-not-found']?.key ===
-                    'promotion-not-found'
-            ) {
-                setCouponCodeError(
-                    t('coupon_code_does_not_exist').replace(
-                        '%couponCode%',
-                        couponCode as string,
-                    ),
-                );
+        if (couponCode?.length >= 2) {
+            const _response = await addPromotionCode(
+                formData.get('couponCode') as string,
+                contextInstance as any,
+            ).then((response) => {
+                if (
+                    response.errors &&
+                    response.errors['promotion-not-found']?.key ===
+                        'promotion-not-found'
+                ) {
+                    setCouponCodeError(
+                        t('coupon_code_does_not_exist').replace(
+                            '%couponCode%',
+                            couponCode as string,
+                        ),
+                    );
 
-                setTimeout(() => {
-                    setCouponCodeError('');
-                }, 5000);
-            } else {
-                setCouponCodeSucces(t('coupon_added'));
-                setTimeout(() => {
-                    setCouponCodeSucces('');
-                }, 5000);
-            }
-            cartStore.set(response);
-        });
+                    setTimeout(() => {
+                        setCouponCodeError('');
+                    }, 5000);
+                } else {
+                    setCouponCodeSucces(t('coupon_added'));
+                    setTimeout(() => {
+                        setCouponCodeSucces('');
+                    }, 5000);
+                }
+                cartStore.set(response);
+            });
+        }
         return false;
     };
 

@@ -31,9 +31,9 @@ export default function ProductBox({ product }: Props) {
                     }
                     title={product.translated.name}
                 >
-                    {product.seoUrls?.[0]?.seoPathInfo
+                    {/* {product.seoUrls?.[0]?.seoPathInfo
                         ? product.seoUrls?.[0].seoPathInfo
-                        : 'keine URL'}
+                        : 'keine URL'} */}
 
                     <img
                         src={getThumbnail(product.cover.media, 400, 400)}

@@ -44,6 +44,7 @@
     "total": "Gesamtsumme",
     "total_netto": "Gesamtnettosumme",
     "excl_vat": "zzgl. %tax%% MwSt.",
+    "incl_vat": " %tax%% MwSt.",
     "use_default_billing_address": "Als Standard-Rechnungsadresse verwenden",
     "default_billing_address": "Standard-Rechnungsadresse",
     "billing_address": "Rechnungsadresse",
@@ -154,5 +155,6 @@
     "suggest_serach_show_more": "Alle Produkte anzeigen",
     "label_from": "Ab", 
     "search_result_total": " Zu '%param%' wurden %total% Produkte gefunden",
-    "suggest_search_result_no_result": "Keine Produkte gefunden"
+    "suggest_search_result_no_result": "Keine Produkte gefunden",
+    "add_coupon": "Gutschein hinzufügen"
 }
