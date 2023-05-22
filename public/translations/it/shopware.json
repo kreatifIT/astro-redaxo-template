@@ -155,5 +155,10 @@
     "suggest_serach_show_more": "Mostra tutti i prodotti",
     "label_from": "Da",
     "search_result_total": " %total% prodotti trovati per '%param%'",
-    "suggest_search_result_no_result": "Nessun prodotto trovato"
+    "suggest_search_result_no_result": "Nessun prodotto trovato",
+    "product_added_to_cart": "Prodotto aggiunto al carrello.",
+    "product_removed_from_cart": "Prodotto rimosso dal carrello.",
+    "product-stock-reached": "Il prodotto %name% esiste solo %amount% volte.",
+    "profile_updated": "Profilo aggiornato",
+    "profile_update_error" : "Non è stato possibile aggiornare il profilo. Si prega di controllare i dati inseriti."
 }
