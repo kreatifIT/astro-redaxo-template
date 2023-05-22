@@ -16,7 +16,6 @@ interface Props {
     configurator: any;
 }
 
-// AddToCart meldung ersteleln wenn OK & Fehlermeldung wenn nicht OK
 // Varianten Filter nur aktiv wenn die komibination möglich ist
 // CrossSelling einbauen
 // nach dem wechseln der varianten Whistlist updaten
@@ -117,7 +116,12 @@ export default function ProductDetail({ product, configurator }: Props) {
                                 </div>
                             )}
                         </h1>
-                        <p>{_product.translated.description}</p>
+
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: _product.translated.description,
+                            }}
+                        />
                         {message && (
                             <div class="relative mb-5 mt-5 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
                                 <span class="block sm:inline">{message}</span>
