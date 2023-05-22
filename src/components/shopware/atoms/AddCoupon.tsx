@@ -4,11 +4,10 @@ import { ShopwareApiInstanceStore, cartStore } from '../utils/shopware-store';
 import { addPromotionCode } from '@shopware-pwa/shopware-6-client';
 import { getClangCodeFromCookie } from '../helpers/client';
 import useTranslations from '@helpers/translations/client';
+import { toast } from 'react-toastify';
 
 export default function AddCoupon() {
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const [couponCodeSucces, setCouponCodeSucces] = useState('');
-    const [couponCodeError, setCouponCodeError] = useState('');
     const clangCode = getClangCodeFromCookie();
     const t = useTranslations(clangCode, 'shopware');
 
@@ -20,7 +19,7 @@ export default function AddCoupon() {
             ? formData.get('couponCode')
             : ' ';
 
-        if (couponCode?.length >= 2) {
+        if (couponCode && couponCode?.length >= 2) {
             const _response = await addPromotionCode(
                 formData.get('couponCode') as string,
                 contextInstance as any,
@@ -30,21 +29,14 @@ export default function AddCoupon() {
                     response.errors['promotion-not-found']?.key ===
                         'promotion-not-found'
                 ) {
-                    setCouponCodeError(
+                    toast.error(
                         t('coupon_code_does_not_exist').replace(
                             '%couponCode%',
                             couponCode as string,
                         ),
                     );
-
-                    setTimeout(() => {
-                        setCouponCodeError('');
-                    }, 5000);
                 } else {
-                    setCouponCodeSucces(t('coupon_added'));
-                    setTimeout(() => {
-                        setCouponCodeSucces('');
-                    }, 5000);
+                    toast.success(t('coupon_added'));
                 }
                 cartStore.set(response);
             });
@@ -59,18 +51,6 @@ export default function AddCoupon() {
                 class="mb-10 mt-10"
                 onSubmit={(e) => addCoupon(e)}
             >
-                {couponCodeSucces && (
-                    <div class="relative mb-5 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
-                        <span class="block sm:inline">{couponCodeSucces}</span>
-                    </div>
-                )}
-
-                {couponCodeError && (
-                    <div class="relative mb-5 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-                        <span class="block sm:inline">{couponCodeError}</span>
-                    </div>
-                )}
-
                 <div class="mb-4 flex items-center">
                     <input
                         type="text"

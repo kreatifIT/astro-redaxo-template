@@ -16,6 +16,7 @@ import HrefLangs from '@layout/head/HrefLangs.astro';
 import SEO from '@layout/head/SEO.astro';
 import ShopwareInit from '@atoms/ShopwareInit.astro';
 import OffcanvasCart from '@components/shopware/utils/OffcanvasCart';
+import Notifycation from '@components/shopware/atoms/Notifycation';
 
 interface Props {
     metadata: Metadata;
@@ -83,5 +84,6 @@ const notify = () => toast('Wow so easy!');
         <Footer siteStartArticle={siteStartArticle} articleId={article?.id} />
 
         <OffcanvasCart client:only="preact" />
+        <Notifycation client:only="preact" />
     </body>
 </html>

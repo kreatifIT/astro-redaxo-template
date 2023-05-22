@@ -11,10 +11,13 @@ if (activeCatId == null) {
     activeCatId = sessionContext.salesChannel.navigationCategoryId;
 }
 
+let page = Astro.url.searchParams.get('page')! || 1;
+page = parseInt(page);
+
 const productListing = await getCategoryProducts(
     activeCatId,
     {
-        p: 1,
+        p: page,
         limit: productStep,
         associations: { seoUrls: ['id', 'pathInfo'], categories: ['id'] },
     },
@@ -24,6 +27,7 @@ const productListing = await getCategoryProducts(
 
 <Container>
     <ProductList
+        currentPage={page}
         client:only="preact"
         productStep={productStep}
         productListing={productListing}

@@ -21,18 +21,18 @@ interface Props {
  */
 export default function ProductWhistlist({ productId, setLoading }: Props) {
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const customerWhistList = useStore(customerWhishlistStore);
+    const customerWhistList: any = useStore(customerWhishlistStore);
 
     const [isOnWishlist, setIsOnWishlist] = useState(false);
-    const [currentWhistList, setCurrentWhistList]: any = useState([]);
 
     useEffect(() => {
+        setIsOnWishlist(false);
         customerWhistList?.products?.elements?.map(function (product: any) {
             if (product.id === productId) {
                 setIsOnWishlist(true);
             }
         });
-    }, [customerWhistList]);
+    }, [customerWhistList, productId]);
 
     const addToWhishlist = async () => {
         const _response = await addWishlistProduct(

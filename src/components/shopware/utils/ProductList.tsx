@@ -14,13 +14,18 @@ import ManufacturerFilter from '../atoms/ManufacturerFilter';
 import Filter from '../atoms/Filter';
 
 interface Props {
+    currentPage: number;
     productStep: number;
     productListing: any;
 }
 
-export default function ProductList({ productStep, productListing }: Props) {
+export default function ProductList({
+    currentPage,
+    productStep,
+    productListing,
+}: Props) {
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(currentPage);
     const [products, setProducts] = useState(productListing.elements);
     const [filter, setFilter] = useState(productListing.currentFilters);
     const [total, setTotal] = useState(productListing.total);
@@ -66,6 +71,7 @@ export default function ProductList({ productStep, productListing }: Props) {
             setTotal(response.total);
         });
 
+        // TODO: add filter to url
         history.pushState(null, '', `?page=${page}`);
     }, [page, currentSorting, filter]);
 

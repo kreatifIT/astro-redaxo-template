@@ -10,6 +10,7 @@ import {
 import { changeDefaultPaymentMethod } from '@adapters/shopware';
 import { getClangCodeFromCookie } from '../helpers/client';
 import useTranslations from '@helpers/translations/client';
+import { toast } from 'react-toastify';
 
 interface Props {
     orderId: string | undefined;
@@ -19,17 +20,11 @@ export default function UserPaymetns({ orderId }: Props) {
     const customer: any = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
 
-    const [successMessage, setSuccessMessage] = useState('');
     const [paymentMethods, setPaymentMethods] = useState<any>([]);
-    const [initLoading, setInitLoading] = useState(false);
     const [defaultPaymentMethod, setDefaultPaymentMethod] = useState('');
 
     const clangCode = getClangCodeFromCookie();
     const t = useTranslations(clangCode, 'shopware');
-
-    if (contextInstance) {
-        setInitLoading(true);
-    }
 
     useEffect(() => {
         if (customer) {
@@ -46,10 +41,8 @@ export default function UserPaymetns({ orderId }: Props) {
 
             setPaymentMethods(_response);
         };
-        if (contextInstance) {
-            _getPaymentMethods(contextInstance, setPaymentMethods);
-        }
-    }, [initLoading]);
+        _getPaymentMethods(contextInstance, setPaymentMethods);
+    }, []);
 
     const _changeDefaultPaymentMethod = async (e: any) => {
         e.preventDefault();
@@ -101,10 +94,7 @@ export default function UserPaymetns({ orderId }: Props) {
 
         customerStore.set(_customer);
 
-        setSuccessMessage('Zahlungsart wurde erfolgreich geändert.');
-        setTimeout(() => {
-            setSuccessMessage('');
-        }, 3000);
+        toast.success(t('payment_method_changed_successfully'));
 
         return false;
     };
@@ -112,11 +102,6 @@ export default function UserPaymetns({ orderId }: Props) {
     return (
         <>
             <h2 class="mb-5 border-b pb-2 font-bold">{t('payment_method')}</h2>
-            {successMessage && (
-                <div class="relative mb-5 mt-5 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
-                    <span class="block sm:inline">{successMessage}</span>
-                </div>
-            )}
 
             {paymentMethods?.elements?.map((paymentMethod: any) => (
                 <>

@@ -12,11 +12,10 @@ import {
 } from '../utils/shopware-store';
 import { getClangCodeFromCookie } from '../helpers/client';
 import useTranslations from '@helpers/translations/client';
+import { toast } from 'react-toastify';
 
 export default function ChangeEmail() {
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const [errorChangeEmail, setErrorChangeEmail] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
 
     const clangCode = getClangCodeFromCookie();
     const t = useTranslations(clangCode, 'shopware');
@@ -36,7 +35,7 @@ export default function ChangeEmail() {
 
         let hasError = false;
         if (email == '' || email != confirm_email) {
-            setErrorChangeEmail(t('error_email_not_match'));
+            toast.error(t('error_email_not_match'));
         } else {
             await updateEmail(
                 {
@@ -46,20 +45,16 @@ export default function ChangeEmail() {
                 } as CustomerUpdateEmailParam,
                 contextInstance as any,
             )
-                .catch((e) => {
-                    setErrorChangeEmail(t('check_input'));
-                    hasError = true;
-                })
                 .then((e: any) => {
-                    if (hasError === false) {
-                        afterEmailChange();
-                        setErrorChangeEmail('');
-                        setSuccessMessage(t('email_successfully_updated'));
-                        afterEmailChange();
-                        setTimeout(() => {
-                            setSuccessMessage('');
-                        }, 5000);
-                    }
+                    afterEmailChange();
+                    toast.success(t('email_successfully_updated'));
+                    afterEmailChange();
+                })
+                .catch((e) => {
+                    e.messages.map((message: any) => {
+                        let key = message.code.split('::')[1].toLowerCase();
+                        toast.error(t(key));
+                    });
                 });
         }
 
@@ -72,52 +67,6 @@ export default function ChangeEmail() {
                 <h2 class="mb-5 border-b pb-2 font-bold">
                     {t('email_address')}
                 </h2>
-
-                {successMessage && (
-                    <>
-                        <div
-                            class="mb-4 flex rounded-lg bg-green-100 p-4 text-sm text-green-700"
-                            role="alert"
-                        >
-                            <svg
-                                class="mr-3 inline h-5 w-5"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                    clip-rule="evenodd"
-                                ></path>
-                            </svg>
-                            <div>{successMessage}</div>
-                        </div>
-                    </>
-                )}
-
-                {errorChangeEmail && (
-                    <>
-                        <div
-                            class="mb-4 flex rounded-lg bg-red-100 p-4 text-sm text-red-700"
-                            role="alert"
-                        >
-                            <svg
-                                class="mr-3 inline h-5 w-5"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                    clip-rule="evenodd"
-                                ></path>
-                            </svg>
-                            <div>{errorChangeEmail}</div>
-                        </div>
-                    </>
-                )}
 
                 <form method="post" onSubmit={(e) => changeEmail(e)}>
                     <div class="flex">

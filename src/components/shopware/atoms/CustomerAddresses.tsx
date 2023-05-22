@@ -14,6 +14,7 @@ import {
 import { getClangCodeFromCookie, getShopwareUrl } from '../helpers/client';
 import { ShopwareURL } from '../helpers/url';
 import useTranslations from '@helpers/translations/client';
+import { toast } from 'react-toastify';
 
 interface Props {
     showChangeBilling: boolean;
@@ -71,7 +72,11 @@ export default function CustomerAddresses({
         await setDefaultCustomerBillingAddress(
             addressId,
             contextInstance as any,
-        );
+        )
+            .then((e) => {
+                toast.success(t('default_billing_address_changed'));
+            })
+            .catch((e) => {});
         getNewCustomer();
         return false;
     };
@@ -81,14 +86,24 @@ export default function CustomerAddresses({
         await setDefaultCustomerShippingAddress(
             addressId,
             contextInstance as any,
-        );
+        ).then((e) => {
+            toast.success(t('default_shipping_address_changed'));
+        });
+
         getNewCustomer();
         return false;
     };
 
     const removeAddress = async (e: any, addressId: string) => {
         e.preventDefault();
-        await deleteCustomerAddress(addressId, contextInstance as any);
+        await deleteCustomerAddress(addressId, contextInstance as any)
+            .then((e) => {
+                toast.success(t('address_removed'));
+            })
+            .catch((e) => {
+                toast.error(t('address_not_removed'));
+            });
+
         getNewCustomer();
         return false;
     };

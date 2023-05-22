@@ -17,6 +17,7 @@ import Tracking from '@layout/head/Tracking.astro';
 import Partytown from '@layout/head/Partytown.astro';
 import SEO from '@layout/head/SEO.astro';
 import { getCategory, getProduct } from '@shopware-pwa/shopware-6-client';
+import Notifycation from '@components/shopware/atoms/Notifycation';
 
 interface Props {
     metadata: Metadata;
@@ -99,6 +100,7 @@ if (itemId) {
         <Partytown />
     </head>
     <body class="overflow-x-hidden pt-16 xl:pt-24">
+        <Notifycation client:only="preact" />
         <Header
             clangs={clangs}
             siteStartArticle={siteStartArticle}

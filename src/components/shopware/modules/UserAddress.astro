@@ -3,7 +3,9 @@ import getTranslations from '@helpers/translations/server';
 import UserMenu from '../atoms/UserMenu';
 import { getClangCodeFromCookie } from '../helpers/client';
 import UserAddress from '../utils/UserAddress';
+import { toast } from 'react-toastify';
 
+// TODO success message anpassen
 const mod = Astro.url.searchParams.get('mod')! || '';
 const clangCode = getClangCodeFromCookie();
 const t = await getTranslations(clangCode, 'shopware');

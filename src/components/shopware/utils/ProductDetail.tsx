@@ -8,15 +8,15 @@ import {
     getClangCodeFromCookie,
     getThumbnail,
 } from '../helpers/client';
-import { getProduct, getProducts } from '@shopware-pwa/shopware-6-client';
+import { getProducts } from '@shopware-pwa/shopware-6-client';
 import useTranslations from '@helpers/translations/client';
+import { toast } from 'react-toastify';
 
 interface Props {
     product: any;
     configurator: any;
 }
 
-// Varianten Filter nur aktiv wenn die komibination möglich ist
 // CrossSelling einbauen
 // nach dem wechseln der varianten Whistlist updaten
 
@@ -24,7 +24,6 @@ export default function ProductDetail({ product, configurator }: Props) {
     const [_product, setProduct] = useState(product);
     const customer = useStore(customerStore);
     const contextInstance = useStore(ShopwareApiInstanceStore);
-    const [message, setMessage] = useState('');
 
     const clangCode = getClangCodeFromCookie();
     const t = useTranslations(clangCode, 'shopware');
@@ -75,20 +74,12 @@ export default function ProductDetail({ product, configurator }: Props) {
                             res.elements[0].seoUrls[0].seoPathInfo,
                         );
                     } else {
-                        setMessage(
-                            'Die Komibination konnte nicht geladen Produktes',
-                        );
+                        toast.error(t('combination_not_available'));
                     }
                 })
                 .catch((err: any) => {
-                    setMessage(
-                        'Die Komibination konnte nicht geladen Produktes',
-                    );
+                    toast.error(t('combination_not_available'));
                 });
-
-            setTimeout(() => {
-                setMessage('');
-            }, 5000);
         }
     };
 
@@ -122,11 +113,6 @@ export default function ProductDetail({ product, configurator }: Props) {
                                 __html: _product.translated.description,
                             }}
                         />
-                        {message && (
-                            <div class="relative mb-5 mt-5 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-                                <span class="block sm:inline">{message}</span>
-                            </div>
-                        )}
                         {configurator.length > 0 && (
                             <div class="mb-5 mt-5">
                                 <form

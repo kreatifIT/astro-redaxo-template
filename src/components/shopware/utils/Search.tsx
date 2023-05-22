@@ -1,7 +1,6 @@
 import { useStore } from '@nanostores/preact';
-import { config, searchProducts } from '@shopware-pwa/shopware-6-client';
 import { useEffect, useState } from 'preact/hooks';
-import { ShopwareApiInstanceStore, contextStore } from './shopware-store';
+import { ShopwareApiInstanceStore } from './shopware-store';
 import ProductBox from '../atoms/ProduktBox';
 import ProductSorting from '../atoms/ProductSorting';
 import { productSearchFilter } from '../helpers/product';
@@ -50,7 +49,6 @@ export default function Search({ limit, results, searchParam }: Props) {
 
     useEffect(() => {
         if (searchParam) {
-            console.log('currentSorting', currentSorting);
             productSearchFilter(
                 searchParam,
                 contextInstance,

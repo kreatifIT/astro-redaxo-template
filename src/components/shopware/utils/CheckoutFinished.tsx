@@ -23,10 +23,6 @@ export default function CheckoutFinished({ orderId }: Props) {
     const clangCode = getClangCodeFromCookie();
     const t = useTranslations(clangCode, 'shopware');
 
-    // if (contextInstance) {
-    //     setLoadOrder(true);
-    // }
-
     useEffect(() => {
         const getOrder = async () => {
             const _response = await getCustomerOrders(

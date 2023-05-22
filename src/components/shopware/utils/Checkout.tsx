@@ -29,12 +29,14 @@ import {
 import ChangeBillingAddress from '../atoms/ChangeBillingAddress';
 import ChangeShippingAddress from '../atoms/ChangeShippingAddress';
 import useTranslations from '@helpers/translations/client';
+import { toast } from 'react-toastify';
 
 export default function Checkout() {
     const contextInstance = useStore(ShopwareApiInstanceStore);
     const cart: any = useStore(cartStore);
+
     const [cartChanged, setCartChanged] = useState(false);
-    const [showMessage, setShowMessage] = useState('');
+
     const clangCode = getClangCodeFromCookie();
     const t = useTranslations(clangCode, 'shopware');
 
@@ -88,7 +90,7 @@ export default function Checkout() {
     const createOrderFromCart = async () => {
         const agbs = document.getElementById('agbs') as HTMLInputElement;
         if (!agbs.checked) {
-            setShowMessage(t('agb_error_text'));
+            toast.error(t('agb_error_text'));
             window.scrollTo(0, 0);
             return;
         }
@@ -170,17 +172,6 @@ export default function Checkout() {
                         setFunction={setChangeShippingAddress}
                         closeOverlay={closeOverlay}
                     />
-                </>
-            )}
-
-            {showMessage && (
-                <>
-                    <div
-                        class="relative mb-3 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
-                        role="alert"
-                    >
-                        {showMessage}
-                    </div>
                 </>
             )}
 

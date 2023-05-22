@@ -13,6 +13,7 @@ import {
 } from '@shopware-pwa/shopware-6-client';
 import { getClangCodeFromCookie } from '../helpers/client';
 import useTranslations from '@helpers/translations/client';
+import { toast } from 'react-toastify';
 
 export default function ChangeProfileData() {
     const customer: any = useStore(customerStore);
@@ -47,7 +48,14 @@ export default function ChangeProfileData() {
                 title: '',
             } as CustomerUpdateProfileParam,
             contextInstance as any,
-        );
+        )
+            .then((response) => {
+                toast.success(t('profile_updated'));
+            })
+            .catch((e) => {
+                toast.error(t('profile_update_error'));
+            });
+
         const context = await getSessionContext(contextInstance as any);
         contextStore.set(context);
         customerStore.set(context.customer);

@@ -7,6 +7,7 @@ import {
 import { addProductToCart } from '@shopware-pwa/shopware-6-client';
 import useTranslations from '@helpers/translations/client';
 import { getClangCodeFromCookie } from '../helpers/client';
+import { toast } from 'react-toastify';
 
 interface Props {
     product: any;
@@ -38,6 +39,22 @@ export default function AddToCart({ product, showQuantity }: Props) {
             contextInstance as any,
         );
 
+        if (response.errors.length === undefined) {
+            toast.error(
+                t(response.errors[Object.keys(response.errors)[0]].messageKey)
+                    .replace(
+                        '%name%',
+                        response.errors[Object.keys(response.errors)[0]].name,
+                    )
+                    .replace(
+                        '%amount%',
+                        response.errors[Object.keys(response.errors)[0]]
+                            .quantity,
+                    ),
+            );
+        } else {
+            toast.success(t('product_added_to_cart'));
+        }
         showOffcanvasStore.set(!_showOffcanvasStore);
         return false;
     };
