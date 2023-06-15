@@ -4,17 +4,20 @@ import { getLayoutData } from '@helpers/layout';
 import ModuleList from '@layout/ModuleList.astro';
 import { CLANG_ID_COOKIE_NAME } from '@helpers/cookies';
 import { RedaxoAdapter } from 'redaxo-adapter';
+import { performLangRedirect } from '@helpers/lang-redirect';
+
+RedaxoAdapter.init(
+    import.meta.env.PUBLIC_REDAXO_ENDPOINT,
+    import.meta.env.PUBLIC_REDAXO_ROOT,
+    import.meta.env.REDAXO_SHARED_SECRET,
+);
 
 let { path } = Astro.params;
 path ??= '/';
 if (path === 'sitemap.xml' || path === 'robots.txt') {
     return Astro.redirect(`${import.meta.env.PUBLIC_REDAXO_ROOT}/${path}`, 301);
 }
-RedaxoAdapter.init(
-    import.meta.env.PUBLIC_REDAXO_ENDPOINT,
-    import.meta.env.PUBLIC_REDAXO_ROOT,
-    import.meta.env.REDAXO_SHARED_SECRET,
-);
+
 const {
     contentType,
     article,
@@ -25,6 +28,10 @@ const {
     siteStartArticle,
 } = await getLayoutData(path, 2);
 Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id);
+const response = performLangRedirect(Astro, currentClang, clangs);
+if (response) {
+    return response;
+}
 ---
 
 <RexLayout
