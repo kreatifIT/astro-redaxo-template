@@ -7,8 +7,8 @@ type Props = {
 
 export default function Icon({ name, class: className }: Props) {
     return (
-        <i className={`icon-element ${name} ${className}`}>
+        <span className={`icon-element ${name} ${className}`}>
             {getIcon(name.replace('iconFont-', ''))}
-        </i>
+        </span>
     );
 }
