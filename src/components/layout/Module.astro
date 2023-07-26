@@ -33,10 +33,10 @@ const values = slice.values as SettingsValues;
 
 <section
     class:list={[
-        values[20].margin_top,
-        values[20].margin_bottom,
-        values[20].padding_top,
-        values[20].padding_bottom,
+        values[20]?.margin_top,
+        values[20]?.margin_bottom,
+        values[20]?.padding_top,
+        values[20]?.padding_bottom,
         'relative',
     ]}
     id={`section-${slice.id}`}
