@@ -14,6 +14,9 @@ export default function RexLink({
     children,
     class: className,
 }: Props) {
+    if (!link) {
+        return null;
+    }
     return (
         <a
             class={className}
