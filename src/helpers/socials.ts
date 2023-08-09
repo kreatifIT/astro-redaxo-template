@@ -10,7 +10,7 @@ const socialMediaClasses = new Map<string, string>([
 ]);
 
 const socialMediaIcons = new Map<string, string>([
-    ['facebook', 'square-facebook'],
+    ['facebook', 'facebook'],
     ['instagram', 'instagram'],
     ['twitter', 'twitter'],
     ['youtube', 'youtube'],
