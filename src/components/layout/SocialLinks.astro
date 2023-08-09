@@ -1,0 +1,41 @@
+---
+import Icon from "@utils/Icon";
+import { getSocialMediaMap } from 'src/helpers/socials';
+import { getSettings, t } from '@helpers/wildcards';
+
+const projectSettings = getSettings(Astro);
+const contact = projectSettings.contact;
+
+const socialMediaMap = getSocialMediaMap(
+    projectSettings.contact?.socials || [],
+);
+
+---
+
+{ (socialMediaMap) && 
+<div>
+    <span>{t(Astro, 'label.follow')}</span>
+    <div class="flex flex-wrap gap-5 mt-1">
+    {
+        contact?.socials &&
+            contact.socials.map((social: { name: string; }) => {
+                const socialMedia = socialMediaMap.get(social.name);
+                if (socialMedia) {
+                    return (
+                        <a
+                            class="cursor-pointer"
+                            href={socialMedia.url}
+                            target="_blank"
+                            title={socialMedia.name}
+                        >
+                            <Icon name={socialMedia.icon} class="text-[26px] leading-none hover:text-primary " />
+                        </a>
+                    );
+                }
+                return null;
+            })
+    }
+    </div>
+</div>
+
+}
