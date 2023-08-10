@@ -1,4 +1,5 @@
 ---
+//import { getArticleMapping } from '@adapters/redaxo/settings';
 import Logo from '@atoms/Logo.astro';
 import Hamburger from '@atoms/Hamburger.astro';
 import MobileNavigation from '@layout/header/MobileNavigation.astro';
@@ -17,9 +18,14 @@ interface Props {
     navigation: INavigationItem[];
     siteStartArticle: Article;
     clangs: Clang[];
+    clang: Clang;
 }
 
-const { navigation, siteStartArticle, clangs } = Astro.props;
+const { navigation, siteStartArticle, clangs, clang } = Astro.props;
+
+//const [privacy] = await Promise.all([
+//    getArticleMapping('privacy_page_id', clangId),
+//]);
 ---
 
 <header
