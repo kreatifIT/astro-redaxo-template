@@ -7,7 +7,7 @@
         "dev": "astro dev --host",
         "start": "astro dev --host",
         "build": "astro build",
-        "preview": "astro preview",
+        "preview": "npm run build && wrangler pages dev ./dist",
         "astro": "astro",
         "format": "prettier --write .",
         "icon-font": "svgtofont --sources ./src/icons --output ./public/fonts/iconFont --fontName iconFont",
@@ -57,6 +57,7 @@
         "svgtofont": "^4.0.0",
         "tailwindcss-hyphens": "^0.1.0",
         "ttf2woff": "^3.0.0",
-        "ttf2woff2": "^5.0.0"
+        "ttf2woff2": "^5.0.0",
+        "wrangler": "^3.5.0"
     }
 }
