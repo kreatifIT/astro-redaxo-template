@@ -2,6 +2,7 @@
 import type { Article, Metadata } from 'redaxo-adapter';
 import { getFullUrl, getLogoUrl } from '@helpers/url';
 import { getSettings } from '@helpers/wildcards';
+import { Schema } from 'astro-seo-schema';
 
 interface Props {
     metadata: Metadata;
@@ -11,14 +12,9 @@ interface Props {
 const settings = getSettings(Astro);
 const { metadata, siteStartArticle } = Astro.props;
 const organizationImage = settings.organization?.images[0];
+
 const schema: any = [
-    {
-        '@context': 'https://schema.org',
-        '@type': 'Organization',
-        name: settings.organization?.name,
-        url: getFullUrl('/'),
-        logo: getLogoUrl(),
-    },
+    {},
     {
         '@context': 'https://schema.org',
         '@type': 'LocalBusiness',
@@ -98,5 +94,51 @@ if (metadata.breadcrumbs?.length > 0) {
 }
 ---
 
-<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}
-></script>
+<Schema
+    item={{
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: settings.organization?.name,
+        url: getFullUrl('/'),
+        logo: getLogoUrl(),
+    }}
+/>
+<Schema
+    item={{
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        name: settings.organization?.name,
+        address: {
+            '@type': 'PostalAddress',
+            streetAddress: settings.organization?.streetAddress,
+            addressLocality: settings.organization?.city,
+            addressRegion: settings.organization?.region,
+            addressCountry: settings.organization?.isoCountryCode,
+            postalCode: settings.organization?.zip,
+        },
+    }}
+/>
+<Schema
+    item={{
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        name: settings.organization?.name,
+        address: {
+            '@type': 'PostalAddress',
+            streetAddress: settings.organization?.streetAddress,
+            addressLocality: settings.organization?.city,
+            addressRegion: settings.organization?.region,
+            addressCountry: settings.organization?.isoCountryCode,
+            postalCode: settings.organization?.zip,
+        },
+        geo: {
+            '@type': 'GeoCoordinates',
+            latitude: settings.contact?.coordinates[0],
+            longitude: settings.contact?.coordinates[1],
+        },
+        url: getFullUrl('/'),
+        image: organizationImage?.src,
+        logo: getLogoUrl(),
+        telephone: settings.contact?.phone,
+    }}
+/>

@@ -3,7 +3,7 @@ import type { Metadata } from 'redaxo-adapter';
 import { getFullUrl } from '@helpers/url';
 import { getSettings } from '@helpers/wildcards';
 import type { TwitterCardType } from 'astro-seo';
-import { SEO } from 'astro-seo';
+import { SEO as AstroSEO } from 'astro-seo';
 
 interface Props {
     metadata: Metadata;
@@ -97,7 +97,7 @@ const SEOData = {
 };
 ---
 
-<SEO
+<AstroSEO
     title={SEOData.title}
     description={SEOData.description}
     noindex={SEOData.noindex}
