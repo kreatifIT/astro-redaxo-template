@@ -7,10 +7,7 @@ export function performLangRedirect(
     clangs: Clang[],
 ): Response | false {
     const hasRedirected = Astro.cookies.get('lang_redirect').boolean();
-    Astro.cookies.set('lang_redirect', '1', {
-        maxAge: 60 * 60 * 24,
-        path: '/',
-    });
+    setLangRedirectCookie(Astro);
     if (hasRedirected) return false;
 
     const browserLangCodes = Astro.request.headers
@@ -36,4 +33,11 @@ export function performLangRedirect(
         return Astro.redirect(browserClang.url, 302);
     }
     return false;
+}
+
+export async function setLangRedirectCookie(Astro: AstroGlobal) {
+    Astro.cookies.set('lang_redirect', '1', {
+        maxAge: 60 * 60 * 24,
+        path: '/',
+    });
 }
