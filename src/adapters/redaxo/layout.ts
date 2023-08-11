@@ -94,6 +94,16 @@ const KREATIF_LAYOUT_QRY = gql`
     ${REX_BREADCRUMB_FRAGMENT}
 `;
 
+const FORWARD_QRY = gql`
+    query Forward($id: ID!) {
+        forward(id: $id) {
+            id
+            status
+            url
+        }
+    }
+`;
+
 export async function getInitialData(
     path: string,
     navigationDepth: number,
@@ -125,4 +135,9 @@ export async function getInitialData(
         wildCards: data.wildCards,
         contentType: data.contentTypeByPath,
     };
+}
+
+export async function getForward(id: string, clangId: string) {
+    const { data } = await RedaxoAdapter.query(FORWARD_QRY, { id }, clangId);
+    return data.forward;
 }

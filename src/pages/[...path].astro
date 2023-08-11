@@ -5,6 +5,7 @@ import ModuleList from '@layout/ModuleList.astro';
 import { CLANG_ID_COOKIE_NAME } from '@helpers/cookies';
 import { RedaxoAdapter } from 'redaxo-adapter';
 import { performLangRedirect } from '@helpers/lang-redirect';
+import { performForward } from '@helpers/forward';
 
 RedaxoAdapter.init(
     import.meta.env.PUBLIC_REDAXO_ENDPOINT,
@@ -15,7 +16,8 @@ RedaxoAdapter.init(
 let { path } = Astro.params;
 path ??= '/';
 
-if (path.substring(path.lastIndexOf('/') + 1).includes('.')) { // exclude file requests
+if (path.substring(path.lastIndexOf('/') + 1).includes('.')) {
+    // exclude file requests
     return new Response();
 }
 
@@ -33,9 +35,13 @@ const {
     siteStartArticle,
 } = await getLayoutData(path, 2);
 Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id);
-const response = performLangRedirect(Astro, currentClang, clangs);
-if (response) {
-    return response;
+const forward = await performForward(contentType, Astro);
+if (forward) {
+    return forward;
+}
+const langRedirect = performLangRedirect(Astro, currentClang, clangs);
+if (langRedirect) {
+    return langRedirect;
 }
 ---
 
