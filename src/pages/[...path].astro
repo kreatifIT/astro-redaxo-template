@@ -2,16 +2,8 @@
 import RexLayout from '@layouts/RexLayout.astro';
 import { getLayoutData } from '@helpers/layout';
 import ModuleList from '@layout/ModuleList.astro';
-import { CLANG_ID_COOKIE_NAME } from '@helpers/cookies';
-import { RedaxoAdapter } from 'redaxo-adapter';
 import { performLangRedirect } from '@helpers/lang-redirect';
 import { performForward } from '@helpers/forward';
-
-RedaxoAdapter.init(
-    import.meta.env.PUBLIC_REDAXO_ENDPOINT,
-    import.meta.env.PUBLIC_REDAXO_ROOT,
-    import.meta.env.REDAXO_SHARED_SECRET,
-);
 
 let { path } = Astro.params;
 path ??= '/';
@@ -33,8 +25,7 @@ const {
     currentClang,
     navigation,
     siteStartArticle,
-} = await getLayoutData(path, 2);
-Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id);
+} = await getLayoutData(Astro, path, 2);
 const forward = await performForward(contentType, Astro);
 if (forward) {
     return forward;

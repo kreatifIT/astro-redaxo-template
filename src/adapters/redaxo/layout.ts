@@ -63,6 +63,7 @@ const KREATIF_LAYOUT_QRY = gql`
                 ...ArticleSliceFragment
             }
         }
+        redaxoLoggedIn
         wildCards {
             id
             wildcard
@@ -116,6 +117,7 @@ export async function getInitialData(
     article: Article;
     wildCards: Wildcard[];
     contentType: ContentType;
+    redaxoLoggedIn: boolean;
 }> {
     const { data } = await RedaxoAdapter.query(
         KREATIF_LAYOUT_QRY,
@@ -128,6 +130,7 @@ export async function getInitialData(
     return {
         clangs: data.contentTypeByPath.clangs,
         navigation: data.rootNavigation,
+        redaxoLoggedIn: data.redaxoLoggedIn,
         siteStartArticle: data.siteStartArticle,
         footerArticle: data.footerArticle,
         projectSettings: data.projectSettings,
