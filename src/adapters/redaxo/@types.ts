@@ -1,4 +1,4 @@
-import type { Clang, Media, Metadata } from 'redaxo-adapter';
+import type { ArticleSlice, Clang, Media, Metadata } from 'redaxo-adapter';
 
 export type ProjectSettings = {
     organization?: {
@@ -53,3 +53,17 @@ export type ContentType = {
     clangs: Clang[];
     metadata: Metadata;
 };
+
+export interface PopupUserInformation {
+    closed: boolean;
+    shownOnce: boolean;
+    currentArticleId: string;
+    lastModified: number;
+}
+
+export interface PopupData {
+    visible: boolean;
+    showReopenButton: boolean;
+    newData: PopupUserInformation;
+    slice: ArticleSlice;
+}

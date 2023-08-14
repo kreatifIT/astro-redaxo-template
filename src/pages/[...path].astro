@@ -5,6 +5,9 @@ import ModuleList from '@layout/ModuleList.astro';
 import { performLangRedirect } from '@helpers/lang-redirect';
 import { performForward } from '@helpers/forward';
 import ArticleLayout from '@layouts/ArticleLayout.astro';
+import PopupsManager from '@utils/popup/PopupsManager.astro';
+import { getPopups } from '@adapters/redaxo/popups';
+import { getPopupData } from '@helpers/popup';
 
 let { path } = Astro.params;
 path ??= '/';
@@ -35,6 +38,8 @@ const langRedirect = performLangRedirect(Astro, currentClang, clangs);
 if (langRedirect) {
     return langRedirect;
 }
+
+//const popups = await getPopupData(Astro, article.id);
 ---
 
 <RexLayout
@@ -52,4 +57,5 @@ if (langRedirect) {
             <ArticleLayout article={article} clang={currentClang} />
         )
     }
+    <!--<PopupsManager {popups} />-->
 </RexLayout>

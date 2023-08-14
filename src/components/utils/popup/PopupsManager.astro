@@ -1,0 +1,59 @@
+---
+import type { PopupData } from '@adapters/redaxo/@types';
+import Popup from './Popup.astro';
+import { parseModuleValues } from 'redaxo-adapter';
+
+interface Props {
+    popups: PopupData[];
+}
+
+const { popups } = Astro.props;
+---
+
+{
+    popups.map(
+        (popup, idx) =>
+            (popup.visible || popup.showReopenButton) && (
+                <div data-popup data-popup-idx={idx}>
+                    <Popup
+                        visible={popup.visible}
+                        showReopenButton={popup.showReopenButton}
+                        slice={{
+                            ...popup.slice,
+                            values: parseModuleValues(popup.slice.values),
+                        }}
+                    />
+                </div>
+            ),
+    )
+}
+
+<script>
+    document.querySelectorAll('[data-popup]').forEach((popup) => {
+        const idx = Number.parseInt(popup.getAttribute('data-popup-idx')!);
+        const close = popup.querySelector('[data-popup-close]');
+        const popupBody = popup.querySelector('[data-popup-body]')!;
+        const popupReopenButton = popup.querySelector('[data-popup-reopen]');
+        close?.addEventListener('click', () => {
+            popupBody.classList.add('hidden');
+            popupReopenButton?.classList.remove('hidden');
+            setClickedData(idx, true);
+        });
+        popupReopenButton?.addEventListener('click', () => {
+            popupBody.classList.remove('hidden');
+            popupReopenButton?.classList.add('hidden');
+            setClickedData(idx, false);
+        });
+    });
+
+    function setClickedData(idx: number, closed: boolean) {
+        const cookieData: string = document.cookie
+            .split('; ')
+            .find((row) => row.startsWith('popup_data='))
+            ?.split('=')[1]!;
+        const cookieParsed = JSON.parse(decodeURIComponent(cookieData));
+        cookieParsed[idx].closed = closed;
+        document.cookie =
+            'popup_data=' + encodeURIComponent(JSON.stringify(cookieParsed));
+    }
+</script>
