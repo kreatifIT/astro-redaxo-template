@@ -39,6 +39,7 @@ const KREATIF_LAYOUT_QRY = gql`
                 id
                 active
                 url
+                online
                 code
             }
         }
@@ -46,6 +47,7 @@ const KREATIF_LAYOUT_QRY = gql`
             id
             name
             url
+            online
             slices {
                 ...ArticleSliceFragment
             }
@@ -109,7 +111,6 @@ export async function getInitialData(
     path: string,
     navigationDepth: number,
 ): Promise<{
-    clangs: Clang[];
     navigation: NavigationItem[];
     siteStartArticle: Article;
     footerArticle: Article;
@@ -128,7 +129,6 @@ export async function getInitialData(
         '1',
     );
     return {
-        clangs: data.contentTypeByPath.clangs,
         navigation: data.rootNavigation,
         redaxoLoggedIn: data.redaxoLoggedIn,
         siteStartArticle: data.siteStartArticle,

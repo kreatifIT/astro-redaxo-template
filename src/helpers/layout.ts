@@ -1,8 +1,9 @@
-import { CLANG_ID_COOKIE_NAME, REDAXO_JWT_COOKIE_NAME } from './cookies';
+import { CLANG_ID_COOKIE_NAME } from './cookies';
 import { getInitialData } from '@adapters/redaxo/layout';
 import WildcardCache from './wildcards';
 import { Clang, RedaxoAdapter } from 'redaxo-adapter';
 import type { AstroGlobal } from 'astro';
+import { REDAXO_JWT_COOKIE_NAME } from './edit-mode';
 
 export async function getLayoutData(
     Astro: AstroGlobal,
@@ -22,7 +23,6 @@ export async function getLayoutData(
         wildCards,
         footerArticle,
         siteStartArticle,
-        clangs,
         navigation,
         article,
         contentType,
@@ -41,7 +41,7 @@ export async function getLayoutData(
         footerArticle,
         siteStartArticle,
         navigation,
-        clangs,
+        clangs: contentType.clangs,
         contentType,
         currentClang,
     };

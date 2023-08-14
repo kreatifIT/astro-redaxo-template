@@ -61,7 +61,11 @@ const {
         />
         <main>
             <slot />
-            {footerArticle && <ModuleList article={footerArticle} />}
+            {
+                footerArticle && (
+                    <ModuleList article={footerArticle} footerModules />
+                )
+            }
         </main>
         <Footer siteStartArticle={siteStartArticle} articleId={article?.id} />
     </body>

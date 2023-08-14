@@ -4,6 +4,7 @@ import { getLayoutData } from '@helpers/layout';
 import ModuleList from '@layout/ModuleList.astro';
 import { performLangRedirect } from '@helpers/lang-redirect';
 import { performForward } from '@helpers/forward';
+import ArticleLayout from '@layouts/ArticleLayout.astro';
 
 let { path } = Astro.params;
 path ??= '/';
@@ -46,5 +47,9 @@ if (langRedirect) {
     siteStartArticle={siteStartArticle}
     path={path}
 >
-    {contentType.type === 'article' && <ModuleList article={article} />}
+    {
+        contentType.type === 'article' && (
+            <ArticleLayout article={article} clang={currentClang} />
+        )
+    }
 </RexLayout>

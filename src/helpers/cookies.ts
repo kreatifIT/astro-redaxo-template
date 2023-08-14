@@ -1,7 +1,6 @@
 import type { AstroGlobal } from 'astro';
 
 export const CLANG_ID_COOKIE_NAME = 'clang_id';
-export const REDAXO_JWT_COOKIE_NAME = 'redaxo_jwt';
 
 export const parseCookieData = (key: string) => {
     const cookie = document.cookie
@@ -19,8 +18,4 @@ export function getClangId(Astro?: AstroGlobal): string {
             'Please provide AstroGlobal or run this function on client side',
         );
     return parseCookieData(CLANG_ID_COOKIE_NAME) || '';
-}
-
-export function isRedaxoLoggedIn(Astro: AstroGlobal): boolean {
-    return !!Astro.cookies.get(REDAXO_JWT_COOKIE_NAME).value;
 }
