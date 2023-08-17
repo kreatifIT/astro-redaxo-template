@@ -1,13 +1,8 @@
 ---
 import RexLayout from '@layouts/RexLayout.astro';
 import { getLayoutData } from '@helpers/layout';
-import ModuleList from '@layout/ModuleList.astro';
-import { performLangRedirect } from '@helpers/lang-redirect';
-import { performForward } from '@helpers/forward';
+import { performRedirects } from '@helpers/redirect';
 import ArticleLayout from '@layouts/ArticleLayout.astro';
-import PopupsManager from '@utils/popup/PopupsManager.astro';
-import { getPopups } from '@adapters/redaxo/popups';
-import { getPopupData } from '@helpers/popup';
 
 let { path } = Astro.params;
 path ??= '/';
@@ -30,13 +25,14 @@ const {
     navigation,
     siteStartArticle,
 } = await getLayoutData(Astro, path, 2);
-const forward = await performForward(contentType, Astro);
-if (forward) {
-    return forward;
-}
-const langRedirect = performLangRedirect(Astro, currentClang, clangs);
-if (langRedirect) {
-    return langRedirect;
+const redirect = await performRedirects(
+    contentType,
+    currentClang,
+    clangs,
+    Astro,
+);
+if (redirect) {
+    return redirect;
 }
 
 //const popups = await getPopupData(Astro, article.id);
@@ -59,3 +55,4 @@ if (langRedirect) {
     }
     <!--<PopupsManager {popups} />-->
 </RexLayout>
+ @helpers/redirect
