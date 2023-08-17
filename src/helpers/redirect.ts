@@ -1,7 +1,48 @@
+import { getClangId } from '@helpers/cookies';
+import type { ContentType } from '@adapters/redaxo/@types';
+import { getArticleRedirect, getForward } from '@adapters/redaxo/layout';
 import type { AstroGlobal } from 'astro';
 import type { Clang } from 'redaxo-adapter';
 
-export function performLangRedirect(
+export async function performRedirects(
+    contentType: ContentType,
+    clang: Clang,
+    clangs: Clang[],
+    Astro: AstroGlobal,
+): Promise<Response | null> {
+    const clangId = getClangId(Astro);
+    let result = null;
+
+    switch (contentType.type) {
+        case 'forward':
+            const forward = await getForward(contentType.elementId, clangId);
+            if (forward) {
+                result = forward;
+            }
+            break;
+        case 'article_redirect':
+            const redirect = await getArticleRedirect(
+                contentType.elementId,
+                clangId,
+            );
+            if (redirect) {
+                result = redirect;
+            }
+            break;
+    }
+
+    if (result) {
+        setLangRedirectCookie(Astro);
+        return Astro.redirect(result.url, result.status);
+    }
+    const langRedirect = performLangRedirect(Astro, clang, clangs);
+    if (langRedirect) {
+        return langRedirect;
+    }
+    return null;
+}
+
+function performLangRedirect(
     Astro: AstroGlobal,
     currentClang: Clang,
     clangs: Clang[],
