@@ -16,7 +16,7 @@ const {
     currentClang,
     navigation,
     siteStartArticle,
-} = await getLayoutData(rexPath, 2);
+} = await getLayoutData(Astro, rexPath, 2);
 
 Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
     path: '/',

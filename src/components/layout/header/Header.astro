@@ -26,7 +26,6 @@ interface Props {
     contextInstance: any;
     sessionContext: any;
     customer: any;
-    clang: Clang;
 }
 
 const {
@@ -36,9 +35,7 @@ const {
     contextInstance,
     sessionContext,
     customer,
-    clang
 } = Astro.props;
-
 
 //const [privacy] = await Promise.all([
 //    getArticleMapping('privacy_page_id', clangId),
