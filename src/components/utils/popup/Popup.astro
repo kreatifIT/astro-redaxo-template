@@ -1,0 +1,29 @@
+---
+import type { ArticleSlice } from 'redaxo-adapter';
+interface Props {
+    slice: ArticleSlice;
+    visible: boolean;
+    showReopenButton: boolean;
+}
+
+interface Values {
+    1: {
+        title_large: string;
+        title_small: string;
+    };
+}
+
+const { slice, visible, showReopenButton } = Astro.props;
+const values = slice.values as Values;
+---
+
+<div>
+    <div class:list={[visible ? '' : 'hidden']} data-popup-body>
+        <div data-popup-close></div>
+    </div>
+    {
+        showReopenButton && (
+            <div class:list={[visible ? 'hidden' : '']} data-popup-reopen />
+        )
+    }
+</div>

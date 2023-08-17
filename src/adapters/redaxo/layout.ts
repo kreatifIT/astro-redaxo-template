@@ -39,6 +39,7 @@ const KREATIF_LAYOUT_QRY = gql`
                 id
                 active
                 url
+                online
                 code
             }
         }
@@ -46,6 +47,7 @@ const KREATIF_LAYOUT_QRY = gql`
             id
             name
             url
+            online
             slices {
                 ...ArticleSliceFragment
             }
@@ -63,6 +65,7 @@ const KREATIF_LAYOUT_QRY = gql`
                 ...ArticleSliceFragment
             }
         }
+        redaxoLoggedIn
         wildCards {
             id
             wildcard
@@ -94,11 +97,28 @@ const KREATIF_LAYOUT_QRY = gql`
     ${REX_BREADCRUMB_FRAGMENT}
 `;
 
+const FORWARD_QRY = gql`
+    query Forward($id: ID!) {
+        forward(id: $id) {
+            status
+            url
+        }
+    }
+`;
+
+const REDIRECT_QRY = gql`
+    query redirect($id: ID!) {
+        articleRedirect(id: $id) {
+            status
+            url
+        }
+    }
+`;
+
 export async function getInitialData(
     path: string,
     navigationDepth: number,
 ): Promise<{
-    clangs: Clang[];
     navigation: NavigationItem[];
     siteStartArticle: Article;
     footerArticle: Article;
@@ -106,6 +126,7 @@ export async function getInitialData(
     article: Article;
     wildCards: Wildcard[];
     contentType: ContentType;
+    redaxoLoggedIn: boolean;
 }> {
     const { data } = await RedaxoAdapter.query(
         KREATIF_LAYOUT_QRY,
@@ -117,8 +138,8 @@ export async function getInitialData(
     );
 
     return {
-        clangs: data.contentTypeByPath?.clangs,
         navigation: data.rootNavigation,
+        redaxoLoggedIn: data.redaxoLoggedIn,
         siteStartArticle: data.siteStartArticle,
         footerArticle: data.footerArticle,
         projectSettings: data.projectSettings,
@@ -126,4 +147,13 @@ export async function getInitialData(
         wildCards: data.wildCards,
         contentType: data.contentTypeByPath,
     };
+}
+
+export async function getForward(id: string, clangId: string) {
+    const { data } = await RedaxoAdapter.query(FORWARD_QRY, { id }, clangId);
+    return data.forward;
+}
+export async function getArticleRedirect(id: string, clangId: string) {
+    const { data } = await RedaxoAdapter.query(REDIRECT_QRY, { id }, clangId);
+    return data.articleRedirect;
 }

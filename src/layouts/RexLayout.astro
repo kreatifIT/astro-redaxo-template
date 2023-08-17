@@ -45,7 +45,6 @@ const {
     sessionContext,
 } = Astro.props;
 
-const notify = () => toast('Wow so easy!');
 ---
 
 <html lang={currentClang.code.toLowerCase()}>
@@ -76,10 +75,15 @@ const notify = () => toast('Wow so easy!');
             contextInstance={contextInstance}
             customer={customer}
             sessionContext={sessionContext}
+            clang={currentClang}
         />
         <main>
             <slot />
-            {footerArticle && <ModuleList article={footerArticle} />}
+            {
+                footerArticle && (
+                    <ModuleList article={footerArticle} footerModules />
+                )
+            }
         </main>
         <Footer siteStartArticle={siteStartArticle} articleId={article?.id} />
 

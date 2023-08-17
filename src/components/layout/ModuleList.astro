@@ -7,9 +7,10 @@ import type { Article } from 'redaxo-adapter';
 
 interface Props {
     article: Article;
+    footerModules?: boolean;
 }
 
-const { article } = Astro.props;
+const { article, footerModules } = Astro.props;
 const anchors = article.slices
     .filter((slice) => {
         const values = parseModuleValues(slice.values);
@@ -45,7 +46,11 @@ const anchors = article.slices
         };
 
         return (
-            <Module slice={parsedSlice}>
+            <Module
+                slice={parsedSlice}
+                article={article}
+                footerModule={footerModules}
+            >
                 <Component
                     slice={parsedSlice}
                     article={article}

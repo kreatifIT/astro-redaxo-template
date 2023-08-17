@@ -1,22 +1,24 @@
 ---
 import RexLayout from '@layouts/RexLayout.astro';
 import { getLayoutData } from '@helpers/layout';
-import ModuleList from '@layout/ModuleList.astro';
 import { initShopwareSite } from '@components/shopware/helpers/server';
 import { CLANG_ID_COOKIE_NAME } from '@helpers/cookies';
-import { RedaxoAdapter } from 'redaxo-adapter';
+import { performRedirects } from '@helpers/redirect';
+import ArticleLayout from '@layouts/ArticleLayout.astro';
 
 let { path } = Astro.params;
 
 path ??= '/';
+
+if (path.substring(path.lastIndexOf('/') + 1).includes('.')) {
+    // exclude file requests
+    return new Response();
+}
+
 if (path === 'sitemap.xml' || path === 'robots.txt') {
     return Astro.redirect(`${import.meta.env.PUBLIC_REDAXO_ROOT}/${path}`, 301);
 }
-RedaxoAdapter.init(
-    import.meta.env.PUBLIC_REDAXO_ENDPOINT,
-    import.meta.env.PUBLIC_REDAXO_ROOT,
-    import.meta.env.REDAXO_SHARED_SECRET,
-);
+
 const {
     contentType,
     article,
@@ -25,8 +27,7 @@ const {
     currentClang,
     navigation,
     siteStartArticle,
-} = await getLayoutData(path, 2);
-
+} = await getLayoutData(Astro, path, 2);
 const {
     component: Component,
     data,
@@ -34,11 +35,23 @@ const {
     sessionContext,
     customer,
     itemId,
-    redirect,
+    redirect: _redirect,
 } = await initShopwareSite(Astro, path ?? '/', currentClang.code ?? '');
 Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
     path: '/',
 });
+
+const redirect = await performRedirects(
+    contentType,
+    currentClang,
+    clangs,
+    Astro,
+);
+if (redirect) {
+    return redirect;
+}
+
+//const popups = await getPopupData(Astro, article.id);
 ---
 
 <RexLayout
@@ -54,5 +67,10 @@ Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
     sessionContext={sessionContext}
     customer={customer}
 >
-    {contentType.type === 'article' && <ModuleList article={article} />}
+    {
+        contentType.type === 'article' && (
+            <ArticleLayout article={article} clang={currentClang} />
+        )
+    }
+    <!--<PopupsManager {popups} />-->
 </RexLayout>

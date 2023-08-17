@@ -1,45 +1,35 @@
 ---
-import type { ArticleSlice } from 'redaxo-adapter';
+import { getSliceEditLink } from '@helpers/edit-mode';
+import type { Article, ArticleSlice } from 'redaxo-adapter';
 
 interface Props {
     slice: ArticleSlice;
+    article?: Article;
+    footerModule?: boolean;
 }
 
-interface SettingsValues {
-    20: {
-        margin_top: 'margin-large-top' | 'margin-top' | 'margin-small-top' | '';
-        margin_bottom:
-            | 'margin-large-bottom'
-            | 'margin-bottom'
-            | 'margin-small-bottom'
-            | '';
-        padding_top:
-            | 'padding-large-top'
-            | 'padding-top'
-            | 'padding-small-top'
-            | '';
-        padding_bottom:
-            | 'padding-large-bottom'
-            | 'padding-bottom'
-            | 'padding-small-bottom'
-            | '';
-        theme?: 'dark' | 'gray';
-    };
-}
-
-const { slice } = Astro.props as Props;
-const values = slice.values as SettingsValues;
+const { slice, article, footerModule } = Astro.props as Props;
+const editLink = getSliceEditLink(Astro, footerModule || false, slice, article);
 ---
 
 <section
     class:list={[
-        values[20].margin_top,
-        values[20].margin_bottom,
-        values[20].padding_top,
-        values[20].padding_bottom,
-        'relative',
+        'group relative',
+        'margin-large-top margin-large-bottom',
+        !slice.online ? 'opacity-50' : '',
     ]}
     id={`section-${slice.id}`}
 >
     <slot />
+    {
+        editLink && (
+            <a
+                href={editLink}
+                target="_blank"
+                class="absolute bottom-10 right-10 rounded-md bg-primary px-4 py-1 text-sm font-bold text-white opacity-0 transition-opacity hover:opacity-50 group-hover:opacity-100"
+            >
+                Edit
+            </a>
+        )
+    }
 </section>
