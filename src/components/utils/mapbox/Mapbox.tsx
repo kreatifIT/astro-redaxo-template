@@ -53,6 +53,7 @@ export default function Mapbox({ marker, accessToken }: Props) {
                 longitude={marker.longitude}
                 latitude={marker.latitude}
                 anchor="center"
+                offset={[0, -marker.size[1] / 2]}
                 onClick={onMarkerClick}
             >
                 <img
