@@ -72,6 +72,7 @@ export default function Mapbox({ marker, accessToken }: Props) {
                     closeOnClick={true}
                     closeOnMove={true}
                     anchor="bottom"
+                    offset={[0, -(marker.size[1])]}
                     onClose={() => setMarkerClicked(false)}
                 >
                     <div className="flex flex-col items-center p-4 text-center">
