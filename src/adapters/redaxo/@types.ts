@@ -39,6 +39,7 @@ export type ProjectSettings = {
         facebookDomainVerification?: string;
         linkedInInsightId?: string;
         mapboxAccessToken?: string;
+        recaptchaSiteKey?: string;
     };
 };
 
