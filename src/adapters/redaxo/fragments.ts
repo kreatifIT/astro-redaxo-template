@@ -46,5 +46,6 @@ export const REX_TOKEN_FRAGMENT = gql`
         facebookDomainVerification
         linkedInInsightId
         mapboxAccessToken
+        recaptchaSiteKey
     }
 `;
