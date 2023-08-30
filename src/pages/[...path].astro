@@ -7,7 +7,10 @@ import ArticleLayout from '@layouts/ArticleLayout.astro';
 let { path } = Astro.params;
 path ??= '/';
 
-if (path.substring(path.lastIndexOf('/') + 1).includes('.')) {
+if (
+    path.substring(path.lastIndexOf('/') + 1).includes('.') ||
+    path.startsWith('node_modules/')
+) {
     // exclude file requests
     return new Response();
 }

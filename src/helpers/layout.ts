@@ -30,9 +30,13 @@ export async function getLayoutData(
     } = await getInitialData(path, navigationDepth);
     const currentClang = contentType.clangs.find((c) => c.active) as Clang;
     WildcardCache.prepareCache(wildCards, projectSettings, currentClang.id);
-    Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id);
+    Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
+        path: '/',
+    });
     if (redaxoLoggedIn) {
-        Astro.cookies.set(REDAXO_JWT_COOKIE_NAME, redaxoJwt || '');
+        Astro.cookies.set(REDAXO_JWT_COOKIE_NAME, redaxoJwt || '', {
+            path: '/',
+        });
     } else {
         Astro.cookies.delete(REDAXO_JWT_COOKIE_NAME);
     }
