@@ -1,24 +1,26 @@
 ---
+import Aos from '@utils/aos/Aos';
 import { getSliceEditLink } from '@helpers/edit-mode';
 import type { Article, ArticleSlice } from 'redaxo-adapter';
-
 interface Props {
     slice: ArticleSlice;
     article?: Article;
     footerModule?: boolean;
 }
 
+const executeAos = false;
 const { slice, article, footerModule } = Astro.props as Props;
 const editLink = getSliceEditLink(Astro, footerModule || false, slice, article);
+const isOffline = !slice.online;
 ---
 
+<Aos client:visible showEffect={executeAos}>
 <section
     class:list={[
         'group relative',
-        'margin-large-top margin-large-bottom',
-        !slice.online ? 'opacity-50' : '',
+        isOffline ? 'module-is-offline' : '',
     ]}
-    id={`section-${slice.id}`}
+id={`section-${slice.id}`}
 >
     <slot />
     {
@@ -33,3 +35,27 @@ const editLink = getSliceEditLink(Astro, footerModule || false, slice, article);
         )
     }
 </section>
+</Aos>
+
+
+
+<style lang="scss" is:global>
+    .module-is-offline {
+        & > * {
+            @apply opacity-50 transition-all duration-500;
+        }
+        &:hover {
+            & > * {
+                @apply opacity-10;
+            }
+
+            &:before {
+                @apply opacity-100;
+            }
+        }
+        &:before {
+            content: 'offline';
+            @apply absolute left-10 top-10 rounded-md bg-red-500 px-2 py-1 text-lg font-bold text-white opacity-10 transition-all duration-500;
+        }
+    }
+</style>
