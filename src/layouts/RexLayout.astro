@@ -14,7 +14,8 @@ import Tracking from '@layout/head/Tracking.astro';
 import Partytown from '@layout/head/Partytown.astro';
 import HrefLangs from '@layout/head/HrefLangs.astro';
 import SEO from '@layout/head/SEO.astro';
-
+import ViewTransitions from 'astro/components/ViewTransitions.astro';
+import Recaptcha from '@utils/form/Recaptcha.astro';
 interface Props {
     metadata: Metadata;
     currentClang: Clang;
@@ -51,6 +52,8 @@ const {
         <meta name="generator" content={Astro.generator} />
         <Tracking />
         <Partytown />
+        <ViewTransitions />
+        <Recaptcha />
     </head>
     <body class="overflow-x-hidden pt-16 xl:pt-24">
         <Header

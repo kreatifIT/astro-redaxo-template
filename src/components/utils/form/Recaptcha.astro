@@ -1,0 +1,19 @@
+---
+import { getSettings } from '@helpers/wildcards';
+const siteKey = getSettings(Astro).tokens?.recaptchaSiteKey;
+---
+
+{
+    siteKey && (
+        <>
+            <script
+                src={`https://www.google.com/recaptcha/api.js?render=${siteKey}`}
+                async
+                defer
+            />
+            <script define:vars={{ recaptchaSiteKey: siteKey }}>
+                window.recaptchaSiteKey = recaptchaSiteKey;
+            </script>
+        </>
+    )
+}

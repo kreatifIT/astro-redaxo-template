@@ -15,6 +15,9 @@ export default defineConfig({
             },
         }),
     ],
+    experimental: {
+        viewTransitions: true,
+    },
     vite: {
         ssr: {
             noExternal: [
