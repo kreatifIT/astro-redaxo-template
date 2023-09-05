@@ -24,6 +24,7 @@ export default defineConfig({
                 '@splidejs/react-splide',
                 'react-map-gl',
                 '@splidejs/splide-extension-video',
+                'framer-motion',
             ],
         },
         define: {
