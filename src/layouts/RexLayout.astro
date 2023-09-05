@@ -40,7 +40,8 @@ const {
 
 <html lang={currentClang.code.toLowerCase()}>
     <head>
-        <meta charset="utf-8" />
+        <SEO metadata={metadata} path={path} />
+        <meta name="generator" content={Astro.generator} />
         <HrefLangs clangs={clangs} />
         <Favicons />
         <Iubenda clangs={clangs} />
@@ -48,8 +49,6 @@ const {
             metadata={metadata}
             siteStartArticle={siteStartArticle}
         />
-        <SEO metadata={metadata} path={path} />
-        <meta name="generator" content={Astro.generator} />
         <Tracking />
         <Partytown />
         <ViewTransitions />
