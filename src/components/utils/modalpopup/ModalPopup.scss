@@ -1,0 +1,49 @@
+.modalpopup-wrapper {
+    animation: 150ms ease-in-out forwards modalpopup-in;
+    .inner {
+        animation: 150ms ease-in-out forwards modalpopup-in-inner;
+    }
+}
+
+.modalpopup-wrapper.popup-out {
+    animation: 150ms ease-in-out forwards modalpopup-out;
+    .inner {
+        animation: 150ms ease-in-out forwards modalpopup-out-inner;
+    }
+}
+
+@keyframes modalpopup-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes modalpopup-in-inner {
+    0% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes modalpopup-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes modalpopup-out-inner {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0.9);
+    }
+}
