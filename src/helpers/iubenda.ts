@@ -10,16 +10,16 @@ const BANNER = `
             <div class="iubenda-banner-content iubenda-custom-content" role="document" tabindex="0"> %{banner_content}</div>
             <div class="iubenda-cs-opt-group">
                 <div class="iubenda-cs-opt-group-custom">
-                    <button aria-pressed="false" class="iubenda-cs-accept-btn iubenda-cs-btn-primary" role="button" tabindex="0">
-                        ###label.cookie_banner_accept###
-                    </button>
+                <button aria-pressed="false" class="iubenda-cs-customize-btn" role="button" tabindex="0">
+                ###label.cookie_banner_customize###
+            </button>
                 </div>
                 <div class="iubenda-cs-opt-group-consent">
                     <button aria-pressed="false" class="iubenda-cs-reject-btn iubenda-cs-btn-primary" role="button" tabindex="0">
                         ###label.cookie_banner_reject###
                     </button>
-                    <button aria-pressed="false" class="iubenda-cs-customize-btn" role="button" tabindex="0">
-                        ###label.cookie_banner_customize###
+                    <button aria-pressed="false" class="iubenda-cs-accept-btn iubenda-cs-btn-primary" role="button" tabindex="0">
+                        ###label.cookie_banner_accept###
                     </button>
                 </div>
             </div>
