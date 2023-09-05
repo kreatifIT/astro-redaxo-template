@@ -9,3 +9,8 @@ export type ModuleProps = {
     slice: ArticleSlice;
     article: Article;
 };
+
+export type FormError = {
+    wildcard: string;
+    field: string;
+};

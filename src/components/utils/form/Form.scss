@@ -1,0 +1,50 @@
+label[required] {
+    &:after {
+        content: '*';
+        margin-left: 0.2rem;
+    }
+}
+
+form {
+    @apply text-neutral-500 text-opacity-70 text-lg leading-snug;
+}
+
+select {
+    -webkit-appearance: none;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    @apply opacity-0;
+}
+
+
+input[type="checkbox"] {
+    @apply z-0 relative w-9 h-9 block;
+
+    &:hover {
+        &:after {
+            @apply border-opacity-100;
+        }
+    }
+
+    &:after,
+    &:before {
+        @apply z-10 absolute border-0 left-0 top-0 bottom-0 right-0 block bg-white;
+        content: "";
+    }
+
+    &:after {
+        @apply transition-all border-2 border-zinc-300 border-opacity-50;
+    }
+
+    &:checked {
+        &:after {
+            @apply border-t-0 border-primary scale-50 border-4 border-l-0 -top-1/2 rotate-45;
+        }
+    }
+}
+
+label.floating {
+    @apply absolute text-xs text-opacity-30 top-1.5 left-4 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-show:text-opacity-100 transition-all;
+}
