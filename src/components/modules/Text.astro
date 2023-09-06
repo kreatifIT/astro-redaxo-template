@@ -21,12 +21,13 @@ interface Values {
 const { slice } = Astro.props;
 
 const values = slice.values as Values;
+const link = values[1].link;
 ---
 
 <Container>
     <Heading size="large" text={values[1].title_large} />
     <Heading size="tiny" text={values[1].title_small} />
     {values[1].text && <RichText text={values[1].text} class="text my-2" />}
-    <RexLink link={values[1].link} />
-    <!-- <Button link={values[1].link} /> -->
+    <RexLink link={link} />
+    <!-- <Button link={link} /> -->
 </Container>

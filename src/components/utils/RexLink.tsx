@@ -10,7 +10,7 @@ interface Props {
 
 export default function RexLink({
     link,
-    title,
+    title = link.label,
     children,
     class: className,
 }: Props) {
@@ -21,11 +21,11 @@ export default function RexLink({
         <a
             class={className}
             href={link.url}
-            target={link.target}
             rel="noopener noreferrer"
-            title={title}
+            {...(link.target && { target: link.target })}
+            {...(title && { title })}
         >
             {children ?? link.label}
-        </a>
+        </a >
     );
 }
