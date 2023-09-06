@@ -27,6 +27,7 @@
         "astro-seo": "^0.7.5",
         "astro-seo-schema": "^2.2.0",
         "dotenv": "^16.3.1",
+        "framer-motion": "^10.16.4",
         "graphql": "^16.7.1",
         "graphql-tag": "^2.12.6",
         "mapbox-gl": "^2.15.0",
