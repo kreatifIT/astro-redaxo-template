@@ -1,10 +1,11 @@
 ---
 import type { Link } from 'redaxo-adapter';
 import Container from '@utils/grid/Container.astro';
-import Heading from '@utils/heading/Heading';
 import RexLink from '@utils/RexLink';
+import Button from '@utils/Button';
 import RichText from '@utils/rich-text/RichText';
 import type { ModuleProps } from '@helpers/@types';
+import Heading from '@utils/heading/Heading';
 
 interface Props extends ModuleProps {}
 
@@ -23,8 +24,9 @@ const values = slice.values as Values;
 ---
 
 <Container>
-    <Heading text={values[1].title_large} class="text-2xl font-bold" />
-    <Heading text={values[1].title_small} class="text-xl font-bold" />
+    <Heading size="large" text={values[1].title_large} />
+    <Heading size="tiny" text={values[1].title_small} />
     {values[1].text && <RichText text={values[1].text} class="text my-2" />}
     <RexLink link={values[1].link} />
+    <!-- <Button link={values[1].link} /> -->
 </Container>

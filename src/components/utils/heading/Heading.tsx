@@ -4,7 +4,7 @@ interface Props {
     text?: string;
     class?: string;
     defaultTag?: string;
-    size?: 'small' | 'huge' | 'large' | 'tiny';
+    size?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge';
 }
 
 export default function Heading({
@@ -15,18 +15,21 @@ export default function Heading({
 }: Props) {
     switch (size) {
         case 'tiny':
-            className += ' text-base leading-1';
+            className += ' text-sm md:text-base xl:text-lg';
             break;
         case 'small':
-            className += ' text-2xl font-loose text-black';
+            className += 'text-base md:text-lg xl:text-xl';
+            break;
+        case 'medium':
+            className += 'text-lg md:text-xl xl:text-2xl';
             break;
         case 'large':
             className +=
-                ' text-[31.98px] leading-9 xl:text-[42.63px] xl:leading-[48px]';
+                ' text-xl md:text-2xl xl:text-3xl';
             break;
         case 'xlarge':
             className +=
-                ' text-[31.98px] leading-9 md:text-4xl md:leading-normal xl:text-[56.83px] xl:leading-[64px] text-black';
+                ' text-2xl md:text-3xl  xl:text-4xl';
             break;
     }
     if (!text) return null;
