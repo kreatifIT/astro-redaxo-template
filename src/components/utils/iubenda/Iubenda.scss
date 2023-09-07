@@ -1,20 +1,29 @@
 #iubenda-cs-banner {
     .iubenda-cs-container {
-        
+
+        a {
+            &,
+            &[href] {
+                &:focus,
+                &:hover {
+                    @apply outline-none #{!important};
+                }
+            }
+        }
+    
         .iubenda-cs-content {
             @apply bg-white text-gray-800;
             font-size: 14px !important;
 
-            button {
-                &:focus,
-                &:hover {
-                    @apply outline-none border-transparent;
-                }
-            }
-
             .iubenda-cs-opt-group {
                 button {
                     @apply bg-gray-400 text-gray-800 #{!important};
+
+                    &:focus,
+                    &:hover {
+                        @apply outline-none border-transparent #{!important};
+                    }
+
                     
                     &.iubenda-cs-btn-primary {
                         
@@ -22,7 +31,6 @@
                     }
                 }
             }
-
            
             .iubenda-cs-customize-btn {
                 @apply bg-gray-400 text-gray-800 #{!important};
@@ -96,6 +104,7 @@
             }
         }
     }
+
     &.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom).iubenda-cs-visible {
         .iubenda-cs-container {
             @apply w-auto xl:w-[930px] md:min-w-[35vw] #{!important};
