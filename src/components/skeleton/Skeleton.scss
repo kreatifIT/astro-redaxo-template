@@ -1,0 +1,11 @@
+$pulseTiming: 2s;
+
+@keyframes pulseanim {
+    0% { opacity: 1;}
+    50% { opacity: 0.2;}
+    100% { opacity: 1;}
+  }
+
+[data-skeleton] {
+    animation: pulseanim $pulseTiming ease-in-out infinite;
+}
