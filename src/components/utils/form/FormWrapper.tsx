@@ -46,7 +46,9 @@ export default function FormWrapper<T extends FormDataBase>(
         // },
     ]);
     const formRef = useRef<HTMLFormElement>(null);
-    const scrollFormInit = formRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const scrollFormInit = () => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
     const [success, setSuccess] = useState(false);
     const _onSubmit = (e: any) => {
         RedaxoAdapter.init(import.meta.env.PUBLIC_REDAXO_ENDPOINT, import.meta.env.PUBLIC_REDAXO_ROOT)
@@ -74,6 +76,7 @@ export default function FormWrapper<T extends FormDataBase>(
                     captcha: recaptchaToken,
                 } as T,
             ).then(({ data, errors }: any) => {
+                console.log(data);
                 if (errors && errors.length > 0) {
                     const parsedErrors = parseFormErrors(errors);
                     if (parsedErrors.length === 0) {
@@ -84,17 +87,20 @@ export default function FormWrapper<T extends FormDataBase>(
                     }
                     setErrors(parsedErrors);
                     setLoading(false);
-                    scrollFormInit;
+                    scrollFormInit();
+                    console.log('errors');
                 } else if (data.success) {
                     setErrors([]);
                     setSuccess(true);
                     setLoading(false);
-                    scrollFormInit;
+                    scrollFormInit();
+                    console.log('success');
                 }
             }).catch((error) => {
                 setErrors(parseFormErrors(error));
                 setLoading(false);
-                scrollFormInit;
+                scrollFormInit();
+                console.log('other err or');
             });
         }).catch(() => {
             setErrors([
@@ -104,7 +110,8 @@ export default function FormWrapper<T extends FormDataBase>(
                 }
             ]);
             setLoading(false);
-            scrollFormInit;
+            scrollFormInit();
+            console.log('piter catch');
         });
     };
 
