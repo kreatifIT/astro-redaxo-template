@@ -40,6 +40,23 @@ const footerMenu = await getNavigation(clangId, articleId, 'footer_menu');
                 </Column>
                 <Column class="md:w-6/12 lg:w-3/12">
                     {
+                        contact?.phone && (
+                            <>
+                                {t(Astro, 'label.phone_short')}
+                                <a
+                                    href={`tel:${contact?.phone?.replace(
+                                        /\s/g,
+                                        '',
+                                    )}`}
+                                    class=""
+                                >
+                                    {contact?.phone}
+                                </a>
+                                <br />
+                            </>
+                        )
+                    }
+                    {
                         organization?.vatNumber && (
                             <>
                                 {t(Astro, 'label.vat_short')}:
@@ -79,7 +96,7 @@ const footerMenu = await getNavigation(clangId, articleId, 'footer_menu');
                                 href={item.url}
                                 target={item.internal ? '_self' : '_blank'}
                                 class:list={[
-                                    'hover:text-primary block transition-colors',
+                                    'block transition-colors hover:text-primary',
                                     item.active ? 'text-primary' : '',
                                 ]}
                                 set:html={item.label}
