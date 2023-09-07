@@ -40,7 +40,6 @@ export default function Select({
                 onChange={(e) => {
                     setSelected(e.currentTarget.value);
                 }}
-                value={selected}
                 class={[
                     'border w-full border-zinc-300 border-opacity-50 color-neutral-500 p-2 sm:p-4 placeholder-transparent focus:outline-none focus:shadow-lg focus:border-opacity-100 peer',
                     className,
