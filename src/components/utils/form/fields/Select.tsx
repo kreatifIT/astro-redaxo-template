@@ -37,6 +37,7 @@ export default function Select({
         <div class="relative">
 
             <select name={name}
+                id={name}
                 onChange={(e) => {
                     setSelected(e.currentTarget.value);
                 }}

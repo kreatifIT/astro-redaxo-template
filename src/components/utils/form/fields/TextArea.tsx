@@ -19,6 +19,7 @@ export default function TextArea({
             type="text"
             value={value}
             name={name}
+            id={name}
             rows={3}
             placeholder={placeholder}
             class={[
