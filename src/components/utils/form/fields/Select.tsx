@@ -2,16 +2,16 @@ import { useState } from 'preact/hooks';
 import Icon from "@utils/Icon";
 
 interface Props {
-    items?: any[];
     name: string;
+    items?: any[];
     value?: string;
     class?: string;
     pleaseChoose?: string;
     required?: boolean;
     valueKey?: string;
     labelKey?: string;
-    minMax: [number, number];
-    labelIsValue: string[];
+    minMax?: [number, number];
+    labelIsValue?: string[];
 }
 
 export default function Select({

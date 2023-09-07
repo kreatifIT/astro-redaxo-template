@@ -26,7 +26,9 @@ export default function Checkbox({
                     class=""
                     required={required}
                 />
-                <span class="text-neutral-500 text-opacity-70 text-sm font-light leading-[18.20px]"><RichText text={label} /></span>
+                {
+                    label && <span class="text-neutral-500 text-opacity-70 text-sm font-light leading-[18.20px]"><RichText text={label} /></span>
+                }
             </label>
         </>
     );

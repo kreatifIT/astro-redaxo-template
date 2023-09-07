@@ -5,8 +5,8 @@ interface Props {
     value?: string;
     placeholder?: string;
     class?: string;
-    darkBg?: boolean;
-    type?: 'text' | 'email' | 'password';
+    type?: 'text' | 'email' | 'password' | 'date';
+
 }
 
 export default function Input({
@@ -14,7 +14,6 @@ export default function Input({
     value,
     placeholder,
     class: className,
-    darkBg,
     type = 'text',
 }: Props) {
     const isDateField = type === 'date';
@@ -24,7 +23,7 @@ export default function Input({
                 type={type}
                 value={value}
                 name={name}
-                id={name}
+                name={name}
                 placeholder={placeholder}
                 class={[
                     'font-light border w-full border-zinc-300 border-opacity-50 color-neutral-500 p-4 placeholder-transparent focus:outline-none focus:shadow-lg focus:border-opacity-100 peer',

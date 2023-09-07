@@ -30,7 +30,7 @@ export default function SplideSlide({
     }, [iubendaPreferences, id]);
     const youtubeId = youtubeUrl?.split('v=')[1];
     return (
-        <div
+        <li
             class={'splide__slide'}
             data-splide-youtube={
                 iubendaPreferences && iubendaPreferences[3] ? youtubeId : null
@@ -41,6 +41,6 @@ export default function SplideSlide({
             <div className="splide__slide__container">
                 {image && <Image {...image} />}
             </div>
-        </div>
+        </li>
     );
 }
