@@ -5,8 +5,22 @@ label[data-required] {
     }
 }
 
+$pulseTiming: 2s;
+
+@keyframes pulseanim {
+    0% { opacity: 1;}
+    50% { opacity: 0.2;}
+    100% { opacity: 1;}
+  }
+  
+
 form {
     @apply text-neutral-500 text-opacity-70 text-lg leading-snug;
+
+
+    &.loading {
+        animation: pulseanim $pulseTiming ease-in-out infinite;
+    }
 }
 
 select {
@@ -43,8 +57,4 @@ input[type="checkbox"] {
             @apply border-t-0 border-primary scale-50 border-4 border-l-0 -top-1/2 rotate-45;
         }
     }
-}
-
-label.floating {
-    @apply absolute text-xs text-opacity-30 top-1.5 left-4 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-show:text-opacity-100 transition-all;
 }

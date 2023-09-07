@@ -106,11 +106,10 @@ export default function FormWrapper<T extends FormDataBase>(
             setLoading(false);
             scrollFormInit;
         });
-
     };
 
     return (
-        <form class={[scrollMarginClasses, className].join(' ')} onSubmit={_onSubmit} noValidate ref={formRef}>
+        <form class={[scrollMarginClasses, className, loading ? 'loading' : ''].join(' ')} onSubmit={_onSubmit} noValidate ref={formRef}>
             <Errors errors={errors} wildcards={new Map([
                 ..._wildcards?.entries() ?? [],
                 ...wildcards?.entries() ?? []
