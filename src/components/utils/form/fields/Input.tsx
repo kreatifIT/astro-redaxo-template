@@ -5,8 +5,8 @@ interface Props {
     value?: string;
     placeholder?: string;
     class?: string;
+    min?: string;
     type?: 'text' | 'email' | 'password' | 'date';
-
 }
 
 export default function Input({
@@ -15,16 +15,18 @@ export default function Input({
     placeholder,
     class: className,
     type = 'text',
+    min,
 }: Props) {
-    const isDateField = type === 'date';
+    const isDateField = (type === 'date');
     return (
         <>
             <input
                 type={type}
                 value={value}
                 name={name}
-                name={name}
+                id={name}
                 placeholder={placeholder}
+                {...(isDateField && min && { min })}
                 class={[
                     'font-light border w-full border-zinc-300 border-opacity-50 color-neutral-500 p-4 placeholder-transparent focus:outline-none focus:shadow-lg focus:border-opacity-100 peer',
                     isDateField ? 'pr-10' : '',

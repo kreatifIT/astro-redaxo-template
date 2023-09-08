@@ -29,9 +29,8 @@ select {
 
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-calendar-picker-indicator {
-    @apply opacity-0;
+    @apply absolute right-2 top-1/2 transform w-4 h-4 -translate-y-1/2  border p-1 opacity-0;
 }
-
 
 input[type="checkbox"] {
     @apply z-0 relative w-9 h-9 block;
