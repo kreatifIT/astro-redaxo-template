@@ -95,6 +95,15 @@ export default function FormWrapper<T extends FormDataBase>(
                     setLoading(false);
                     scrollFormInit();
                     console.log('success');
+                } else {
+                    for (var propName in data) {
+                        if (data[propName].hasOwnProperty('success') && (data[propName]['success'] == true)) {
+                            setErrors([]);
+                            setSuccess(true);
+                            setLoading(false);
+                            scrollFormInit();
+                        }
+                    }
                 }
             }).catch((error) => {
                 setErrors(parseFormErrors(error));
