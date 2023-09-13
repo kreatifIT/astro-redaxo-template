@@ -17,7 +17,6 @@ export default function TextArea({
     return (
         <textarea
             type="text"
-            value={value}
             name={name}
             id={name}
             rows={3}
