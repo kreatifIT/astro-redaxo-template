@@ -70,5 +70,15 @@ const {
             }
         </main>
         <Footer siteStartArticle={siteStartArticle} articleId={article?.id} />
+        <script type="text/javascript" defer>
+            document.addEventListener('astro:beforeload', () => {
+                if (
+                    typeof _iub.cs !== 'undefined' &&
+                    typeof _iub.cs.api !== 'undefined'
+                ) {
+                    _iub.cs.api.activateSnippets();
+                }
+            });
+        </script>
     </body>
 </html>

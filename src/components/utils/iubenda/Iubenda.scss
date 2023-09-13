@@ -112,6 +112,10 @@
             .iubenda-banner-content {
                 @apply p-6 focus:outline-none #{!important};
 
+                &:focus {
+                    outline: none!important;
+                }
+
                 #iubenda-cs-title {
                     @apply mt-0 text-base #{!important};
                 }
