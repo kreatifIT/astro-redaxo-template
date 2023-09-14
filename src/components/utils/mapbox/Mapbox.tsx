@@ -31,7 +31,7 @@ export default function Mapbox({ marker, accessToken }: Props) {
     };
     if (!iubendaPreferences || !iubendaPreferences[3])
         return (
-            <div class="flex w-full items-center justify-center bg-gray-100 text-center"></div>
+            <div class="flex w-full h-full items-center justify-center bg-gray-100 text-center"></div>
         );
     return (
         <Map
