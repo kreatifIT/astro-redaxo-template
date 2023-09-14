@@ -31,10 +31,12 @@ export async function getLayoutData(
     const currentClang = contentType.clangs.find((c) => c.active) as Clang;
     WildcardCache.prepareCache(wildCards, projectSettings, currentClang.id);
     Astro.cookies.set(CLANG_ID_COOKIE_NAME, currentClang.id, {
+        sameSite: 'lax',
         path: '/',
     });
     if (redaxoLoggedIn) {
         Astro.cookies.set(REDAXO_JWT_COOKIE_NAME, redaxoJwt || '', {
+            sameSite: 'lax',
             path: '/',
         });
     } else {
