@@ -1,98 +1,68 @@
 {
-    "angle-down-light": {
-        "encodedCode": "\\ea01",
-        "prefix": "iconFont",
-        "className": "iconFont-angle-down-light",
-        "unicode": "&#59905;"
-    },
-    "angle-down-solid": {
-        "encodedCode": "\\ea02",
-        "prefix": "iconFont",
-        "className": "iconFont-angle-down-solid",
-        "unicode": "&#59906;"
-    },
-    "angle-left-solid": {
-        "encodedCode": "\\ea03",
-        "prefix": "iconFont",
-        "className": "iconFont-angle-left-solid",
-        "unicode": "&#59907;"
-    },
-    "angle-right-solid": {
-        "encodedCode": "\\ea04",
-        "prefix": "iconFont",
-        "className": "iconFont-angle-right-solid",
-        "unicode": "&#59908;"
-    },
-    "facebook": {
-        "encodedCode": "\\ea05",
-        "prefix": "iconFont",
-        "className": "iconFont-facebook",
-        "unicode": "&#59909;"
-    },
-    "images-thin": {
-        "encodedCode": "\\ea06",
-        "prefix": "iconFont",
-        "className": "iconFont-images-thin",
-        "unicode": "&#59910;"
-    },
-    "instagram": {
-        "encodedCode": "\\ea07",
-        "prefix": "iconFont",
-        "className": "iconFont-instagram",
-        "unicode": "&#59911;"
-    },
-    "linkedin": {
-        "encodedCode": "\\ea08",
-        "prefix": "iconFont",
-        "className": "iconFont-linkedin",
-        "unicode": "&#59912;"
-    },
-    "paper-plane-solid": {
-        "encodedCode": "\\ea09",
-        "prefix": "iconFont",
-        "className": "iconFont-paper-plane-solid",
-        "unicode": "&#59913;"
-    },
-    "pinterest": {
-        "encodedCode": "\\ea0a",
-        "prefix": "iconFont",
-        "className": "iconFont-pinterest",
-        "unicode": "&#59914;"
-    },
-    "square-envelope-light": {
-        "encodedCode": "\\ea0b",
-        "prefix": "iconFont",
-        "className": "iconFont-square-envelope-light",
-        "unicode": "&#59915;"
-    },
-    "square-envelope-solid": {
-        "encodedCode": "\\ea0c",
-        "prefix": "iconFont",
-        "className": "iconFont-square-envelope-solid",
-        "unicode": "&#59916;"
-    },
-    "square-phone-light": {
-        "encodedCode": "\\ea0d",
-        "prefix": "iconFont",
-        "className": "iconFont-square-phone-light",
-        "unicode": "&#59917;"
-    },
-    "square-phone-solid": {
-        "encodedCode": "\\ea0e",
-        "prefix": "iconFont",
-        "className": "iconFont-square-phone-solid",
-        "unicode": "&#59918;"
-    },
-    "twitter": {
-        "encodedCode": "\\ea0f",
-        "prefix": "iconFont",
-        "className": "iconFont-twitter",
-        "unicode": "&#59919;"
-    },
-    "youtube": {
-        "encodedCode": "\\ea10",
-        "prefix": "iconFont",
-        "className": "iconFont-youtube",
-        "unicode": "&#59920;"
-    }
+  "angle-down-light": {
+    "encodedCode": "\\ea01",
+    "prefix": "iconFont",
+    "className": "iconFont-angle-down-light",
+    "unicode": "&#59905;"
+  },
+  "angle-down-solid": {
+    "encodedCode": "\\ea02",
+    "prefix": "iconFont",
+    "className": "iconFont-angle-down-solid",
+    "unicode": "&#59906;"
+  },
+  "angle-left-solid": {
+    "encodedCode": "\\ea03",
+    "prefix": "iconFont",
+    "className": "iconFont-angle-left-solid",
+    "unicode": "&#59907;"
+  },
+  "angle-right-solid": {
+    "encodedCode": "\\ea04",
+    "prefix": "iconFont",
+    "className": "iconFont-angle-right-solid",
+    "unicode": "&#59908;"
+  },
+  "facebook": {
+    "encodedCode": "\\ea05",
+    "prefix": "iconFont",
+    "className": "iconFont-facebook",
+    "unicode": "&#59909;"
+  },
+  "images-thin": {
+    "encodedCode": "\\ea06",
+    "prefix": "iconFont",
+    "className": "iconFont-images-thin",
+    "unicode": "&#59910;"
+  },
+  "instagram": {
+    "encodedCode": "\\ea07",
+    "prefix": "iconFont",
+    "className": "iconFont-instagram",
+    "unicode": "&#59911;"
+  },
+  "linkedin": {
+    "encodedCode": "\\ea08",
+    "prefix": "iconFont",
+    "className": "iconFont-linkedin",
+    "unicode": "&#59912;"
+  },
+  "pinterest": {
+    "encodedCode": "\\ea09",
+    "prefix": "iconFont",
+    "className": "iconFont-pinterest",
+    "unicode": "&#59913;"
+  },
+  "twitter": {
+    "encodedCode": "\\ea0a",
+    "prefix": "iconFont",
+    "className": "iconFont-twitter",
+    "unicode": "&#59914;"
+  },
+  "youtube": {
+    "encodedCode": "\\ea0b",
+    "prefix": "iconFont",
+    "className": "iconFont-youtube",
+    "unicode": "&#59915;"
+  }
 }

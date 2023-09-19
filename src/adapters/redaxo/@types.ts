@@ -55,16 +55,3 @@ export type ContentType = {
     metadata: Metadata;
 };
 
-export interface PopupUserInformation {
-    closed: boolean;
-    shownOnce: boolean;
-    currentArticleId: string;
-    lastModified: number;
-}
-
-export interface PopupData {
-    visible: boolean;
-    showReopenButton: boolean;
-    newData: PopupUserInformation;
-    slice: ArticleSlice;
-}

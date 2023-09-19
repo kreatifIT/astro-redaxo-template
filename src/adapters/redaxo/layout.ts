@@ -96,25 +96,6 @@ const KREATIF_LAYOUT_QRY = gql`
     ${REX_CONTACT_FRAGMENT}
     ${REX_BREADCRUMB_FRAGMENT}
 `;
-
-const FORWARD_QRY = gql`
-    query Forward($id: ID!) {
-        forward(id: $id) {
-            status
-            url
-        }
-    }
-`;
-
-const REDIRECT_QRY = gql`
-    query redirect($id: ID!) {
-        articleRedirect(id: $id) {
-            status
-            url
-        }
-    }
-`;
-
 export async function getInitialData(
     path: string,
     navigationDepth: number,
@@ -148,11 +129,3 @@ export async function getInitialData(
     };
 }
 
-export async function getForward(id: string, clangId: string) {
-    const { data } = await RedaxoAdapter.query(FORWARD_QRY, { id }, clangId);
-    return data.forward;
-}
-export async function getArticleRedirect(id: string, clangId: string) {
-    const { data } = await RedaxoAdapter.query(REDIRECT_QRY, { id }, clangId);
-    return data.articleRedirect;
-}

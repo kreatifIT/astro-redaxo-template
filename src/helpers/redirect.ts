@@ -1,6 +1,6 @@
 import { getClangId } from '@helpers/cookies';
 import type { ContentType } from '@adapters/redaxo/@types';
-import { getArticleRedirect, getForward } from '@adapters/redaxo/layout';
+import { getArticleRedirect, getForward } from 'redaxo-adapter';
 import type { AstroGlobal } from 'astro';
 import type { Clang } from 'redaxo-adapter';
 
