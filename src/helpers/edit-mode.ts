@@ -5,7 +5,7 @@ import { getClangId } from './cookies';
 export const REDAXO_JWT_COOKIE_NAME = 'redaxo_jwt';
 
 export function isRedaxoLoggedIn(Astro: AstroGlobal): boolean {
-    return !!Astro.cookies.get(REDAXO_JWT_COOKIE_NAME).value;
+    return !!Astro.cookies.get(REDAXO_JWT_COOKIE_NAME)?.value;
 }
 
 export function getSliceEditLink(

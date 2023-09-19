@@ -1,30 +1,21 @@
-import { defineConfig } from 'astro/config';
+import {defineConfig} from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import preact from '@astrojs/preact';
-import partytown from '@astrojs/partytown';
 import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
     integrations: [
-        preact({ compat: true }),
-        tailwind(),
-        partytown({
-            config: {
-                forward: ['dataLayer.push'],
-            },
-        }),
+        preact({compat: true}),
+        tailwind()
     ],
-    experimental: {
-        viewTransitions: true,
-    },
     vite: {
         ssr: {
             noExternal: [
                 '@splidejs/react-splide',
                 'react-map-gl',
                 '@splidejs/splide-extension-video',
-                //'framer-motion',
+                'framer-motion',
             ],
         },
         define: {
@@ -40,6 +31,8 @@ export default defineConfig({
             ),
         },
     },
-    adapter: cloudflare(),
+    adapter: cloudflare({
+        mode: 'advanced'
+    }),
     output: 'server',
 });
