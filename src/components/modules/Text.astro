@@ -1,11 +1,10 @@
 ---
 import type { Link } from 'redaxo-adapter';
-import Container from '@utils/grid/Container.astro';
-import RexLink from '@utils/RexLink';
-import Button from '@utils/Button';
-import RichText from '@utils/rich-text/RichText';
-import type { ModuleProps } from '@helpers/@types';
-import Heading from '@utils/heading/Heading';
+import type {ModuleProps} from "@config/modules";
+import Container from '@layout/Container';
+import Heading from '@atoms/Heading';
+import RichText from '@atoms/rich-text/RichText';
+import RexLink from '@kreatif/starter/components/utils/RexLink';
 
 interface Props extends ModuleProps {}
 

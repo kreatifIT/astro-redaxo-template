@@ -1,49 +1,28 @@
 ---
 import RexLayout from '@layouts/RexLayout.astro';
-import { getLayoutData } from '@helpers/layout';
-import { performRedirects } from '@helpers/redirect';
-import ArticleLayout from '@layouts/ArticleLayout.astro';
-
-let { path } = Astro.params;
-path ??= '/';
-
-if (
-    path.substring(path.lastIndexOf('/') + 1).includes('.') ||
-    path.startsWith('node_modules/')
-) {
-    // exclude file requests
-    return new Response();
-}
-
-if (path === 'sitemap.xml' || path === 'robots.txt') {
-    return Astro.redirect(`${import.meta.env.PUBLIC_REDAXO_ROOT}/${path}`, 301);
-}
+import { initRedaxoAdapter } from '@config/layout';
+import KArticleContent from '@kreatif/starter/components/layout/KArticleContent.astro';
+const { path } = Astro.params;
+import ModuleList from '@layout/ModuleList.astro';
 
 const {
+    redirect,
     contentType,
     article,
     clangs,
+    clang,
     footerArticle,
-    currentClang,
     navigation,
     siteStartArticle,
-} = await getLayoutData(Astro, path, 2);
-const redirect = await performRedirects(
-    contentType,
-    currentClang,
-    clangs,
-    Astro,
-);
+} = await initRedaxoAdapter(Astro, path);
 if (redirect) {
     return redirect;
 }
-
-//const popups = await getPopupData(Astro, article.id);
 ---
 
 <RexLayout
     article={article}
-    currentClang={currentClang}
+    clang={clang}
     metadata={contentType.metadata}
     clangs={clangs}
     footerArticle={footerArticle}
@@ -53,8 +32,11 @@ if (redirect) {
 >
     {
         contentType.type === 'article' && (
-            <ArticleLayout article={article} clang={currentClang} />
+            <KArticleContent
+                clang={clang}
+                article={article!}
+                ModuleListComponent={ModuleList}
+            />
         )
     }
-    <!--<PopupsManager {popups} />-->
 </RexLayout>

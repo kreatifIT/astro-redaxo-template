@@ -1,12 +1,12 @@
 ---
-import Logo from '@atoms/Logo.astro';
-import { getSettings, t } from '@helpers/wildcards';
+import Logo from '../atoms/Logo';
+import { getSettings, t } from '../../../../@kreatif/starter/src/config/wildcards';
 import { getNavigation } from 'redaxo-adapter';
 import type { Article } from 'redaxo-adapter';
-import Container from '@utils/grid/Container.astro';
-import Row from '@utils/grid/Row.astro';
-import Column from '@utils/grid/Column.astro';
-import { getClangId } from '@helpers/cookies';
+import Container from '../../../../@kreatif/starter/components/grid/Container.tsx';
+import Row from '../../../../@kreatif/starter/components/grid/Row.astro';
+import Column from '../../../../@kreatif/starter/components/grid/Column.astro';
+import { getClangId } from '../../config/cookies';
 
 interface Props {
     siteStartArticle: Article;

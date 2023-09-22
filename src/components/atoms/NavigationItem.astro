@@ -1,6 +1,5 @@
 ---
 import type { NavigationItem } from 'redaxo-adapter';
-import Icon from '@utils/Icon';
 interface Props extends NavigationItem {
     children?: NavigationItem[];
 }
@@ -11,12 +10,12 @@ const { url, label, active, internal, children = [] } = Astro.props;
 <li
     data-navigation-item
     class:list={[
-        'relative px-2 xl:px-4 tracking-wide text-sm uppercase before:absolute before:bottom-0 before:left-4 before:right-4 before:bg-primary before:h-[2px] before:scale-x-0 hover:before:scale-x-100 before:transition-transform before:origin-left hover:text-primary',
+        'relative text-sm uppercase tracking-wide',
         active ? 'text-primary before:scale-x-100' : 'text-gray-600',
     ]}
 >
     {
-        children.length < 2 ? (
+        (
             <a
                 href={url}
                 class="block py-2 transition-colors"
@@ -24,65 +23,6 @@ const { url, label, active, internal, children = [] } = Astro.props;
             >
                 {label}
             </a>
-        ) : (
-            <>
-                <span class="block cursor-pointer py-2 transition-colors">
-                    {label}
-                    <span
-                        data-navigation-icon
-                        class="ml-1 inline-block transition-transform"
-                    >
-                        <Icon name="angle-down-light" class="inline-block" />
-                    </span>
-                </span>
-                <ul
-                    class="text-normal invisible absolute bottom-0 left-0 right-0 translate-y-full bg-white p-4 pb-6 normal-case opacity-0 transition-all"
-                    data-sub-navigation
-                >
-                    {children.map((child) => (
-                        <a
-                            href={child.url}
-                            target={internal ? '_self' : '_blank'}
-                            class="hover:text-primary mt-2 block text-center text-gray-600 transition-colors first:mt-0"
-                        >
-                            {child.label}
-                        </a>
-                    ))}
-                </ul>
-            </>
         )
     }
 </li>
-
-<style>
-    .open {
-        @apply visible opacity-100;
-    }
-    .expanded {
-        @apply rotate-180;
-    }
-</style>
-
-<script>
-    document.querySelectorAll('[data-navigation-item]').forEach((item) => {
-        const subnav = item.querySelector('[data-sub-navigation]');
-        const icon = item.querySelector('[data-navigation-icon]');
-        if (!subnav || !icon) return;
-        let openWithHover = false;
-        item.addEventListener('mouseleave', () => {
-            subnav.classList.remove('open');
-            icon.classList.remove('expanded');
-            openWithHover = false;
-        });
-        item.addEventListener('mouseenter', () => {
-            subnav.classList.add('open');
-            icon.classList.add('expanded');
-            openWithHover = true;
-        });
-        item.addEventListener('click', (e) => {
-            if (openWithHover) return;
-            subnav.classList.toggle('open');
-            icon.classList.toggle('expanded');
-        });
-    });
-</script>

@@ -1,10 +1,8 @@
 ---
-import type { ModuleProps } from '@helpers/@types';
-import Column from '@utils/grid/Column.astro';
-import Container from '@utils/grid/Container.astro';
-import Row from '@utils/grid/Row.astro';
-
-interface Props extends ModuleProps {}
+import type {ModuleProps} from "@config/modules";
+import Container from '@layout/Container';
+interface Props extends ModuleProps {
+}
 
 interface Values {
     20: {
@@ -12,36 +10,37 @@ interface Values {
     };
 }
 
-const { slice } = Astro.props;
+const {slice} = Astro.props;
 
 const values = slice.values as Values;
 ---
 
 <Container>
-    <Row class="justify-center">
-        <Column class="lg:w-10/12 xl:w-8/12">
+    <div class="w-full flex justify-center">
+        <div class="lg:w-10/12 xl:w-8/12">
             <div class="privacy-policy">
                 <a
-                    href={`https://www.iubenda.com/privacy-policy/${values[20].iubenda_code}`}
-                    class="iubenda-white no-brand iubenda-embed iub-no-markup iub-body-embed"
-                    title="Privacy Policy">Privacy Policy</a
+                        href={`https://www.iubenda.com/privacy-policy/${values[20].iubenda_code}`}
+                        class="iubenda-white no-brand iubenda-embed iub-no-markup iub-body-embed"
+                        title="Privacy Policy">Privacy Policy</a
                 >
                 <script
-                    type="text/javascript"
-                    src="https://cdn.iubenda.com/iubenda.js"
-                    async
-                    defer></script>
+                        type="text/javascript"
+                        src="https://cdn.iubenda.com/iubenda.js"
+                        async
+                        defer></script>
             </div>
-        </Column>
-    </Row>
+        </div>
+    </div>
 </Container>
 <style is:global lang="scss">
-    .privacy-policy {
-        h1 {
-            @apply mb-5 text-3xl font-bold;
-        }
-        h2 {
-            @apply mb-3 mt-7 text-2xl font-bold;
-        }
+  .privacy-policy {
+    h1 {
+      @apply mb-5 text-3xl font-bold;
     }
+
+    h2 {
+      @apply mb-3 mt-7 text-2xl font-bold;
+    }
+  }
 </style>

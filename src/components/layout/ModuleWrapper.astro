@@ -1,0 +1,16 @@
+---
+import KModuleWrapper from '@kreatif/starter/components/layout/KModuleWrapper.astro';
+import { Article, ArticleSlice } from 'redaxo-adapter';
+interface Props {
+    slice: ArticleSlice;
+    isFooterModule?: boolean;
+    article?: Article;
+}
+
+const props = Astro.props;
+const { slice, isFooterModule, article } = props;
+---
+
+<KModuleWrapper {...props} class="">
+    <slot />
+</KModuleWrapper>

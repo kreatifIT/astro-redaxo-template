@@ -1,18 +1,15 @@
 ---
-//import { getArticleMapping } from '@adapters/redaxo/settings';
-import Logo from '@atoms/Logo.astro';
-import Hamburger from '@atoms/Hamburger.astro';
-import MobileNavigation from '@layout/header/MobileNavigation.astro';
-import NavigationItem from '@atoms/NavigationItem.astro';
-import LanguagePicker from '@layout/LanguagePicker.astro';
 import type {
     Article,
     Clang,
     NavigationItem as INavigationItem,
 } from 'redaxo-adapter';
-import Container from '@utils/grid/Container.astro';
-import Row from '@utils/grid/Row.astro';
-import Column from '@utils/grid/Column.astro';
+
+import Logo from '@atoms/Logo';
+import Hamburger from '@atoms/Hamburger';
+import NavigationItem from '@atoms/NavigationItem.astro';
+import LanguagePicker from '@layout/LanguagePicker.astro';
+import Container from '@layout/Container';
 
 interface Props {
     navigation: INavigationItem[];
@@ -22,10 +19,6 @@ interface Props {
 }
 
 const { navigation, siteStartArticle, clangs, clang } = Astro.props;
-
-//const [privacy] = await Promise.all([
-//    getArticleMapping('privacy_page_id', clangId),
-//]);
 ---
 
 <header
@@ -33,11 +26,11 @@ const { navigation, siteStartArticle, clangs, clang } = Astro.props;
     data-header-section
 >
     <Container>
-        <Row>
-            <Column class="w-5/12 md:w-3/12 xl:w-2/12">
+        <div class="flex gap-6">
+            <div class="w-5/12 md:w-3/12 xl:w-2/12">
                 <Logo siteStartArticle={siteStartArticle} />
-            </Column>
-            <Column class="w-7/12 md:w-9/12 lg:flex-grow-0 xl:w-10/12">
+            </div>
+            <div class="w-7/12 md:w-9/12 lg:flex-grow-0 xl:w-10/12">
                 <nav
                     class="hidden h-full w-full items-center justify-end xl:flex"
                 >
@@ -60,10 +53,9 @@ const { navigation, siteStartArticle, clangs, clang } = Astro.props;
                 <div
                     class="flex h-full w-full items-center justify-end xl:hidden"
                 >
-                    <Hamburger />
-                    <MobileNavigation navigation={navigation} clangs={clangs} />
+                    <Hamburger client:visible />
                 </div>
-            </Column>
-        </Row>
+            </div>
+        </div>
     </Container>
 </header>

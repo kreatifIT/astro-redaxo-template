@@ -1,0 +1,20 @@
+---
+import { Article, Clang } from 'redaxo-adapter';
+import KModuleList from '@kreatif/starter/components/layout/KModuleList.astro';
+import { moduleToComponent } from '@config/modules';
+import ModuleWrapper from '@components/layout/ModuleWrapper.astro';
+
+interface Props {
+    article: Article;
+    isFooterModuleList?: boolean;
+    clang: Clang;
+}
+
+const props = Astro.props;
+---
+
+<KModuleList
+    ModuleWrapperComponent={ModuleWrapper}
+    moduleMapping={moduleToComponent}
+    {...props}
+/>
