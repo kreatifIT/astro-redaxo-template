@@ -1,6 +1,6 @@
 import type { AstroGlobal } from 'astro';
 import type { Clang } from 'redaxo-adapter';
-import { t } from '@helpers/wildcards';
+import { t } from '../../../@kreatif/starter/src/helpers/wildcards';
 import { getClangId } from './cookies';
 
 const BANNER = `
