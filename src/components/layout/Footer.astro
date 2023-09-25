@@ -1,134 +1,122 @@
 ---
-import Logo from '../atoms/Logo';
-import { getSettings, t } from '../../../../@kreatif/starter/src/config/wildcards';
-import { getNavigation } from 'redaxo-adapter';
-import type { Article } from 'redaxo-adapter';
-import Container from '../../../../@kreatif/starter/components/grid/Container.tsx';
-import Row from '../../../../@kreatif/starter/components/grid/Row.astro';
-import Column from '../../../../@kreatif/starter/components/grid/Column.astro';
-import { getClangId } from '../../config/cookies';
+import Logo from '@atoms/Logo';
+import { getSettings, t } from '@kreatif/starter/utils/wildcards';
+import type { Article, NavigationItem } from 'redaxo-adapter';
+import Container from './Container';
 
 interface Props {
     siteStartArticle: Article;
     articleId?: string;
+    footerMenu: NavigationItem[];
 }
-const { siteStartArticle, articleId } = Astro.props;
+const { siteStartArticle, footerMenu } = Astro.props;
 
 const year = new Date().getFullYear();
 
-const clangId = getClangId(Astro);
-
-const projectSettings = getSettings(Astro);
-const organization = projectSettings.organization;
-const contact = projectSettings.contact;
-
-const footerMenu = await getNavigation(clangId, articleId, 'footer_menu');
+const { organization, contact } = getSettings(Astro);
 ---
 
 <footer class="z-1 relative bg-gray-100">
-    <div class="md:py-18 py-12 text-gray-800 lg:py-24">
-        <Container>
-            <Row>
-                <Column class="md:w-6/12 lg:w-3/12">
-                    <Logo siteStartArticle={siteStartArticle} />
-                </Column>
-                <Column class="md:w-6/12 lg:w-3/12">
-                    {organization?.streetAddress}<br />
-                    {organization?.zip}
-                    {organization?.city} ({organization?.region})<br />
-                    {organization?.province} - {organization?.country}<br />
-                </Column>
-                <Column class="md:w-6/12 lg:w-3/12">
-                    {
-                        contact?.phone && (
-                            <>
-                                {t(Astro, 'label.phone_short')}
-                                <a
-                                    href={`tel:${contact?.phone?.replace(
-                                        /\s/g,
-                                        '',
-                                    )}`}
-                                    class=""
-                                >
-                                    {contact?.phone}
-                                </a>
-                                <br />
-                            </>
-                        )
-                    }
-                    {
-                        organization?.vatNumber && (
-                            <>
-                                {t(Astro, 'label.vat_short')}:
-                                {organization?.vatNumber}
-                                <br />
-                            </>
-                        )
-                    }
-                    {
-                        organization?.reaNumber && (
-                            <>
-                                {t(Astro, 'label.rea_nr')}:{' '}
-                                {organization?.reaNumber}
-                                <br />
-                            </>
-                        )
-                    }
-                    {
-                        contact?.emailPec && (
-                            <>
-                                {t(Astro, 'label.pec')}:
-                                <a
-                                    href={`mailto:${contact?.emailPec}`}
-                                    class="font-bold underline underline-offset-2"
-                                >
-                                    {contact?.emailPec}
-                                </a>
-                                <br />
-                            </>
-                        )
-                    }
-                </Column>
-                <Column class="md:w-6/12 lg:w-3/12">
-                    {
-                        footerMenu.map((item) => (
-                            <a
-                                href={item.url}
-                                target={item.internal ? '_self' : '_blank'}
-                                class:list={[
-                                    'block transition-colors hover:text-primary',
-                                    item.active ? 'text-primary' : '',
-                                ]}
-                                set:html={item.label}
-                            />
-                        ))
-                    }
-                    <button
-                        class="iubenda-cs-preferences-link transition-colors hover:text-primary"
-                        >{t(Astro, 'label.cookie_settings')}</button
-                    >
-                </Column>
-            </Row>
-        </Container>
-    </div>
-    <div
-        class="bg-gray-800 py-7 text-sm tracking-wide text-white md:py-9 lg:py-11"
-    >
-        <Container>
-            <div class="justify-between md:flex">
-                <div class="mb-2 md:mb-0">
-                    Copyright &copy; {year}
-                    {organization?.name}
-                </div>
-                <div>
-                    Produced by <a
-                        href="https://www.kreatif.it"
-                        target="_blank"
-                        class="font-bold text-kreatif-green transition-opacity hover:opacity-80"
-                        >Kreatif</a
-                    >
-                </div>
+    <Container>
+        <div class="md:py-18 flex gap-6 py-12 text-gray-800 lg:py-24">
+            <div class="md:w-6/12 lg:w-3/12">
+                <Logo siteStartArticle={siteStartArticle} />
             </div>
-        </Container>
-    </div>
+            <div class="md:w-6/12 lg:w-3/12">
+                {organization?.streetAddress}<br />
+                {organization?.zip}
+                {organization?.city} ({organization?.region})<br />
+                {organization?.province} - {organization?.country}<br />
+            </div>
+            <div class="md:w-6/12 lg:w-3/12">
+                {
+                    contact?.phone && (
+                        <>
+                            {t(Astro, 'label.phone_short')}
+                            <a
+                                href={`tel:${contact?.phone?.replace(
+                                    /\s/g,
+                                    '',
+                                )}`}
+                                class=""
+                            >
+                                {contact?.phone}
+                            </a>
+                            <br />
+                        </>
+                    )
+                }
+                {
+                    organization?.vatNumber && (
+                        <>
+                            {t(Astro, 'label.vat_short')}:
+                            {organization?.vatNumber}
+                            <br />
+                        </>
+                    )
+                }
+                {
+                    organization?.reaNumber && (
+                        <>
+                            {t(Astro, 'label.rea_nr')}:{' '}
+                            {organization?.reaNumber}
+                            <br />
+                        </>
+                    )
+                }
+                {
+                    contact?.emailPec && (
+                        <>
+                            {t(Astro, 'label.pec')}:
+                            <a
+                                href={`mailto:${contact?.emailPec}`}
+                                class="font-bold underline underline-offset-2"
+                            >
+                                {contact?.emailPec}
+                            </a>
+                            <br />
+                        </>
+                    )
+                }
+            </div>
+            <div class="md:w-6/12 lg:w-3/12">
+                {
+                    footerMenu.map((item) => (
+                        <a
+                            href={item.url}
+                            target={item.internal ? '_self' : '_blank'}
+                            class:list={[
+                                'block transition-colors hover:text-primary',
+                                item.active ? 'text-primary' : '',
+                            ]}
+                            set:html={item.label}
+                        />
+                    ))
+                }
+                <button
+                    class="iubenda-cs-preferences-link transition-colors hover:text-primary"
+                    >{t(Astro, 'label.cookie_settings')}</button
+                >
+            </div>
+        </div>
+    </Container>
 </footer>
+
+<div class="bg-gray-800 py-7 text-sm tracking-wide text-white md:py-9 lg:py-11">
+    <Container>
+        <div class="justify-between md:flex">
+            <div class="mb-2 md:mb-0">
+                Copyright &copy; {year}
+                {organization?.name}
+            </div>
+            <div>
+                Produced by <a
+                    href="https://www.kreatif.it"
+                    target="_blank"
+                    class="font-bold text-kreatif-green transition-opacity hover:opacity-80"
+                    >Kreatif</a
+                >
+            </div>
+        </div>
+    </Container>
+</div>

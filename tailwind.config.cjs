@@ -1,6 +1,9 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 /** @type {import('tailwindcss').Config} */
 const config = {
-    content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+    content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+        './node_modules/@kreatif/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',],
     darkMode: 'media',
     options: {},
     plugins: [require('tailwindcss-hyphens')],
@@ -19,6 +22,9 @@ const config = {
                         linkedin: '#0077b5',
                     },
                 },
+                fontFamily: {
+                    sans: ['', ...defaultTheme.fontFamily.sans],
+                }
             },
         },
     },

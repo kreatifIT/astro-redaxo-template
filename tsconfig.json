@@ -5,6 +5,7 @@
         "paths": {
             "@layout/*": ["components/layout/*"],
             "@modules/*": ["components/modules/*"],
+            "@molecules/*": ["components/molecules/*"],
             "@atoms/*": ["components/atoms/*"],
             "@utils/*": ["components/utils/*"],
             "@components/*": ["components/*"],

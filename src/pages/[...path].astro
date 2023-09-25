@@ -1,42 +1,16 @@
 ---
 import RexLayout from '@layouts/RexLayout.astro';
 import { initRedaxoAdapter } from '@config/layout';
-import KArticleContent from '@kreatif/starter/components/layout/KArticleContent.astro';
-const { path } = Astro.params;
-import ModuleList from '@layout/ModuleList.astro';
+import ArticleContent from '@contents/ArticleContent.astro';
 
-const {
-    redirect,
-    contentType,
-    article,
-    clangs,
-    clang,
-    footerArticle,
-    navigation,
-    siteStartArticle,
-} = await initRedaxoAdapter(Astro, path);
+const { path } = Astro.params;
+const data = await initRedaxoAdapter(Astro, path);
+const { redirect, contentType } = data;
 if (redirect) {
     return redirect;
 }
 ---
 
-<RexLayout
-    article={article}
-    clang={clang}
-    metadata={contentType.metadata}
-    clangs={clangs}
-    footerArticle={footerArticle}
-    navigation={navigation}
-    siteStartArticle={siteStartArticle}
-    path={path}
->
-    {
-        contentType.type === 'article' && (
-            <KArticleContent
-                clang={clang}
-                article={article!}
-                ModuleListComponent={ModuleList}
-            />
-        )
-    }
+<RexLayout {...data} metadata={contentType.metadata} path={path}>
+    {contentType.type === 'article' && <ArticleContent {...data} />}
 </RexLayout>

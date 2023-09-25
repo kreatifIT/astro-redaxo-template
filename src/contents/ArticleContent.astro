@@ -1,0 +1,16 @@
+---
+import KArticleContent from '@kreatif/starter/components/layout/KArticleContent.astro';
+import ModuleList from '@layout/ModuleList.astro';
+import { Article, Clang } from 'redaxo-adapter';
+
+interface Props {
+    article: Article;
+    clang: Clang;
+}
+
+const props = Astro.props;
+---
+
+<KArticleContent {...props}>
+    <ModuleList {...props} />
+</KArticleContent>

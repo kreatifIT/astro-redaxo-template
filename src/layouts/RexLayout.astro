@@ -1,14 +1,14 @@
 ---
-import KRexLayout from '@kreatif/starter/components/layout/KRexLayout.astro';
 import '@styles/fonts.scss';
 import '@styles/spacing.scss';
 import '@styles/base.scss';
+import KRexLayout from '@kreatif/starter/components/layout/KRexLayout.astro';
 import type { Article, Clang, Metadata, NavigationItem } from 'redaxo-adapter';
 import ModuleList from '@layout/ModuleList.astro';
 import Favicons from '@layout/head/Favicons.astro';
 import { baseUrl } from '@config/url';
-import Header from '@layout/header/Header.astro';
-import Footer from '../components/layout/Footer.astro';
+import Header from '@layout/Header.astro';
+import Footer from '@layout/Footer.astro';
 interface Props {
     metadata: Metadata;
     clang: Clang;
@@ -18,46 +18,25 @@ interface Props {
     footerArticle: Article;
     path: string;
     article?: Article;
+    footerMenu?: NavigationItem[];
 }
-const {
-    clangs,
-    siteStartArticle,
-    navigation,
-    footerArticle,
-    metadata,
-    clang,
-    path,
-    article,
-} = Astro.props;
+const props = Astro.props;
+const { footerArticle } = props;
 ---
 
-<KRexLayout
-    bodyClass="overflow-x-hidden pt-16 xl:pt-24"
-    metadata={metadata}
-    path={path}
-    clang={clang}
-    clangs={clangs}
-    navigation={navigation}
-    baseUrl={baseUrl}
-    siteStartArticle={siteStartArticle}
->
+<KRexLayout {...props} {baseUrl} bodyClass="overflow-x-hidden pt-16 xl:pt-24">
     <Fragment slot="head">
         <Favicons />
         <link rel="stylesheet" href="/fonts/iconFont/iconFont.scss" />
     </Fragment>
-    <Header
-        navigation={navigation}
-        clangs={clangs}
-        siteStartArticle={siteStartArticle}
-        article={article}
-    />
+    <Header {...props} />
     <main>
         <slot />
-        {footerArticle && <ModuleList article={footerArticle} footerModules />}
+        {
+            footerArticle && (
+                <ModuleList article={footerArticle} footerModules={true} />
+            )
+        }
     </main>
-    <Footer
-        clangs={clangs}
-        siteStartArticle={siteStartArticle}
-        article={article}
-    />
+    <Footer {...props} />
 </KRexLayout>

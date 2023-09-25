@@ -1,13 +1,25 @@
-import {initRedaxoPage as init} from '@kreatif/starter/adapter/init';
-import type {AstroGlobal} from "astro";
+import {
+    kInitRedaxoPage,
+    buildInitialQuery,
+    buildContentTypeFields,
+    buildProjectSettingsFields,
+} from '@kreatif/starter/adapter/init';
+import type { AstroGlobal } from 'astro';
 
-export const initRedaxoAdapter = (Astro: AstroGlobal, path?: string) => init({
-    Astro, redaxoEndpoint: import.meta.env.PUBLIC_REDAXO_ENDPOINT,
-    redaxoRoot: import.meta.env.PUBLIC_REDAXO_ROOT,
-    redaxoSecret: import.meta.env.PUBLIC_REDAXO_SECRET,
-    variables: {
-        navigationDepth: 2,
-        path
-    }
-});
-
+export const initRedaxoAdapter = (Astro: AstroGlobal, path?: string) =>
+    kInitRedaxoPage({
+        Astro,
+        variables: {
+            navigationDepth: 2,
+            path,
+        },
+        redaxo: {
+            endpoint: import.meta.env.PUBLIC_REDAXO_ENDPOINT,
+            root: import.meta.env.PUBLIC_REDAXO_ROOT,
+            secret: import.meta.env.REDAXO_SECRET,
+        },
+        initialQuery: buildInitialQuery({
+            projectSettingsFields: buildProjectSettingsFields({}),
+            contentTypeFields: buildContentTypeFields({}),
+        }),
+    });

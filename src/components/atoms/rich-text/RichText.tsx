@@ -1,7 +1,7 @@
 import './RichText.scss';
 
 interface Props {
-    text: string;
+    text?: string;
     class?: string;
 }
 

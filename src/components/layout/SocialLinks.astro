@@ -1,45 +1,36 @@
 ---
-import Icon from '../../../../@kreatif/starter/components/Icon';
-import { getSocialMediaMap } from '../../config/socials';
-import {
-    getSettings,
-    t,
-} from '../../../../@kreatif/starter/src/config/wildcards';
+import { getSettings } from '@kreatif/starter/utils/wildcards';
+import { getSocialMediaMap } from '@kreatif/starter/utils/socials';
+import Icon from '@atoms/Icon';
 
-const projectSettings = getSettings(Astro);
-const contact = projectSettings.contact;
+const { contact } = getSettings(Astro);
+const { socials = [] } = contact || {};
 
-const socialMediaMap = getSocialMediaMap(
-    projectSettings.contact?.socials || [],
-);
+const socialMediaMap = getSocialMediaMap(socials);
 ---
 
 {
     socialMediaMap && (
-        <div>
-            <span>{t(Astro, 'label.follow')}</span>
-            <div class="mt-1 flex flex-wrap gap-5">
-                {contact?.socials &&
-                    contact.socials.map((social: { name: string }) => {
-                        const socialMedia = socialMediaMap.get(social.name);
-                        if (socialMedia) {
-                            return (
-                                <a
-                                    class="cursor-pointer"
-                                    href={socialMedia.url}
-                                    target="_blank"
-                                    title={socialMedia.name}
-                                >
-                                    <Icon
-                                        name={socialMedia.icon}
-                                        class="text-[26px] leading-none hover:text-primary "
-                                    />
-                                </a>
-                            );
-                        }
-                        return null;
-                    })}
-            </div>
+        <div class="flex flex-wrap gap-5">
+            {socials.map((social: { name: string }) => {
+                const socialMedia = socialMediaMap.get(social.name);
+                if (socialMedia) {
+                    return (
+                        <a
+                            class="cursor-pointer"
+                            href={socialMedia.url}
+                            target="_blank"
+                            title={socialMedia.name}
+                        >
+                            <Icon
+                                name={socialMedia.name}
+                                class="text-[26px] leading-none hover:text-primary "
+                            />
+                        </a>
+                    );
+                }
+                return null;
+            })}
         </div>
     )
 }

@@ -1,5 +1,5 @@
-import Icon from '../../../../@kreatif/starter/components/Icon';
-import RexLink from '../../../../@kreatif/starter/components/RexLink';
+import Icon from '@atoms/Icon';
+import KRexLink from '@kreatif/starter/components/utils/KRexLink';
 import type { Link } from 'redaxo-adapter';
 
 interface Props {
@@ -16,13 +16,12 @@ export default function Button({
     isActive,
 }: Props) {
     if (!link) return null;
-
     return (
-        <RexLink
+        <KRexLink
             link={link}
             class={[
                 isActive ? 'bg-primary text-white ' : '',
-                'border p-4 gap-2 flex items-center justify-start hover:text-white hover:bg-primary transition-all duration-500',
+                'flex items-center justify-start gap-2 border px-4 py-2 transition-all duration-500 hover:bg-primary hover:text-white',
                 className,
             ].join(' ')}
         >
@@ -30,6 +29,6 @@ export default function Button({
             {link?.label?.length && (
                 <span class="z-1 relative">{link.label}</span>
             )}
-        </RexLink>
+        </KRexLink>
     );
 }

@@ -1,10 +1,8 @@
 ---
 import type { Link } from 'redaxo-adapter';
-import type {ModuleProps} from "@config/modules";
+import type { ModuleProps } from '@config/modules';
 import Container from '@layout/Container';
-import Heading from '@atoms/Heading';
-import RichText from '@atoms/rich-text/RichText';
-import RexLink from '@kreatif/starter/components/utils/RexLink';
+import TitleText from '@molecules/TitleText';
 
 interface Props extends ModuleProps {}
 
@@ -20,13 +18,8 @@ interface Values {
 const { slice } = Astro.props;
 
 const values = slice.values as Values;
-const link = values[1].link;
 ---
 
 <Container>
-    <Heading size="large" text={values[1].title_large} />
-    <Heading size="tiny" text={values[1].title_small} />
-    {values[1].text && <RichText text={values[1].text} class="text my-2" />}
-    <RexLink link={link} />
-    <!-- <Button link={link} /> -->
+    <TitleText {...values[1]} />
 </Container>
