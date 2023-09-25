@@ -11,6 +11,6 @@ if (redirect) {
 }
 ---
 
-<RexLayout {...data} metadata={contentType.metadata} path={path}>
+<RexLayout {...data} metadata={contentType.metadata}>
     {contentType.type === 'article' && <ArticleContent {...data} />}
 </RexLayout>
