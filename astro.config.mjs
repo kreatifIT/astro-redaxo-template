@@ -2,12 +2,14 @@ import {defineConfig} from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import preact from '@astrojs/preact';
 import cloudflare from '@astrojs/cloudflare';
+import redaxo from '@kreatif/starter/integrations/redaxo.mjs';
 
 // https://astro.build/config
 export default defineConfig({
     integrations: [
         preact({compat: true}),
-        tailwind()
+        tailwind(),
+        redaxo(),
     ],
     vite: {
         ssr: {
