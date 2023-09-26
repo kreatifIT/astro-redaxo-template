@@ -1,6 +1,7 @@
 ---
 import Logo from '@atoms/Logo';
 import { getSettings, t } from '@kreatif/starter/utils/wildcards';
+import { sanitizePhoneNumber } from '@kreatif/starter/utils/formatters';
 import type { Article, NavigationItem } from 'redaxo-adapter';
 import Container from './Container';
 
@@ -34,9 +35,8 @@ const { organization, contact } = getSettings(Astro);
                         <>
                             {t(Astro, 'label.phone_short')}
                             <a
-                                href={`tel:${contact?.phone?.replace(
-                                    /\s/g,
-                                    '',
+                                href={`tel:${sanitizePhoneNumber(
+                                    contact?.phone,
                                 )}`}
                                 class=""
                             >
@@ -106,7 +106,7 @@ const { organization, contact } = getSettings(Astro);
     <Container>
         <div class="justify-between md:flex">
             <div class="mb-2 md:mb-0">
-                Copyright &copy; {year}
+                Copyright &copy; {year}{' '}
                 {organization?.name}
             </div>
             <div>

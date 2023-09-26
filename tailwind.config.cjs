@@ -14,7 +14,6 @@ const config = {
                 kreatif: {
                     green: '#bcc802',
                     socials: {
-                        /* generated with copilot */
                         facebook: '#3b5998',
                         twitter: '#1da1f2',
                         instagram: '#e1306c',

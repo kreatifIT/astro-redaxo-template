@@ -11,14 +11,13 @@
         "astro": "astro",
         "format": "prettier --write .",
         "icon-font": "svgtofont --sources ./src/icons --output ./public/fonts/iconFont --fontName iconFont",
-        "convert-font": "node scripts/convert-font.cjs $fontName",
-        "generate-favicon": "node scripts/favicon-manifest-generator.cjs"
+        "convert-font": "node ../@kreatif/starter/bin/convert-font.cjs $fontName",
+        "generate-favicon": "kreatif-favicon ./src/components/layout/head/Favicons.astro ./public/"
     },
     "dependencies": {
         "@astrojs/cloudflare": "^7.1.1",
         "@astrojs/preact": "^3.0.0",
         "@astrojs/tailwind": "^5.0.0",
-        "@fancyapps/ui": "^5.0.22",
         "@nanostores/preact": "^0.5.0",
         "@splidejs/splide-extension-video": "^0.8.0",
         "@splidejs/react-splide": "^0.7.12",
@@ -28,16 +27,10 @@
         "dotenv": "^16.3.1",
         "graphql": "^16.8.1",
         "graphql-tag": "^2.12.6",
-        "mapbox-gl": "^2.15.0",
         "nanostores": "^0.9.3",
         "preact": "^10.17.1",
-        "react-map-gl": "^7.1.6",
         "redaxo-adapter": "^0.0.38",
-        "scrollama": "^3.2.0",
-        "tailwindcss": "^3.3.3",
-        "ukiyojs": "^4.1.2",
-        "video.js": "^8.5.2",
-        "videojs-youtube": "^3.0.1"
+        "tailwindcss": "^3.3.3"
     },
     "overrides": {
         "react": "npm:@preact/compat@latest",
@@ -51,7 +44,6 @@
         "generateInfoData": true
     },
     "devDependencies": {
-        "@types/mapbox-gl": "^2.7.14",
         "favicons": "^7.1.4",
         "jsdom": "^22.1.0",
         "postcss-nesting": "^12.0.1",
