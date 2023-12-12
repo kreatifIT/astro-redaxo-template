@@ -15,23 +15,23 @@
         "generate-favicon": "kreatif-favicon ./src/components/layout/head/Favicons.astro ./public/"
     },
     "dependencies": {
-        "@astrojs/cloudflare": "^7.1.1",
-        "@astrojs/preact": "^3.0.0",
-        "@astrojs/tailwind": "^5.0.0",
-        "@kreatif/starter": "^0.0.1",
+        "@astrojs/cloudflare": "^8.0.0",
+        "@astrojs/preact": "^3.0.1",
+        "@astrojs/tailwind": "^5.0.3",
+        "@kreatif/starter": "^0.0.11",
         "@nanostores/preact": "^0.5.0",
         "@splidejs/react-splide": "^0.7.12",
         "@splidejs/splide-extension-video": "^0.8.0",
-        "astro": "^3.1.1",
+        "astro": "^4.0.4",
         "astro-seo": "^0.8.0",
-        "astro-seo-schema": "^3.2.0",
+        "astro-seo-schema": "^4.0.0",
         "dotenv": "^16.3.1",
         "graphql": "^16.8.1",
         "graphql-tag": "^2.12.6",
-        "nanostores": "^0.9.3",
-        "preact": "^10.17.1",
-        "redaxo-adapter": "^0.0.38",
-        "tailwindcss": "^3.3.3"
+        "nanostores": "^0.9.5",
+        "preact": "^10.19.3",
+        "redaxo-adapter": "^0.0.39",
+        "tailwindcss": "^3.3.6"
     },
     "overrides": {
         "react": "npm:@preact/compat@latest",
@@ -46,17 +46,17 @@
     },
     "devDependencies": {
         "favicons": "^7.1.4",
-        "jsdom": "^22.1.0",
+        "jsdom": "^23.0.1",
         "postcss-nesting": "^12.0.1",
-        "prettier": "^3.0.3",
-        "prettier-plugin-astro": "^0.12.0",
-        "prettier-plugin-tailwindcss": "^0.5.4",
-        "sass": "^1.67.0",
-        "svgtofont": "^4.0.0",
+        "prettier": "^3.1.1",
+        "prettier-plugin-astro": "^0.12.2",
+        "prettier-plugin-tailwindcss": "^0.5.9",
+        "sass": "^1.69.5",
+        "svgtofont": "^4.0.1",
         "tailwindcss-hyphens": "^0.1.0",
         "tailwindcss-touch": "^1.0.1",
         "ttf2woff": "^3.0.0",
         "ttf2woff2": "^5.0.0",
-        "wrangler": "^3.8.0"
+        "wrangler": "^3.19.0"
     }
 }
