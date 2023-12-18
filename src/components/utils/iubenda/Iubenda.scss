@@ -1,0 +1,159 @@
+#iubenda-cs-banner {
+    .iubenda-cs-container {
+
+        a {
+            &,
+            &[href] {
+                &:focus,
+                &:hover {
+                    @apply outline-none #{!important};
+                }
+            }
+        }
+    
+        .iubenda-cs-content {
+            @apply bg-white text-gray-800;
+            font-size: 14px !important;
+
+            button {
+                @apply w-auto  #{!important};
+
+                &:focus,
+                &:hover {
+                    @apply outline-none border-transparent #{!important};
+                }
+
+                &.iubenda-cs-btn-primary {
+                    @apply bg-primary w-auto text-white #{!important};
+                }
+
+                &.iubenda-cs-customize-btn {
+                    @apply bg-secondary text-white #{!important};
+                }
+            }
+
+            .iubenda-cs-close-btn {
+                display: none !important;
+            }
+
+            .cookieBannerLanguageSwitch {
+                position: absolute;
+                top: 24px;
+                right: 24px;
+                text-align: center;
+                line-height: 100%;
+                font-size: 14px;
+                @apply text-gray-400;
+                z-index: 1;
+
+                .cookieBannerLanguageToggler {
+                    width: 20px;
+                    height: 20px;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                .cookieBannerLanguageMenu {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    max-height: 0;
+                    opacity: 0;
+                    overflow: hidden;
+                    transition: all 0.3s ease;
+                    box-shadow: 0px 2px 7px gray;
+                    transform: translateY(10px);
+                    text-transform: uppercase;
+                    @apply text-gray-600;
+
+                    & > * {
+                        padding: 7px 10px;
+                        text-align: center;
+                        display: block;
+                    }
+
+                    span {
+                        @apply bg-primary text-white;
+                    }
+
+                    a {
+                        text-decoration: none;
+                        transition: all 0.3s ease;
+                        border-bottom: 1px solid transparent;
+                        @apply bg-white text-gray-600;
+
+                        &:hover {
+                            @apply bg-primary text-white;
+                        }
+                    }
+                }
+
+                &.menu-open {
+                    .cookieBannerLanguageMenu {
+                        max-height: initial;
+                        overflow: visible;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+    &.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom).iubenda-cs-visible {
+        .iubenda-cs-container {
+            @apply w-auto xl:w-[930px] md:min-w-[35vw] #{!important};
+
+            .iubenda-banner-content {
+                @apply p-6 focus:outline-none #{!important};
+
+                #iubenda-cs-title {
+                    @apply mt-0 text-base #{!important};
+                }
+
+                #iubenda-cs-paragraph {
+                    .iub-p {
+                        @apply inline #{!important};
+                    }
+                }
+            }
+
+            .iubenda-cs-opt-group {
+                @apply m-6 mt-0 #{!important};
+            }
+
+            .iubenda-cs-opt-group {
+                @apply md:flex-row-reverse md:content-between #{!important};
+            }
+        }
+    }
+
+    &.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom).iubenda-cs-visible {
+        .iubenda-cs-container {
+            @apply w-auto xl:w-[930px] #{!important};
+
+            .iubenda-banner-content {
+                @apply p-6 focus:outline-none #{!important};
+
+                #iubenda-cs-title {
+                    @apply mt-0 text-base #{!important};
+                }
+                #iubenda-cs-paragraph {
+                    .iub-p {
+                        display: inline!important;
+                    }
+                }
+            }
+            .iubenda-cs-opt-group {
+                @apply m-6 mt-0 #{!important};
+            }
+
+            .iubenda-cs-opt-group {
+                @apply md:flex-row-reverse md:content-between #{!important};
+                button {
+                    width: auto!important;
+                }
+            }
+        }
+    }
+}

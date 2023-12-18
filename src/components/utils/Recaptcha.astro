@@ -1,0 +1,32 @@
+---
+import { getSettings } from '@kreatif/starter/utils/wildcards';
+const siteKey = getSettings(Astro).tokens?.recaptchaSiteKey;
+---
+
+{
+    siteKey && (
+        <>
+            <script
+                type="text/javascript"
+                src={`https://www.google.com/recaptcha/api.js?render=${siteKey}`}
+                async
+                defer
+                is:inline
+            />
+            <script define:vars={{ recaptchaSiteKey: siteKey }} async defer>
+                window.recaptchaSiteKey = recaptchaSiteKey;
+            </script>
+            {
+
+                import.meta.env.PROD && (
+                <style is:global lang="scss">
+                    .grecaptcha-badge {
+                        visibility: hidden;
+                        opacity: 0;
+                    }
+                    </style>
+                )
+            }
+        </>
+    )
+}

@@ -1,0 +1,38 @@
+---
+import { getBanner } from '@utils/iubenda/iubenda';
+import './Iubenda.scss';
+import { getSettings } from '@kreatif/starter/utils/wildcards';
+import type { Clang } from 'redaxo-adapter';
+
+interface Props {
+    clangs: Clang[];
+}
+
+const { clangs } = Astro.props;
+
+const bannerHTML = getBanner(Astro, clangs);
+const settings = getSettings(Astro);
+const showBanner = import.meta.env.DEV;
+---
+
+{
+    showBanner && (
+        <Fragment
+            set:html={settings.iubendaCookieBanner?.bannerData.replace(
+                '{{BANNER_HTML}}',
+                bannerHTML,
+            )}
+        />
+    )
+}
+<script type="text/javascript" is:inline>
+    window.iubendaLanguageSwitch = () => {
+        const menuToggler = document.querySelector(
+            '.cookieBannerLanguageSwitch .cookieBannerLanguageToggler',
+        );
+        const menu = document.querySelector('.cookieBannerLanguageSwitch');
+        menuToggler.onclick = () => {
+            menu.classList.toggle('menu-open');
+        };
+    };
+</script>
