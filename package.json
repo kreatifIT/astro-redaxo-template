@@ -26,6 +26,7 @@
         "astro-seo": "^0.8.0",
         "astro-seo-schema": "^4.0.0",
         "dotenv": "^16.3.1",
+        "framer-motion": "^10.17.9",
         "graphql": "^16.8.1",
         "graphql-tag": "^2.12.6",
         "nanostores": "^0.9.5",
