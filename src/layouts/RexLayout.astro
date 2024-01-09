@@ -39,7 +39,11 @@ const { footerArticle, clangs } = props;
         <slot />
         {
             footerArticle && (
-                <ModuleList article={footerArticle} footerModules={true} />
+                <ModuleList
+                    {...props}
+                    article={footerArticle}
+                    footerModules={true}
+                />
             )
         }
     </main>
