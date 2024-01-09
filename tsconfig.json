@@ -10,6 +10,7 @@
             "@utils/*": ["components/utils/*"],
             "@components/*": ["components/*"],
             "@adapters/*": ["adapters/*"],
+            "@helpers/*": ["helpers/*"],
             "@styles/*": ["styles/*"],
             "@config/*": ["config/*"],
             "@layouts/*": ["layouts/*"],
