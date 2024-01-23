@@ -25,12 +25,20 @@ interface Props {
 }
 const props = Astro.props;
 const { footerArticle, clangs } = props;
+
+const showIubenda = import.meta.env.PROD;
+//const showIubenda = true;
 ---
 
-<KRexLayout {...props} {baseUrl} bodyClass="overflow-x-hidden pt-16 xl:pt-24">
+<KRexLayout
+    {...props}
+    {baseUrl}
+    bodyClass="overflow-x-hidden pt-16 xl:pt-24"
+    viewTransitions={false}
+>
     <Fragment slot="head">
         <Favicons />
-        <Iubenda clangs={clangs} />
+        {showIubenda && <Iubenda clangs={clangs} />}
         <link rel="stylesheet" href="/fonts/iconFont/iconFont.css" />
         <Recaptcha />
     </Fragment>
