@@ -25,9 +25,10 @@ export default function useIubendaPreferences(): Preferences | null {
                 setIubPreference(
                     // @ts-ignore
                     typeof _iub !== 'undefined'
-                        ? // @ts-ignore
-                          _iub.cs?.consent?.purposes
-                        : null,
+                        ? {
+                            // @ts-ignore
+                            ..._iub.cs?.consent?.purposes,
+                        } : null,
                 );
             });
         };
