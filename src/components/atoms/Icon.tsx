@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function Icon({ name, class: className = '' }: Props) {
-    return <KIcon class={className} icon={getIcon(name)} />;
+    return <KIcon class={className} icon={getIcon(name.replace('iconFont-', ''))} />;
 }
 export function getIcon(name: string) {
     return getIconFromJson(name, iconJson);

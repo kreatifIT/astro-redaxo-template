@@ -25,7 +25,7 @@ export default function Hamburger() {
             <span
                 className={[
                     'block h-0.5 w-6 bg-gray-800 transition-transform',
-                    open ? '-translate-y-2- rotate-45' : '',
+                    open ? '-translate-y-2 -rotate-45' : '',
                 ].join(' ')}
             ></span>
         </button>

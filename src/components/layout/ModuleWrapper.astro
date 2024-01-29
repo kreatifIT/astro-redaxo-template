@@ -9,8 +9,9 @@ interface Props {
 
 const props = Astro.props;
 const { slice, isFooterModule, article } = props;
+const moduleClass = 'module-' + slice.moduleCode;
 ---
 
-<KModuleWrapper {...props} class="">
+<KModuleWrapper {...props} class={moduleClass}>
     <slot />
 </KModuleWrapper>
