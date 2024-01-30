@@ -22,7 +22,7 @@ const { navigation, siteStartArticle, clangs, clang } = Astro.props;
 ---
 
 <header
-    class="fixed top-0 z-50 flex h-16 w-full items-center bg-gray-100 transition-colors md:h-20 xl:h-24"
+    class="fixed top-0 z-50 flex h-16 w-full items-center bg-gray-100 md:h-20 xl:h-24"
     data-header-section
 >
     <Container>
@@ -59,3 +59,38 @@ const { navigation, siteStartArticle, clangs, clang } = Astro.props;
         </div>
     </Container>
 </header>
+
+<script>
+    const header = document.querySelector('[data-header-section]');
+    let lastScrollPosition = window.scrollY;
+    let disapperarThreshold = header?.scrollHeight || 10;
+
+    const checkHeaderVisibility = () => {
+        const currentScrollPos = window.scrollY;
+        if (currentScrollPos > disapperarThreshold) {
+            if (currentScrollPos < lastScrollPosition) {
+                header?.classList.remove('header-hide');
+            } else {
+                header?.classList.add('header-hide');
+            }
+        } else {
+            header?.classList.remove('header-hide');
+        }
+        lastScrollPosition = currentScrollPos;
+    };
+
+    checkHeaderVisibility();
+    document.addEventListener('scroll', checkHeaderVisibility);
+    document.addEventListener('astro:beforeload', checkHeaderVisibility);
+    document.addEventListener('astro:page-load', checkHeaderVisibility);
+</script>
+
+<style is:global lang="scss">
+    header {
+        @apply transition-all duration-500;
+
+        &.header-hide {
+            @apply -translate-y-full opacity-0;
+        }
+    }
+</style>

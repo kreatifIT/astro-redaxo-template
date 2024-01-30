@@ -5,14 +5,14 @@ interface Props {
 }
 
 export default function Container({
-                                      class: className = '',
-                                      noPadding = false,
-                                      children,
-                                  }: Props) {
+    class: className = '',
+    noPadding = false,
+    children,
+}: Props) {
     return (
         <div
             class={[
-                'max-w-[1680px] mx-auto relative z-1 w-full flex flex-col',
+                'max-w-[1680px] mx-auto relative z-1 w-full grid',
                 !noPadding ? 'px-4' : '',
                 className,
             ].join(' ')}
