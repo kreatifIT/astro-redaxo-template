@@ -14,7 +14,6 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-
 body {
     & > * {
         @apply max-w-[1920px] mx-auto;
