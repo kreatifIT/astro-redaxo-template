@@ -3,7 +3,7 @@ import '@kreatif/starter/components/utils/form/Form.scss';
 import Errors from '@kreatif/starter/components/utils/form/partials/Errors.tsx';
 import Success from '@kreatif/starter/components/utils/form/partials/Success.tsx';
 import type { GraphQLResponse } from 'redaxo-adapter';
-import useWildcards from '@adapters/redaxo/useWildcards';
+import useWildcards from '@kreatif/starter/hooks/useWildcards';
 import type { FormError } from '@kreatif/starter/utils/forms.ts';
 import { parseFormErrors, performRecaptcha } from '@kreatif/starter/utils/forms.ts';
 

@@ -1,4 +1,6 @@
-import 'mapbox-gl/dist/mapbox-gl.css';
+
+// todo: if mapbox is used, then enable this commented css import
+// import 'mapbox-gl/dist/mapbox-gl.css';
 import './Mapbox.scss';
 import { useState } from 'preact/hooks';
 import Map, {
