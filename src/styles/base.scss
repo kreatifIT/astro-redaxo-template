@@ -14,3 +14,17 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+body {
+    & > * {
+        @apply max-w-[1920px] mx-auto;
+
+        &#iubenda-cs-banner,
+        &.fancybox-focus-guard,
+        &.fancybox__container,
+        &.fancybox-focus-guard
+         {
+            @apply max-w-none;
+        }
+    }
+}
