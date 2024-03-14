@@ -25,5 +25,15 @@ body {
          {
             @apply max-w-none;
         }
+
+        &#iubenda-cs-banner {
+            &.iubenda-cs-fix-height {
+                .iubenda-cs-container, 
+                .iubenda-cs-content, 
+                .iubenda-cs-rationale {
+                   @apply xl:h-auto #{!important};
+               }
+            }
+        }
     }
 }
