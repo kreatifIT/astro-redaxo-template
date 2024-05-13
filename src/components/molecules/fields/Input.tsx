@@ -21,12 +21,14 @@ export default function Input({
     return (
         <>
             <input
-                type={type}
+                type={isDateField ? 'text' : type}
                 value={value}
                 name={name}
                 id={name}
                 placeholder={placeholder}
                 {...(isDateField && min && { min })}
+                {...(isDateField && { onFocus: (e) => (e.currentTarget.type = 'date') })}
+                {...(isDateField && { onBlur: (e) => (e.currentTarget.type = 'text') })}
                 class={[
                     'color-neutral-500 peer w-full border border-zinc-300 border-opacity-50 p-4 font-light placeholder-transparent focus:border-opacity-100 focus:shadow-lg focus:outline-none',
                     isDateField ? 'pr-10' : '',
