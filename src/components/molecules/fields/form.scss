@@ -1,0 +1,17 @@
+form {
+    option {
+        font-size: inherit;
+    }
+
+    input[type=checkbox]:checked:after {
+        @apply translate-y-1;
+    }
+
+    input[type=checkbox] {
+        // @apply w-5 h-5;
+
+        &:after {
+            @apply border border-[currentColor];
+        }
+    }
+}
