@@ -38,7 +38,7 @@ const showIubenda = import.meta.env.PROD;
 >
     <Fragment slot="head">
         <Favicons />
-        {showIubenda && <Iubenda clangs={clangs} />}
+        {showIubenda && <Iubenda visible={showIubenda} clangs={clangs} />}
         <link rel="stylesheet" href="/fonts/iconFont/iconFont.css" />
         <Recaptcha />
     </Fragment>

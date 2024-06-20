@@ -6,17 +6,17 @@ import type { Clang } from 'redaxo-adapter';
 
 interface Props {
     clangs: Clang[];
+    visible: boolean;
 }
 
-const { clangs } = Astro.props;
+const { clangs, visible } = Astro.props;
 
 const bannerHTML = getBanner(Astro, clangs);
 const settings = getSettings(Astro);
-const showBanner = import.meta.env.DEV;
 ---
 
 {
-    showBanner && (
+    visible && (
         <Fragment
             set:html={settings.iubendaCookieBanner?.bannerData.replace(
                 '{{BANNER_HTML}}',
