@@ -24,9 +24,11 @@ const {
 } = props;
 let showBreadcrumbs = article?.id !== siteStartArticle?.id && !isFirst;
 const moduleClass = 'module-' + slice.moduleCode;
+
+const enableAos = !isFirst;
 ---
 
-<KModuleWrapper {...props} class={moduleClass}>
+<KModuleWrapper enableAos={enableAos} {...props} class={moduleClass}>
     <slot />
     {showBreadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
 </KModuleWrapper>
