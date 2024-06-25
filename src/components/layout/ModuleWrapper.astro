@@ -1,17 +1,32 @@
 ---
 import KModuleWrapper from '@kreatif/starter/components/layout/KModuleWrapper.astro';
-import type { Article, ArticleSlice } from 'redaxo-adapter';
+import type { Article, ArticleSlice, Breadcrumb } from 'redaxo-adapter';
+import Breadcrumbs from '@layout//Breadcrumbs.astro';
 interface Props {
     slice: ArticleSlice;
     isFooterModule?: boolean;
     article?: Article;
+    isFirst?: boolean;
+    siteStartArticle?: Article;
+    currentArticleId?: string;
+    breadcrumbs: Breadcrumb[];
 }
 
 const props = Astro.props;
-const { slice, isFooterModule, article } = props;
+const {
+    slice,
+    isFooterModule,
+    article,
+    isFirst,
+    siteStartArticle,
+    currentArticleId,
+    breadcrumbs,
+} = props;
+let showBreadcrumbs = article?.id !== siteStartArticle?.id && !isFirst;
 const moduleClass = 'module-' + slice.moduleCode;
 ---
 
 <KModuleWrapper {...props} class={moduleClass}>
     <slot />
+    {showBreadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
 </KModuleWrapper>

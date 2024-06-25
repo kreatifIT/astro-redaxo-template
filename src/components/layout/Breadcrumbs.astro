@@ -1,0 +1,38 @@
+---
+import type { Article, Breadcrumb } from 'redaxo-adapter';
+import Container from '@layout/Container';
+
+interface Props {
+    breadcrumbs: Breadcrumb[];
+    showBottomSpacing: boolean;
+}
+
+const { breadcrumbs, showBottomSpacing } = Astro.props;
+const breadcrumbsLength = breadcrumbs?.length;
+---
+
+{
+    breadcrumbsLength && (
+        <Container
+            class={[
+                'max-md:hidden 2xl:p-0',
+                showBottomSpacing ? 'mb-8 lg:mb-16 xl:mb-40' : '',
+            ].join(' ')}
+        >
+            <nav class="flex gap-2 py-6 text-sm text-gray-800">
+                {breadcrumbs.map((breadcrumb, i) => (
+                    <>
+                        {i < breadcrumbsLength - 1 ? (
+                            <a href={breadcrumb.url} class="">
+                                {breadcrumb.label}
+                            </a>
+                        ) : (
+                            <div class="text-gray-400">{breadcrumb.label}</div>
+                        )}
+                        {i < breadcrumbsLength - 1 && <span>/</span>}
+                    </>
+                ))}
+            </nav>
+        </Container>
+    )
+}
