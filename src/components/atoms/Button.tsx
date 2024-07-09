@@ -15,7 +15,7 @@ export default function Button({
     icon,
     isActive,
 }: Props) {
-    if (!link) return null;
+    if (!link || typeof link !== 'object') return null;
     return (
         <KRexLink
             link={link}
