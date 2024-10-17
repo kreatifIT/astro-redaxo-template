@@ -72,7 +72,6 @@ export default function FormWrapper<T extends FormDataBase>({
                     captcha: recaptchaToken,
                 } as T)
                     .then(({ data, errors }: any) => {
-                        console.log(data);
                         if (errors && errors.length > 0) {
                             const parsedErrors = parseFormErrors(errors);
                             if (parsedErrors.length === 0) {
@@ -88,6 +87,7 @@ export default function FormWrapper<T extends FormDataBase>({
                             setErrors([]);
                             setSuccess(true);
                             setLoading(false);
+                            formRef.current?.reset(); // Clear the form
                             scrollFormInit();
                         } else {
                             for (var propName in data) {
@@ -98,6 +98,7 @@ export default function FormWrapper<T extends FormDataBase>({
                                     setErrors([]);
                                     setSuccess(true);
                                     setLoading(false);
+                                    formRef.current?.reset(); // Clear the form
                                     scrollFormInit();
                                 }
                             }
@@ -107,7 +108,6 @@ export default function FormWrapper<T extends FormDataBase>({
                         setErrors(parseFormErrors(error));
                         setLoading(false);
                         scrollFormInit();
-                        console.log('other err or');
                     });
             })
             .catch(() => {
@@ -119,7 +119,6 @@ export default function FormWrapper<T extends FormDataBase>({
                 ]);
                 setLoading(false);
                 scrollFormInit();
-                console.log('piter catch');
             });
     };
 
